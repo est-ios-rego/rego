@@ -14,4 +14,11 @@ extension Date {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: self)
     }
+
+    var toYearMonth: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_kr")
+        formatter.dateFormat = "yyyy년 MM월"
+        return formatter.string(from: self)
+    }
 }
