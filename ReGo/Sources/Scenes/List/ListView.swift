@@ -8,6 +8,12 @@
 import SwiftUI
 import SwiftData
 
+enum SelectedSearch {
+    case title
+    case category
+    case date
+}
+
 struct ListView: View {
     var items: [Retrospect]
     var dateList: [String] {
@@ -25,38 +31,110 @@ struct ListView: View {
         return arrayDate.sorted()
     }
 
-    var body: some View {
+    @State var keyword: String = ""
+    @State var selectedCategory: RetrospectCategory = .category1
+    @State var selectedDate = Date.now
+    @State var selectedSearch: SelectedSearch = .title
 
+    var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                Text("List")
+                Text("회고 기록")
                     .font(.largeTitle)
                     .bold()
-                    .padding()
                     .font(.title2)
 
-                ScrollView {
-                    ForEach(dateList, id: \.self) { date in
-                        Text(date)
-                            .font(.largeTitle)
-                        List {
-                            ForEach(items) { item in
-                                if item.date.toYearMonth == date {
-                                    NavigationLink{
-                                        TestView()
-                                    } label: {
-                                        ListItem(item: item)
-                                    }
-                                }
+                VStack(alignment: .leading) {
+                    Text("검색")
+                        .font(.title3)
+                    HStack {
+
+
+                        TextField("제목을 검색하세요", text: $keyword)
+
+                        Button {
+
+                        } label: {
+                            Image(systemName: "magnifyingglass")
+                        }
+
+
+
+                    }
+                    .padding()
+                    .background(.secondary.opacity(0.2))
+                    .clipShape(Capsule())
+                    .overlay {
+                        Capsule().stroke(Color.primary, lineWidth: 1)
+
+                    }
+
+
+                    HStack {
+                        Text("카테고리")
+                        Spacer()
+
+                        Picker("카테고리", selection: $selectedCategory) {
+                            ForEach(RetrospectCategory.allCases) { item in
+                                Text(item.rawValue)
                             }
                         }
                     }
+                    HStack {
+                        Text("날짜")
+                        Spacer()
 
+                        DatePicker("", selection: $selectedDate, displayedComponents: .date)
+
+//                        DatePicker("날짜", selection: $selectedDate, displayedComponents: .datePickerStyle(.graphical)) {
+
+                        Text("~")
+                            .padding(.leading, 10)
+
+                        DatePicker("", selection: $selectedDate, displayedComponents: .date)
+
+                    }
                 }
+
+                List{
+                    ScrollView {
+                        ForEach(dateList, id: \.self) { date in
+                            Text(date)
+                                .font(.title)
+
+
+                            ForEach(items) { item in
+                                if item.date.toYearMonth == date {
+                                    NavigationLink{
+                                        EmptyView()
+                                    } label: {
+                                        ListItem(item: item)
+                                            .frame(maxWidth: .infinity)
+                                    }
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+                .listStyle(.plain)
 
 
             }
             .padding(.horizontal)
+//            .navigationTitle("회고 기록")
+//            .searchable(text: $keyword, prompt: "내용을 검색하세요.")
+            .toolbar {
+                ToolbarItem {
+                    Button {
+
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+
+                }
+            }
 
         }
     }

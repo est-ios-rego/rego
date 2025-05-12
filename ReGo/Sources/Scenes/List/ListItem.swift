@@ -13,20 +13,27 @@ struct ListItem: View {
 
     var body: some View {
 
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text(item.category.rawValue)
-                    .font(.title3)
+                    .font(.headline)
                     .foregroundStyle(.white)
                     .padding(10)
                     .background(.green)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                Spacer()
 
                 Text(item.title)
+                    .tint(.primary)
+
+                Spacer()
+                Spacer()
             }
 
             Text(item.date.toListDate)
+                .tint(.secondary)
         }
+//        .background(.blue)
     }
 }
 
