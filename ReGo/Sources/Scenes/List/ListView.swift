@@ -25,6 +25,8 @@ struct ListView: View {
         return arrayDate.sorted()
     }
 
+    @State private var showEditView = false
+
     var body: some View {
 
         NavigationStack {
@@ -57,7 +59,18 @@ struct ListView: View {
 
             }
             .padding(.horizontal)
-
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showEditView = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .navigationDestination(isPresented: $showEditView) {
+                EditView(mode: .create)
+            }
         }
     }
 

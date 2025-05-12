@@ -14,19 +14,19 @@ struct MainView: View {
         TabView(selection: $selectedIndex) {
             HomeView()
                 .tabItem {
-                    Label("home", systemImage: "house")
+                    Label("홈", systemImage: "house")
                 }
             ListView(items: Retrospect.sampleData)
                 .tabItem {
-                    Label("home", systemImage: "list.bullet.clipboard")
+                    Label("목록", systemImage: "list.bullet.clipboard")
                 }
             StatisticsView()
                 .tabItem {
-                    Label("home", systemImage: "pencil.slash")
+                    Label("통계", systemImage: "pencil.slash")
                 }
             SettingView()
                 .tabItem {
-                    Label("home", systemImage: "gear")
+                    Label("설정", systemImage: "gear")
                 }
         }
 
