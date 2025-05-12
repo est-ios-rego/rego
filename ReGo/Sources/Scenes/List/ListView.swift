@@ -8,8 +8,26 @@
 import SwiftUI
 
 struct ListView: View {
+    
+
     var body: some View {
-        Text("List View")
+
+        NavigationStack {
+            VStack(alignment: .leading) {
+                Text("List")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding()
+
+
+                
+            }
+        }
+        .toolbar {
+            ToolbarItem {
+                Image(systemName: "plus")
+            }
+        }
     }
 }
 
