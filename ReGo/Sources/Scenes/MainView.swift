@@ -16,7 +16,7 @@ struct MainView: View {
                 .tabItem {
                     Label("home", systemImage: "house")
                 }
-            ListView()
+            ListView(items: Retrospect.sampleData)
                 .tabItem {
                     Label("home", systemImage: "list.bullet.clipboard")
                 }

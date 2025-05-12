@@ -9,24 +9,30 @@ import Foundation
 import SwiftUI
 import SwiftData
 
-enum RestrospectCategory: String, Codable {
-    case a = "카테고리a"
-    case b = "카테고리b"
-    case c = "카테고리c"
+import Foundation
+import SwiftUI
+import SwiftData
+
+enum RetrospectCategory: String, Codable {
+    case category1 = "category1"
+    case category2 = "category2"
+    case category3 = "category3"
+    case category4 = "category4"
+    case category5 = "category5"
 }
 
 @Model
-class Restrospect: Identifiable {
+class Retrospect: Identifiable {
     var id: UUID = UUID()
-    var date: Date
-    var category: RestrospectCategory
     var title: String
     var content: String
+    var date: Date
+    var category: RetrospectCategory
 
-    init(date: Date, category: RestrospectCategory, title: String, content: String) {
-        self.date = date
-        self.category = category
+    init(title: String, content: String, date: Date, category: RetrospectCategory) {
         self.title = title
         self.content = content
+        self.date = date
+        self.category = category
     }
 }

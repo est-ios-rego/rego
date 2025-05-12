@@ -9,37 +9,28 @@ import SwiftUI
 
 
 struct ListItem: View {
-    var item: Restrospect
+    var item: Retrospect
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Text(item.date, style: .date)
-                .font(.title2)
 
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(item.category.rawValue)
-                        .font(.title3)
-                        .foregroundStyle(.white)
-                        .padding(10)
-                        .background(.green)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
+        VStack(alignment: .leading) {
+            HStack {
+                Text(item.category.rawValue)
+                    .font(.title3)
+                    .foregroundStyle(.white)
+                    .padding(10)
+                    .background(.green)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
 
-                    Text(item.title)
-                }
-
-                Text(item.date.toListDate)
+                Text(item.title)
             }
-            .frame(maxWidth: .infinity)
 
-            .background(.blue)
+            Text(item.date.toListDate)
         }
-
-
     }
 }
 
 #Preview {
-    ListItem(item: Restrospect.sampleData[0])
+    ListItem(item: Retrospect.sampleData[0])
         .environment(\.locale, Locale(identifier: "ko_kr"))
 }
