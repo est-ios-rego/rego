@@ -10,9 +10,12 @@ import SwiftData
 
 @main
 struct ReGoApp: App {
+    @AppStorage("appTheme") private var appThemeRaw: String = AppTheme.system.rawValue
+    
     var body: some Scene {
         WindowGroup {
             MainView()
+                .preferredColorScheme(AppTheme(rawValue: appThemeRaw)?.colorScheme)
         }
     }
 }

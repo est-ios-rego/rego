@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
-    @State var selectedIndex = 0
+    @SceneStorage("selectedTab") private var selectedIndex = 0
 
     var body: some View {
         TabView(selection: $selectedIndex) {
@@ -16,18 +16,24 @@ struct MainView: View {
                 .tabItem {
                     Label("home", systemImage: "house")
                 }
+                .tag(0)
+
             ListView(items: Retrospect.sampleData)
                 .tabItem {
                     Label("home", systemImage: "list.bullet.clipboard")
                 }
+                .tag(1)
+
             StatisticsView()
                 .tabItem {
                     Label("home", systemImage: "pencil.slash")
                 }
+                .tag(2)
             SettingView()
                 .tabItem {
                     Label("home", systemImage: "gear")
                 }
+                .tag(3)
         }
 
     }
