@@ -6,15 +6,16 @@
 //
 
 import Foundation
-import SwiftUI
 import SwiftData
 
-enum RetrospectCategory: String, Codable {
+enum RetrospectCategory: String, Codable, CaseIterable, Identifiable {
 	case category1
     case category2
     case category3
     case category4
     case category5
+
+    var id: String { rawValue }
 }
 
 @Model
