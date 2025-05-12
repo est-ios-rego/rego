@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Tabiew: View {
+struct MainView: View {
     @State var selectedIndex = 0
 
     var body: some View {
@@ -16,7 +16,6 @@ struct Tabiew: View {
                 .tabItem {
                     Label("home", systemImage: "house")
                 }
-
             ListView()
                 .tabItem {
                     Label("home", systemImage: "list.bullet.clipboard")
@@ -29,12 +28,11 @@ struct Tabiew: View {
                 .tabItem {
                     Label("home", systemImage: "gear")
                 }
-
         }
 
     }
 }
 
 #Preview {
-    Tabiew()
+    MainView()
 }

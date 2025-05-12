@@ -12,7 +12,7 @@ import SwiftData
 struct ReGoApp: App {
     var body: some Scene {
         WindowGroup {
-            Tabiew()
+            MainView()
         }
     }
 }
