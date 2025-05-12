@@ -7,32 +7,24 @@
 
 import SwiftUI
 
-struct CategorySheet: View {
+struct CategoryPicker: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var selectedCategory: String?
+    @Binding var currentCategory: RetrospectCategory
 
-    let categories = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    let categories = RetrospectCategory.allCases
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(categories, id: \.self) { category in
-                        Button {
-                            selectedCategory = category
+                    ForEach(categories) { category in
+                        CategoryButton(
+                            category: category,
+                            isSelected: currentCategory == category
+                        ) {
+                            currentCategory = category
                             dismiss()
-                        } label: {
-                            Text(category)
-                                .frame(maxWidth: .infinity, minHeight: 50)
-                                .background(
-                                    selectedCategory == category ? Color.blue.opacity(0.2) : Color.gray.opacity(0.1)
-                                )
-                                .cornerRadius(8)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(selectedCategory == category ? Color.blue : Color.gray.opacity(0.3), lineWidth: 1)
-                                )
                         }
                     }
                 }
@@ -47,6 +39,30 @@ struct CategorySheet: View {
                     }
                 }
             }
+        }
+    }
+}
+
+struct CategoryButton: View {
+    let category: RetrospectCategory
+    let isSelected: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        let backgroundColor = isSelected ? Color.blue.opacity(0.2) : Color.gray.opacity(0.1)
+        let borderColor = isSelected ? Color.blue : Color.gray.opacity(0.3)
+
+        Button {
+            onTap()
+        } label: {
+            Text(category.rawValue)
+                .frame(maxWidth: .infinity, minHeight: 50)
+                .background(backgroundColor)
+                .cornerRadius(8)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(borderColor, lineWidth: 1)
+                )
         }
     }
 }
