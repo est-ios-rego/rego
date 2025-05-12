@@ -9,52 +9,82 @@ import SwiftUI
 
 enum EditMode {
     case create
-    case update(title: String, content: String, category: String?)
+    case update(category: String?, title: String, content: String)
 }
 
-struct EditRetroView: View {
+struct EditView: View {
     let mode: EditMode
 
     @State private var title: String = ""
     @State private var content: String = ""
-    @State private var selectedCategory: String?
-    @State private var showCategory = false
+    @State private var currentCategory: String?
+    @State private var showCategoryPicker = false
+
     @Environment(\.dismiss) var dismiss
+
+    private var navigationTitle: String {
+        switch mode {
+        case .create: return "작성하기"
+        case .update: return "수정하기"
+        }
+    }
+
+    private var buttonTitle: String {
+        switch mode {
+        case .create: return "작성하기"
+        case .update: return "수정하기"
+        }
+    }
 
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
-                    Text("현재 카테고리: \(selectedCategory ?? "없음")")
+                    Text("현재 카테고리: \(currentCategory ?? "없음")")
                     Spacer()
                     Button("변경") {
-                        showCategory = true
+                        showCategoryPicker = true
                     }
                 }
-                .sheet(isPresented: $showCategory) {
-                    CategorySheet(selectedCategory: $selectedCategory)
+                .sheet(isPresented: $showCategoryPicker) {
+                    CategorySheet(selectedCategory: $currentCategory)
                 }
 
+                // 제목
                 VStack(alignment: .leading, spacing: 8) {
                     Text("제목")
-                    TextField("제목을 입력해주세요", text: $title)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+
+                    TextField("제목을 입력해주세요.", text: $title)
                         .padding(12)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled(true)
                 }
 
+                // 내용
                 VStack(alignment: .leading, spacing: 8) {
                     Text("내용")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+
                     TextEditor(text: $content)
                         .frame(minHeight: 180)
                         .padding(12)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled(true)
                 }
 
-                Button(modeButtonTitle) {
-                    // 저장 또는 업데이트 처리
-                    print("제목: \(title), 내용: \(content), 카테고리: \(selectedCategory ?? "없음")")
+                Button(buttonTitle) {
+                    // 작성/수정 내용 반영
                     dismiss()
                 }
                 .frame(maxWidth: .infinity)
@@ -65,29 +95,23 @@ struct EditRetroView: View {
                 .padding(.top)
             }
             .padding()
-            .navigationTitle(modeNavigationTitle)
+            .navigationTitle(navigationTitle)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
-                if case let .update(t, c, cat) = mode {
+                if case let .update(cate, t, c) = mode {
+                    currentCategory = cate
                     title = t
                     content = c
-                    selectedCategory = cat
                 }
             }
         }
     }
+}
 
-    private var modeNavigationTitle: String {
-        switch mode {
-        case .create: return "작성하기"
-        case .update: return "수정하기"
-        }
-    }
+#Preview {
+// 작성 프리뷰
+//    EditView(mode: .create)
 
-    private var modeButtonTitle: String {
-        switch mode {
-        case .create: return "저장하기"
-        case .update: return "수정 완료"
-        }
-    }
+// 수정 프리뷰
+    EditView(mode: .update(category: "A", title: "수정할 제목", content: "수정할 내용"))
 }
