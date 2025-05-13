@@ -22,6 +22,13 @@ struct HomeView: View {
 
     }
 
+    var buttonStrokeColor: Color {
+        colorScreme == .dark ? .brown.opacity(0.4) : .brown.opacity(0.2)
+
+    }
+
+
+
     var infiniteAnimation: Animation {
         Animation.linear(duration: 3).repeatForever(autoreverses: true)
     }
@@ -35,15 +42,15 @@ struct HomeView: View {
                         HStack {
                             Image(systemName: "scribble.variable")
                                 .font(.largeTitle)
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(.orange)
                                 .bold()
 
                             VStack(alignment: .leading,spacing: 4) {
-                                Text("??")
+                                Text("앱이름")
                                     .italic()
                                     .font(.largeTitle)
                                     .bold()
-                                    .foregroundStyle(.blue)
+                                    .foregroundStyle(.orange)
 
                                 Text("오늘보다 발전된 내일이 되기")
                                     .font(.subheadline)
@@ -125,8 +132,8 @@ struct HomeView: View {
                         .frame(height: 100, alignment: .bottom)
                         .padding()
 
-                        NavigationLink(destination: ListItem(item: Retrospect.sampleData[0])) {
-                            Text("자세히보기")
+                        NavigationLink(destination: ListView(items: Retrospect.sampleData)) {
+                            Text("전체보기")
                                 .frame(maxWidth: .infinity, alignment: .trailing)
                                 .padding(.top)
                                 .padding(.trailing, 10)
@@ -137,7 +144,7 @@ struct HomeView: View {
                             HStack {
                                 ZStack{
                                     RoundedRectangle(cornerRadius: 30)
-                                        .fill(.gray.opacity(0.7))
+                                        .fill(.brown.opacity(0.4))
                                         .frame(width: 150, height: 150)
 
 
@@ -153,7 +160,7 @@ struct HomeView: View {
 
                                 ZStack{
                                     RoundedRectangle(cornerRadius: 30)
-                                        .fill(.gray.opacity(0.7))
+                                        .fill(.brown.opacity(0.4))
                                         .frame(width: 150, height: 150)
 
 
@@ -168,7 +175,7 @@ struct HomeView: View {
 
                                 ZStack{
                                     RoundedRectangle(cornerRadius: 30)
-                                        .fill(.gray.opacity(0.7))
+                                        .fill(.brown.opacity(0.4))
                                         .frame(width: 150, height: 150)
                                     VStack {
                                         Text("최근 작성한 회고")
@@ -195,8 +202,8 @@ struct HomeView: View {
                 }
 
 
-                //TODO: 작성뷰로 수정하기
-                NavigationLink(destination: ListItem(item: Retrospect.sampleData[0])) {
+                
+                NavigationLink(destination: EditView(mode: .create)) {
                     VStack {
                         HStack {
                             Spacer()
@@ -219,7 +226,7 @@ struct HomeView: View {
 
                         }
                         .frame(width: 300, height: 40)
-                        .background(.ultraThinMaterial)
+                        .background(buttonStrokeColor)
                         .cornerRadius(12)
                         .frame(maxWidth: .infinity)
                         .padding(.bottom, 10)
