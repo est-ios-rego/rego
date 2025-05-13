@@ -18,7 +18,7 @@ struct HomeView: View {
     @Environment(\.colorScheme) var colorScreme
 
     var readStrokeColor: Color {
-        colorScreme == .dark ? .white.opacity(0.8) : .black
+        colorScreme == .dark ? .white : .black
 
     }
 
@@ -30,7 +30,7 @@ struct HomeView: View {
 
 
     var infiniteAnimation: Animation {
-        Animation.linear(duration: 3).repeatForever(autoreverses: true)
+        Animation.easeInOut(duration: 4).repeatForever(autoreverses: true)
     }
 
 
