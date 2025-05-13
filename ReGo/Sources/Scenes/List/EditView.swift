@@ -51,32 +51,6 @@ struct EditView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // 카테고리
-            HStack {
-                Text("카테고리: \(category.rawValue)")
-                Spacer()
-                Button("변경") {
-                    showCategoryPicker = true
-                }
-                .tint(Color("AppAccent"))
-            }
-            .sheet(isPresented: $showCategoryPicker) {
-                CategoryPicker(currentCategory: $category)
-            }
-
-            // 기분
-            HStack {
-                Text("기분: \(mood.emoji) \(mood.name)")
-                Spacer()
-                Button("변경") {
-                    showMoodPicker = true
-            	}
-                .tint(Color("AppAccent"))
-            }
-            .sheet(isPresented: $showMoodPicker) {
-                MoodPicker(currentMood: $mood)
-            }
-
             // 제목
             VStack(alignment: .leading, spacing: 8) {
                 Text("제목")
@@ -102,7 +76,6 @@ struct EditView: View {
                     .foregroundColor(.secondary)
 
                 TextEditor(text: $content)
-                    .frame(minHeight: 180)
                     .padding(12)
                     .background(Color("AppBackground2"))
                     .overlay(
@@ -112,9 +85,58 @@ struct EditView: View {
                     .autocapitalization(.none)
                     .autocorrectionDisabled(true)
             }
+
+            // 카테고리
+            VStack(alignment: .leading, spacing: 8) {
+                Text("카테고리")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
+                Button {
+                    showCategoryPicker = true
+                } label: {
+                    HStack {
+                        Text("\(category.rawValue)")
+                            .foregroundColor(.primary)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(.gray)
+                    }
+                    .padding()
+                    .background(Color("AppBackground2"))
+                    .cornerRadius(8)
+                }
+                .sheet(isPresented: $showCategoryPicker) {
+                    CategoryPicker(currentCategory: $category)
+                }
+            }
+
+            // 오늘의 기분
+            VStack(alignment: .leading, spacing: 8) {
+                Text("오늘의 기분")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                Button {
+                    showMoodPicker = true
+                } label: {
+                    HStack {
+                        Text("\(mood.emoji) \(mood.name)")
+                            .foregroundColor(.primary)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(.gray)
+                    }
+                    .padding()
+                    .background(Color("AppBackground2"))
+                    .cornerRadius(8)
+                }
+                .sheet(isPresented: $showMoodPicker) {
+                    MoodPicker(currentMood: $mood)
+                }
+            }
+
         }
         .padding()
-        .padding(.bottom, 10)
         .scrollContentBackground(.hidden)
         .background(Color("AppBackground"))
         .navigationTitle(navigationTitle)
@@ -134,12 +156,10 @@ struct EditView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
+                Button("저장") {
                     onClickSave()
-                } label: {
-                    Image(systemName: "checkmark.circle")
-                        .foregroundStyle(Color("AppPositive"))
                 }
+                .foregroundStyle(Color("AppAccent"))
             }
         }
         .onAppear {
@@ -235,9 +255,9 @@ extension EditView {
 
     NavigationStack {
         // 작성 프리뷰
-//      EditView(mode: .create)
+      EditView(mode: .create)
 
         // 수정 프리뷰
-        EditView(mode: .update(retro: sampleRetro))
+//        EditView(mode: .update(retro: sampleRetro))
     }
 }

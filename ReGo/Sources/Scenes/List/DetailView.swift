@@ -24,65 +24,63 @@ struct DetailView: View {
                     Text("카테고리")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-                    
+
                     Text(retro.category.rawValue)
                         .fontWeight(.medium)
                 }
-                
+
                 // 작성일
                 HStack {
                     Text("작성일")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-                    
+
                     Text(retro.date.toDetailDate)
                         .font(.subheadline)
                 }
-                
-                // 기분
+
+                // 오늘의 기분
                 HStack(spacing: 8) {
                     Text("기분")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-                    
+
                     Text("\(retro.mood.emoji) \(retro.mood.name)")
                         .font(.subheadline)
                         .foregroundColor(.primary)
                 }
-                
+
                 Divider()
-                
+
                 // 제목
                 VStack(alignment: .leading, spacing: 8) {
                     Text("제목")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-                    
+
                     Text(retro.title)
                         .font(.title3)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.leading)
                 }
-                
+
                 // 내용
                 VStack(alignment: .leading, spacing: 8) {
                     Text("내용")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-                    
+
                     Text(retro.content)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .multilineTextAlignment(.leading)
                 }
-                
+
                 Spacer()
             }
         }
         .padding()
         .scrollContentBackground(.hidden)
         .background(Color("AppBackground"))
-        .navigationTitle("상세보기")
-        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -93,24 +91,27 @@ struct DetailView: View {
                         .foregroundStyle(Color("AppAccent"))
                 }
             }
-            ToolbarItemGroup(placement: .topBarTrailing) {
-                Button {
-                    showEditView = true
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    HStack {
+                        Button {
+                            showEditView = true
+                        } label: {
+                            Label("수정", systemImage: "square.and.pencil")
+                        }
+                    }
+
+                    HStack {
+                        Button(role: .destructive) {
+                            showDeleteConfirm = true
+                        } label: {
+                            Label("삭제", systemImage: "trash")
+                        }
+                    }
                 } label: {
-                    Image(systemName: "square.and.pencil")
+                    Image(systemName: "ellipsis.circle")
                         .foregroundStyle(Color("AppAccent"))
                 }
-                .buttonStyle(.borderless)
-
-                Spacer()
-
-                Button(role: .destructive) {
-                    showDeleteConfirm = true
-                } label: {
-                    Image(systemName: "trash")
-                        .foregroundStyle(Color("AppNegative"))
-                }
-                .buttonStyle(.borderless)
             }
         }
         .navigationDestination(isPresented: $showEditView) {
