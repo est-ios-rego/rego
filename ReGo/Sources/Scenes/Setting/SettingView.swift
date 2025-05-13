@@ -31,6 +31,7 @@ struct SettingView: View {
                     }
                 }
             }
+            .listRowBackground(Color("AppBackground2"))
         }
         .scrollContentBackground(.hidden)
         .background(Color("AppBackground"))

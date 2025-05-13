@@ -39,6 +39,7 @@ struct CategoryPicker: View {
                     Button("닫기") {
                         dismiss()
                     }
+                    .tint(Color("AppAccent"))
                 }
             }
         }
@@ -51,14 +52,15 @@ struct CategoryButton: View {
     let onTap: () -> Void
 
     var body: some View {
-        let backgroundColor = isSelected ? Color.blue.opacity(0.2) : Color.gray.opacity(0.1)
-        let borderColor = isSelected ? Color.blue : Color.gray.opacity(0.3)
+        let backgroundColor = isSelected ? Color("AppAccent").opacity(0.2) : Color.gray.opacity(0.1)
+        let borderColor = isSelected ? Color("AppAccent") : Color.gray.opacity(0.3)
 
         Button {
             onTap()
         } label: {
             Text(category.rawValue)
                 .frame(maxWidth: .infinity, minHeight: 50)
+                .foregroundStyle(Color("AppAccent"))
                 .background(backgroundColor)
                 .cornerRadius(8)
                 .overlay(

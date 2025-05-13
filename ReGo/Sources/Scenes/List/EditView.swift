@@ -50,6 +50,7 @@ struct EditView: View {
                 Button("변경") {
                     showCategoryPicker = true
                 }
+                .tint(Color("AppAccent"))
             }
             .sheet(isPresented: $showCategoryPicker) {
                 CategoryPicker(currentCategory: $category)
@@ -63,6 +64,7 @@ struct EditView: View {
 
                 TextField("제목을 입력해주세요.", text: $title)
                     .padding(12)
+                    .background(Color("AppBackground2"))
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.gray.opacity(0.2), lineWidth: 1)
@@ -80,6 +82,7 @@ struct EditView: View {
                 TextEditor(text: $content)
                     .frame(minHeight: 180)
                     .padding(12)
+                    .background(Color("AppBackground2"))
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.gray.opacity(0.2), lineWidth: 1)
@@ -94,8 +97,8 @@ struct EditView: View {
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
+            .background(Color("AppPositive"))
+            .foregroundColor(Color.white)
             .cornerRadius(10)
             .padding(.top)
         }
@@ -115,6 +118,7 @@ struct EditView: View {
                     }
                 } label: {
                     Image(systemName: "chevron.left")
+                        .foregroundStyle(Color("AppAccent"))
                 }
             }
         }

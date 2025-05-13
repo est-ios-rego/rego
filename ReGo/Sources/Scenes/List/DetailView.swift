@@ -67,6 +67,7 @@ struct DetailView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "chevron.left")
+                            .foregroundStyle(Color("AppAccent"))
                     }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
@@ -74,6 +75,7 @@ struct DetailView: View {
                         showEditView = true
                     } label: {
                         Image(systemName: "square.and.pencil")
+                            .foregroundStyle(Color("AppAccent"))
                     }
                     .buttonStyle(.borderless)
 
@@ -83,6 +85,7 @@ struct DetailView: View {
                         showDeleteConfirm = true
                     } label: {
                         Image(systemName: "trash")
+                            .foregroundStyle(Color("AppNegative"))
                     }
                     .buttonStyle(.borderless)
                 }
