@@ -160,13 +160,13 @@ struct ListView: View {
 
             .navigationTitle("회고 기록")
             .searchable(text: $keyword, prompt: "내용을 검색하세요.")
-
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showEditView = true
                     } label: {
                         Image(systemName: "plus")
+                            .foregroundStyle(Color("AppAccent"))
                     }
                 }
             }

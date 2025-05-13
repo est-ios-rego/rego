@@ -17,11 +17,13 @@ struct EditView: View {
 
     @State private var originalTitle: String = ""
     @State private var originalContent: String = ""
+    @State private var originalDate: Date = Date()
     @State private var originalCategory: RetrospectCategory = .category1
     @State private var originalMood: Mood = .neutral
 
     @State private var title: String = ""
     @State private var content: String = ""
+    @State private var date: Date = Date()
     @State private var category: RetrospectCategory = .category1
     @State private var mood: Mood = .neutral
 
@@ -51,32 +53,6 @@ struct EditView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // 카테고리
-            HStack {
-                Text("카테고리: \(category.rawValue)")
-                Spacer()
-                Button("변경") {
-                    showCategoryPicker = true
-                }
-                .tint(Color("AppAccent"))
-            }
-            .sheet(isPresented: $showCategoryPicker) {
-                CategoryPicker(currentCategory: $category)
-            }
-
-            // 기분
-            HStack {
-                Text("기분: \(mood.emoji) \(mood.name)")
-                Spacer()
-                Button("변경") {
-                    showMoodPicker = true
-            	}
-                .tint(Color("AppAccent"))
-            }
-            .sheet(isPresented: $showMoodPicker) {
-                MoodPicker(currentMood: $mood)
-            }
-
             // 제목
             VStack(alignment: .leading, spacing: 8) {
                 Text("제목")
@@ -103,6 +79,7 @@ struct EditView: View {
 
                 TextEditor(text: $content)
                     .padding(12)
+                    .frame(minHeight: 200)
                     .background(Color("AppBackground2"))
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
@@ -110,6 +87,28 @@ struct EditView: View {
                     )
                     .autocapitalization(.none)
                     .autocorrectionDisabled(true)
+            }
+
+            // 날짜
+            VStack(alignment: .leading, spacing: 8) {
+                Text("카테고리")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
+                Button {
+
+                } label: {
+                    HStack {
+                        Text("\(date.toDetailDate)")
+                            .foregroundColor(.primary)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(.gray)
+                    }
+                    .padding()
+                    .background(Color("AppBackground2"))
+                    .cornerRadius(8)
+                }
             }
 
             // 카테고리
@@ -213,6 +212,7 @@ struct EditView: View {
 
 extension EditView {
     private var isDataChanged: Bool {
+        // TODO: 날짜 비교 추가 (연월일만)
         return title != originalTitle ||
                content != originalContent ||
                category != originalCategory ||
