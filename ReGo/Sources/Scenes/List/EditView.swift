@@ -51,32 +51,6 @@ struct EditView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // 카테고리
-            HStack {
-                Text("카테고리: \(category.rawValue)")
-                Spacer()
-                Button("변경") {
-                    showCategoryPicker = true
-                }
-                .tint(Color("AppAccent"))
-            }
-            .sheet(isPresented: $showCategoryPicker) {
-                CategoryPicker(currentCategory: $category)
-            }
-
-            // 기분
-            HStack {
-                Text("기분: \(mood.emoji) \(mood.name)")
-                Spacer()
-                Button("변경") {
-                    showMoodPicker = true
-            	}
-                .tint(Color("AppAccent"))
-            }
-            .sheet(isPresented: $showMoodPicker) {
-                MoodPicker(currentMood: $mood)
-            }
-
             // 제목
             VStack(alignment: .leading, spacing: 8) {
                 Text("제목")
@@ -103,6 +77,7 @@ struct EditView: View {
 
                 TextEditor(text: $content)
                     .padding(12)
+                    .frame(minHeight: 200)
                     .background(Color("AppBackground2"))
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
