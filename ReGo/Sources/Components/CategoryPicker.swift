@@ -1,5 +1,5 @@
 //
-//  CategorySheet.swift
+//  CategoryPicker.swift
 //  ReGo
 //
 //  Created by 김종성 on 5/12/25.
@@ -11,18 +11,17 @@ struct CategoryPicker: View {
     @Environment(\.dismiss) var dismiss
     @Binding var currentCategory: RetrospectCategory
 
-    let categories = RetrospectCategory.allCases
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    private let categories = RetrospectCategory.allCases
+    private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(categories) { category in
-                        CategoryButton(
-                            category: category,
-                            isSelected: currentCategory == category
-                        ) {
+                        let isSelected = currentCategory == category
+
+                        CategoryButton(category: category, isSelected: isSelected) {
                             currentCategory = category
                             dismiss()
                         }
@@ -42,6 +41,7 @@ struct CategoryPicker: View {
                     .tint(Color("AppAccent"))
                 }
             }
+            .presentationDetents([.fraction(0.5)])
         }
     }
 }
@@ -52,20 +52,17 @@ struct CategoryButton: View {
     let onTap: () -> Void
 
     var body: some View {
-        let backgroundColor = isSelected ? Color("AppAccent").opacity(0.2) : Color.gray.opacity(0.1)
-        let borderColor = isSelected ? Color("AppAccent") : Color.gray.opacity(0.3)
-
         Button {
             onTap()
         } label: {
             Text(category.rawValue)
                 .frame(maxWidth: .infinity, minHeight: 50)
                 .foregroundStyle(Color("AppAccent"))
-                .background(backgroundColor)
+                .background(isSelected ? Color("AppAccent").opacity(0.2) : Color.gray.opacity(0.1))
                 .cornerRadius(8)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(borderColor, lineWidth: 1)
+                        .stroke(isSelected ? Color("AppAccent") : Color.gray.opacity(0.3), lineWidth: 1)
                 )
         }
     }

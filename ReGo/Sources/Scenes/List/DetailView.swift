@@ -28,6 +28,7 @@ struct DetailView: View {
                     .fontWeight(.medium)
             }
 
+            // 작성일
             HStack {
                 Text("작성일")
                     .font(.subheadline)
@@ -35,6 +36,17 @@ struct DetailView: View {
 
                 Text(retro.date.toDetailDate)
                     .font(.subheadline)
+            }
+
+            // 기분
+            HStack(spacing: 8) {
+                Text("기분")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
+                Text("\(retro.mood.emoji) \(retro.mood.name)")
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
             }
 
             Divider()
