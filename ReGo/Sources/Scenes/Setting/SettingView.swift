@@ -8,8 +8,30 @@
 import SwiftUI
 
 struct SettingView: View {
+    @AppStorage("appTheme") private var appThemeRaw: String = AppTheme.system.rawValue
+
     var body: some View {
-        Text("Setting View")
+        List {
+            Section(header: Text("테마")) {
+                ForEach(AppTheme.allCases) { theme in
+                    HStack {
+                        Text(theme.displayName)
+
+                        Spacer()
+
+                        if theme.rawValue == appThemeRaw {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            appThemeRaw = theme.rawValue
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

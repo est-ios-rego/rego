@@ -31,10 +31,14 @@ struct ListView: View {
         return arrayDate.sorted()
     }
 
+
     @State var keyword: String = ""
     @State var selectedCategory: RetrospectCategory = .category1
     @State var selectedDate = Date.now
     @State var selectedSearch: SelectedSearch = .title
+
+    @State private var showEditView = false
+
 
     var body: some View {
         NavigationStack {
@@ -123,19 +127,22 @@ struct ListView: View {
 
             }
             .padding(.horizontal)
+
 //            .navigationTitle("회고 기록")
 //            .searchable(text: $keyword, prompt: "내용을 검색하세요.")
-            .toolbar {
-                ToolbarItem {
-                    Button {
 
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showEditView = true
                     } label: {
                         Image(systemName: "plus")
                     }
-
                 }
             }
-
+            .navigationDestination(isPresented: $showEditView) {
+                EditView(mode: .create)
+            }
         }
     }
 

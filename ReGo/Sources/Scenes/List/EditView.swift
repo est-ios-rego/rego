@@ -15,12 +15,16 @@ enum EditMode {
 struct EditView: View {
     let mode: EditMode
 
+    @State private var originalTitle: String = ""
+    @State private var originalContent: String = ""
+    @State private var originalCategory: RetrospectCategory = .category1
+
     @State private var title: String = ""
     @State private var content: String = ""
-    @State private var date: Date = Date()
     @State private var category: RetrospectCategory = .category1
 
     @State private var showCategoryPicker = false
+    @State private var showDismissAlert = false
 
     @Environment(\.dismiss) private var dismiss
 
@@ -102,7 +106,11 @@ struct EditView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    dismiss()
+                    if isDataChanged {
+                        showDismissAlert = true
+                    } else {
+                        dismiss()
+                    }
                 } label: {
                     Image(systemName: "chevron.left")
                 }
@@ -110,12 +118,34 @@ struct EditView: View {
         }
         .onAppear {
             if case let .update(retro) = mode {
-                title = retro.title
-                content = retro.content
-                date = retro.date
-                category = retro.category
+        		initRetro(retro)
             }
         }
+        .alert("변경사항이 저장되지 않았습니다.\n나가시겠습니까?", isPresented: $showDismissAlert) {
+            Button("취소", role: .cancel) {}
+
+            Button("나가기", role: .destructive) {
+                dismiss()
+            }
+        }
+    }
+}
+
+extension EditView {
+    private var isDataChanged: Bool {
+        return title != originalTitle ||
+               content != originalContent ||
+               category != originalCategory
+    }
+
+    private func initRetro(_ retro: Retrospect) {
+        originalTitle = retro.title
+        originalContent = retro.content
+        originalCategory = retro.category
+
+        title = retro.title
+        content = retro.content
+        category = retro.category
     }
 }
 
@@ -129,11 +159,9 @@ struct EditView: View {
 
     NavigationStack {
         // 작성 프리뷰
-        //    EditView(mode: .create)
+            EditView(mode: .create)
 
         // 수정 프리뷰
-        EditView(
-            mode: .update(retro: sampleRetro)
-        )
+//        EditView(mode: .update(retro: sampleRetro))
     }
 }
