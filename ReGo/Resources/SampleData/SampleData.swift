@@ -76,3 +76,311 @@ extension Retrospect {
         ]
     }
 }
+
+extension Retrospect {
+    static var sampleDataForStatistics: [Retrospect] {
+        return [
+            Retrospect(
+                title: "Title1",
+                content: "Title1",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title2",
+                content: "Title2",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category5
+            ),
+            Retrospect(
+                title: "Title3",
+                content: "Title3",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title4",
+                content: "Title4",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category5
+            ),
+            Retrospect(
+                title: "Title5",
+                content: "Title5",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category1
+            ),
+            Retrospect(
+                title: "Title6",
+                content: "Title6",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category2
+            ),
+            Retrospect(
+                title: "Title7",
+                content: "Title7",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title8",
+                content: "Title8",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title9",
+                content: "Title9",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category5
+            ),
+            Retrospect(
+                title: "Title10",
+                content: "Title10",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title11",
+                content: "Title11",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category2
+            ),
+            Retrospect(
+                title: "Title12",
+                content: "Title12",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title13",
+                content: "Title13",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title14",
+                content: "Title14",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category1
+            ),
+            Retrospect(
+                title: "Title15",
+                content: "Title15",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category2
+            ),
+            Retrospect(
+                title: "Title16",
+                content: "Title16",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category2
+            ),
+            Retrospect(
+                title: "Title17",
+                content: "Title17",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title18",
+                content: "Title18",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title19",
+                content: "Title19",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title20",
+                content: "Title20",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title21",
+                content: "Title21",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category1
+            ),
+            Retrospect(
+                title: "Title22",
+                content: "Title22",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title23",
+                content: "Title23",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title24",
+                content: "Title24",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title25",
+                content: "Title25",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title26",
+                content: "Title26",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category2
+            ),
+            Retrospect(
+                title: "Title27",
+                content: "Title27",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category5
+            ),
+            Retrospect(
+                title: "Title28",
+                content: "Title28",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category1
+            ),
+            Retrospect(
+                title: "Title29",
+                content: "Title29",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category1
+            ),
+            Retrospect(
+                title: "Title30",
+                content: "Title30",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title31",
+                content: "Title31",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category5
+            ),
+            Retrospect(
+                title: "Title32",
+                content: "Title32",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title33",
+                content: "Title33",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title34",
+                content: "Title34",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category5
+            ),
+            Retrospect(
+                title: "Title35",
+                content: "Title35",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category2
+            ),
+            Retrospect(
+                title: "Title36",
+                content: "Title36",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title37",
+                content: "Title37",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category1
+            ),
+            Retrospect(
+                title: "Title38",
+                content: "Title38",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category2
+            ),
+            Retrospect(
+                title: "Title39",
+                content: "Title39",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title40",
+                content: "Title40",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category1
+            ),
+            Retrospect(
+                title: "Title41",
+                content: "Title41",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category2
+            ),
+            Retrospect(
+                title: "Title42",
+                content: "Title42",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title43",
+                content: "Title43",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category2
+            ),
+            Retrospect(
+                title: "Title44",
+                content: "Title44",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category5
+            ),
+            Retrospect(
+                title: "Title45",
+                content: "Title45",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title46",
+                content: "Title46",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category5
+            ),
+            Retrospect(
+                title: "Title47",
+                content: "Title47",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category4
+            ),
+            Retrospect(
+                title: "Title48",
+                content: "Title48",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category3
+            ),
+            Retrospect(
+                title: "Title49",
+                content: "Title49",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category2
+            ),
+            Retrospect(
+                title: "Title50",
+                content: "Title50",
+                date: Date.now.addingTimeInterval(-86400 * Double.random(in: 0...12)),
+                category: .category5
+            ),
+
+        ]
+    }
+}

@@ -10,58 +10,23 @@ import SwiftUI
 import Charts
 
 enum StatisticsPeriodCase {
-	case week
+    case week
     case month
 }
 
 struct StatisticsView: View {
     @State var statPeriod: StatisticsPeriodCase = .week
 
-    var calendar: Calendar = Calendar.current
-
     private let numOfWeekKr = ["첫", "둘", "셋", "넷", "다섯"]
 
-    @State var baseStartDate: Date = {
-        var calendar = Calendar.current
-        calendar.timeZone = TimeZone(abbreviation: "KST")!
-
-        let year = calendar.component(.year, from: .now)
-        let month = calendar.component(.month, from: .now)
-        let day = calendar.component(.day, from: .now)
-
-        print(Calendar.current.date(from: DateComponents(year: year, month: month, day: day, weekday: 1)))
-        print(calendar.date(from: DateComponents(year: year, month: month, day: day, weekday: 1)))
-        return calendar.date(from: DateComponents(year: year, month: month, day: day, weekday: 1))!
-    } ()
-
-    @State var baseEndDate: Date = {
-        var calendar = Calendar.current
-        calendar.timeZone = TimeZone(abbreviation: "KST")!
-
-        let year = calendar.component(.year, from: .now)
-        let month = calendar.component(.month, from: .now)
-        let day = calendar.component(.day, from: .now)
-
-        print("-------------------")
-        print(Calendar.current.date(from: DateComponents(year: year, month: month, day: day, weekday: 6)))
-        print(calendar.date(from: DateComponents(year: year, month: month, day: day, weekday: 6)))
-        print("-------------------")
-        
-
-        return calendar.date(from: DateComponents(year: year, month: month, day: day, weekday: 6))!
-    }()
+    @State var baseStartDate: Date
+    @State var baseEndDate: Date
 
     @State var isLastWeek: Bool = true
 
-    var year: String {
-        return String(calendar.component(.year, from: self.baseStartDate))
-    }
-
-    var month: String {
-        return String(calendar.component(.month, from: self.baseStartDate))
-    }
-
     var weekOfMonth: String {
+        let calendar = Calendar.current
+
         let year = calendar.component(.year, from: baseStartDate)
         let month = calendar.component(.month, from: baseStartDate)
         let day = calendar.component(.day, from: baseStartDate)
@@ -74,79 +39,269 @@ struct StatisticsView: View {
 
         let weekNumber = (daysSinceFirstThursday / 7) + 1
 
-		return numOfWeekKr[weekNumber - 1]
+        return numOfWeekKr[weekNumber - 1]
     }
 
-    var data = Retrospect.sampleData
+    var weekdayRange: Range<Int> {
+        Calendar.current.component(.day, from: baseStartDate) ..< Calendar.current.component(.day, from: baseEndDate) + 1
+    }
+
+    var data = Retrospect.sampleDataForStatistics
+
+    init(statPeriod: StatisticsPeriodCase = .week, baseStartDate: Date = .now, baseEndDate: Date = .now, isLastWeek: Bool = true, data: [Retrospect] = Retrospect.sampleDataForStatistics) {
+        self.statPeriod = statPeriod
+
+        self.isLastWeek = isLastWeek
+        self.data = data
+
+        var calendar = Calendar.current
+        calendar.locale = Locale(identifier: "ko_Kr")
+        calendar.timeZone = TimeZone(abbreviation: "KST")!
+
+        let weekday = calendar.component(.weekday, from: .now)
+
+        self.baseStartDate = calendar.date(byAdding: .weekday, value: 1 - weekday, to: .now)!
+        self.baseEndDate = calendar.date(byAdding: .weekday, value: 7 - weekday, to: .now)!
+    }
+
+    func moveDate(_ flag: String) {
+        let calendar = Calendar.current
+
+        var nextStartDate: Date = .now
+        var nextEndDate: Date = .now
+
+        let weight = flag.isEmpty ? 0 : flag == "+" ? 1 : -1
+
+        if statPeriod == .week {
+            nextStartDate = calendar.date(byAdding: .weekOfYear, value: weight, to: baseStartDate)!
+
+            let weekday = calendar.component(.weekday, from: nextStartDate)
+
+            nextStartDate = calendar.date(byAdding: .weekday, value: 1 - weekday, to: nextStartDate)!
+            nextEndDate = calendar.date(byAdding: .day, value: 6, to: nextStartDate)!
+        } else {
+            nextStartDate = calendar.date(byAdding: .month, value: weight, to: baseStartDate)!
+
+            let components = calendar.dateComponents([.year, .month], from: nextStartDate)
+
+            nextStartDate = calendar.date(from: DateComponents(year: components.year, month: components.month, day: 1))!
+            nextEndDate = calendar.date(byAdding: DateComponents(month: 1, day: -1),to: nextStartDate)!
+        }
+
+        isLastWeek = nextEndDate >= .now
+
+        baseStartDate = nextStartDate
+        baseEndDate = nextEndDate
+    }
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack {
-                    Picker(selection: $statPeriod) {
-						Text("주")
-                            .tag(StatisticsPeriodCase.week)
+            VStack {
+                Picker(selection: $statPeriod) {
+                    Text("주")
+                        .tag(StatisticsPeriodCase.week)
 
-                        Text("월")
-                            .tag(StatisticsPeriodCase.month)
+                    Text("월")
+                        .tag(StatisticsPeriodCase.month)
+                } label: {
+
+                }
+                .pickerStyle(.palette)
+                .onChange(of: statPeriod) {
+                    moveDate("")
+                }
+
+                HStack {
+                    Button {
+                        moveDate("-")
                     } label: {
+                        Image(systemName: "chevron.left")
                     }
-                    .pickerStyle(.palette)
 
-                    Text(baseStartDate, format: .dateTime)
-                    Text(baseEndDate, format: .dateTime)
+                    Spacer()
 
-                    HStack {
-                        Button {
-                            let nextStartDate = calendar.date(byAdding: .weekOfYear, value: -1, to: baseStartDate)!
-                            let nextEndDate = Calendar.current.date(byAdding: .day, value: 6, to: nextStartDate)!
-
-                            isLastWeek = nextEndDate < .now
-
-                            baseStartDate = nextStartDate
-                            baseEndDate = nextEndDate
-                        } label: {
-                            Image(systemName: "chevron.left")
-                        }
-
-                        Spacer()
-
-                        Text("\(year)년 \(month)월 \(weekOfMonth)째 주")
-
-                        Spacer()
-
-                        Button {
-                            let nextStartDate = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: baseStartDate)!
-                            let nextEndDate = Calendar.current.date(byAdding: .day, value: 6, to: nextStartDate)!
-
-                            isLastWeek = nextEndDate >= .now
-
-                            baseStartDate = nextStartDate
-                            baseEndDate = nextEndDate
-                        } label: {
-                            Image(systemName: "chevron.right")
-                        }
-
+                    if statPeriod == .week {
+                        Text("\(baseStartDate.toYearMonth) \(weekOfMonth)째 주")
+                    } else {
+                        Text(baseStartDate.toYearMonth)
                     }
-                    .padding()
 
-                    CountByCategoryChart(startDate: $baseStartDate, endDate: $baseEndDate, data: data)
+                    Spacer()
 
-//                    if UIDevice.isPad {
-//                        CountByCategoryChart(data: self.data)
-//                    }
-//                    else {
-//                        CountByCategoryChart(data: self.data)
-//                    }
-                    
+                    Button {
+                        moveDate("+")
+                    } label: {
+                        Image(systemName: "chevron.right")
+                    }.disabled(isLastWeek)
+
                 }
                 .padding()
+
+                ScrollView {
+                    VStack {
+                        Text("\(baseStartDate.toListDate) ~ \(baseEndDate.toListDate)")
+
+                        if data.isEmpty {
+                            Text("아직 작성한 회고가 없어요.. ㅠ")
+
+                            Button {
+
+                            } label: {
+                                Text("회고 작성하러 가기")
+                            }
+                        } else {
+                            ContributionChart(startDate: baseStartDate, endDate: baseEndDate, statPeriod: statPeriod, data: data)
+                                .padding(.vertical)
+                                .padding(.horizontal, 4)
+
+                            CountByCategoryChart(startDate: $baseStartDate, endDate: $baseEndDate, data: data)
+                        }
+
+                        //                    if UIDevice.isPad {
+                        //                        CountByCategoryChart(data: self.data)
+                        //                    }
+                        //                    else {
+                        //                        CountByCategoryChart(data: self.data)
+                        //                    }
+
+                    }
+                }
+                .navigationTitle("Statistics")
+                .navigationBarTitleDisplayMode(.inline)
             }
             .scrollContentBackground(.hidden)
+            .padding()
             .background(Color("AppBackground"))
-            .navigationTitle("Statistics")
-            .navigationBarTitleDisplayMode(.inline)
         }
+    }
+}
+
+struct ContributionChart: View {
+    var startDate: Date
+    var endDate: Date
+
+    var statPeriod: StatisticsPeriodCase
+
+    @State var data: [Retrospect]
+
+    var dayArray: [Int] {
+        var result: [Int] = [Int]()
+
+        let calendar = Calendar.current
+
+        var curosor = startDate
+
+        var interval: Double = 0
+
+        var count = 0
+
+        repeat {
+            curosor.addTimeInterval(interval)
+
+            let day = calendar.component(.day, from: curosor)
+
+            result.append(day)
+
+            interval = 86400
+
+            count += 1
+        } while count <= Int(endDate.timeIntervalSince(startDate) / 86400)
+
+        return result
+    }
+
+    var filteredData: [Int: Int] {
+        let calendar: Calendar = Calendar.current
+
+        return data
+            .filter {
+                return $0.date >= startDate && $0.date <= endDate
+            }
+            .reduce(into: [:]) { result, item in
+                let day = calendar.component(.day, from: item.date)
+
+                result[day, default: 0] += 1
+            }
+    }
+
+    var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
+
+    struct WeekContributionItem: View {
+        let count: Int
+        let day: Int
+
+        var body: some View {
+            RoundedRectangle(cornerRadius: 16)
+                .fill(.white)
+                .stroke(.black, lineWidth: 1)
+                .frame(height: 90)
+                .overlay {
+                    VStack {
+                        //                        Text("일")
+                        //                            .font(.subheadline)
+                        //                            .foregroundStyle(.gray)
+                        //                            .bold()
+
+                        Text("\(day)")
+                            .bold()
+
+                        Circle()
+                            .fill(.green.opacity(0.2 * Double(count)))
+                            .frame(width: 20)
+
+                    }
+
+                }
+        }
+
+    }
+
+    struct MonthContributionItem: View {
+        let count: Int
+        let day: Int
+
+        var body: some View {
+            Rectangle()
+                .fill(.green.opacity(0.2 * Double(count)))
+                .stroke(.black, lineWidth: 1)
+                .scaledToFit()
+                .overlay {
+                    Text("\(day)")
+                }
+        }
+    }
+
+    var body: some View {
+        LazyVGrid(columns: columns) {
+            ForEach(dayArray, id: \.self) { day in
+                let count = filteredData[day] ?? 0
+
+                if statPeriod == .week {
+                    WeekContributionItem(count: count, day: day)
+                } else {
+                    MonthContributionItem(count: count, day: day)
+                }
+
+            }
+        }
+
+        //        HStack(spacing: 0) {
+        //            ForEach(dayArray, id: \.self) { day in
+        //                let count = filteredData[day] ?? 0
+        //
+        //                VStack {
+        //                    Rectangle()
+        //                        .fill(.green.opacity(0.2 * Double(count)))
+        //                        .stroke(.black, lineWidth: 1)
+        //                        .scaledToFit()
+        //                        .overlay {
+        //                            Text("\(day)")
+        //                        }
+        //                }
+        //
+        //            }
+        //        }
+        //        .padding()
     }
 }
 
@@ -184,8 +339,8 @@ struct CountByCategoryChart: View {
                         .position(x: frame.midX, y: frame.midY)
                 }
             }
-
         }
+
     }
 
 }
