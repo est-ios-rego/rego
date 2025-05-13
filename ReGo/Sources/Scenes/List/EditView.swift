@@ -26,6 +26,7 @@ struct EditView: View {
     @State private var mood: Mood = .neutral
 
     @State private var showCategoryPicker = false
+    @State private var showMoodPicker = false
     @State private var showDismissAlert = false
     @State private var showTitleAlert = false
 
@@ -48,8 +49,9 @@ struct EditView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
+            // 카테고리
             HStack {
-                Text("현재 카테고리: \(category.rawValue)")
+                Text("카테고리: \(category.rawValue)")
                 Spacer()
                 Button("변경") {
                     showCategoryPicker = true
@@ -58,6 +60,19 @@ struct EditView: View {
             }
             .sheet(isPresented: $showCategoryPicker) {
                 CategoryPicker(currentCategory: $category)
+            }
+
+            // 기분
+            HStack {
+                Text("기분: \(mood.emoji) \(mood.name)")
+                Spacer()
+                Button("변경") {
+                    showMoodPicker = true
+            	}
+                .tint(Color("AppAccent"))
+            }
+            .sheet(isPresented: $showMoodPicker) {
+                MoodPicker(currentMood: $mood)
             }
 
             // 제목
