@@ -17,5 +17,6 @@ struct ReGoApp: App {
             MainView()
                 .preferredColorScheme(AppTheme(rawValue: appThemeRaw)?.colorScheme)
         }
+        .modelContainer(for: Retrospect.self)
     }
 }
