@@ -14,28 +14,27 @@ struct HomeView: View {
     @State private var beigeHeight: CGFloat = 50
     @State private var apricotHeight: CGFloat = 40
     @State private var lavenderHeight: CGFloat = 50
-
+    
     @Binding var selectedIndex: Int
-
+    
     @Environment(\.colorScheme) var colorScreme
-
+    
     var readStrokeColor: Color {
         colorScreme == .dark ? .white : .black
-
+        
     }
-
+    
     var buttonStrokeColor: Color {
         colorScreme == .dark ? .brown.opacity(0.4) : .brown.opacity(0.2)
-
+        
     }
-
-
-
+    
+    
     var infiniteAnimation: Animation {
         Animation.easeInOut(duration: 4).repeatForever(autoreverses: true)
     }
-
-
+    
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -46,35 +45,35 @@ struct HomeView: View {
                                 .font(.largeTitle)
                                 .foregroundStyle(.orange)
                                 .bold()
-
+                            
                             VStack(alignment: .leading,spacing: 4) {
                                 Text("앱이름")
                                     .italic()
                                     .font(.largeTitle)
                                     .bold()
                                     .foregroundStyle(.orange)
-
+                                
                                 Text("오늘보다 발전된 내일이 되기")
                                     .font(.subheadline)
                                     .foregroundColor(readStrokeColor)
-
+                                
                             }
-
+                            
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal)
-
-
-
-
-
+                        
+                        
+                        
+                        
+                        
                     }
                     Spacer()
-
-
+                    
+                    
                     VStack(alignment: .center) {
                         HStack(alignment: .bottom) {
-
+                            
                             Rectangle()
                                 .foregroundColor(.brown.opacity(0.9))
                                 .frame(width: 40, height: brownHeight)
@@ -85,7 +84,7 @@ struct HomeView: View {
                                         brownHeight = 130
                                     }
                                 }
-
+                            
                             Rectangle()
                                 .foregroundColor(.mint.opacity(0.4))
                                 .frame(width: 40, height: mintHeight)
@@ -96,7 +95,7 @@ struct HomeView: View {
                                         mintHeight = 120
                                     }
                                 }
-
+                            
                             Rectangle()
                                 .foregroundColor(.brown.opacity(0.5))
                                 .frame(width: 40, height: beigeHeight)
@@ -107,7 +106,7 @@ struct HomeView: View {
                                         beigeHeight = 140
                                     }
                                 }
-
+                            
                             Rectangle()
                                 .foregroundColor(.orange.opacity(0.4))
                                 .frame(width: 40, height: apricotHeight)
@@ -118,7 +117,7 @@ struct HomeView: View {
                                         apricotHeight = 110
                                     }
                                 }
-
+                            
                             Rectangle()
                                 .foregroundColor(.red.opacity(0.4))
                                 .frame(width: 40, height: lavenderHeight)
@@ -130,116 +129,219 @@ struct HomeView: View {
                                     }
                                 }
                         }
-
+                        
                         .frame(height: 100, alignment: .bottom)
                         .padding()
-
-                        Button {
-                            selectedIndex = 1
-                        } label: {
-
-                            Text("전체보기")
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                                .padding(.top)
-                                .padding(.trailing, 10)
+                        
+                        VStack {
+                            HStack {
+                                Text("최근 작성한 회고")
+                                    .font(.headline)
+                                    .foregroundColor(readStrokeColor)
+                                    .padding(.leading, 20)
+                                
+                                
+                                
+                                Button {
+                                    selectedIndex = 1
+                                } label: {
+                                    
+                                    Text("목록보기")
+                                        .font(.caption)
+                                        .frame(maxWidth: .infinity, alignment: .trailing)
+                                        .padding(.top)
+                                        .padding(.trailing, 20)
+                                }
+                                
+                            }
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    
+                                    if let firstTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).first?.title, !firstTitle.isEmpty {
+                                        ZStack{
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .fill(.orange.opacity(0.4))
+                                                .frame(width: 120, height: 80)
+                                            
+                                            
+                                            
+                                            Text(firstTitle)
+                                                .font(.headline)
+                                                .font(.headline)
+                                                .foregroundColor(readStrokeColor)
+                                            
+                                        }
+                                    }
+                                    
+                                    if let secondTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst().first?.title, !secondTitle.isEmpty {
+                                        ZStack{
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .fill(.orange.opacity(0.4))
+                                                .frame(width: 120, height: 80)
+                                            
+                                            
+                                            
+                                            Text(secondTitle)
+                                                .font(.headline)
+                                                .font(.headline)
+                                                .foregroundColor(readStrokeColor)
+                                            
+                                        }
+                                    }
+                                    
+                                    if let thirdTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst(2).first?.title, !thirdTitle.isEmpty {
+                                        ZStack{
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .fill(.orange.opacity(0.4))
+                                                .frame(width: 120, height: 80)
+                                            
+                                            
+                                            
+                                            Text(thirdTitle)
+                                                .font(.headline)
+                                                .font(.headline)
+                                                .foregroundColor(readStrokeColor)
+                                            
+                                        }
+                                    }
+                                    
+                                    if let fourthTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst(3).first?.title, !fourthTitle.isEmpty {
+                                        ZStack{
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .fill(.orange.opacity(0.4))
+                                                .frame(width: 120, height: 80)
+                                            
+                                            
+                                            
+                                            Text(fourthTitle)
+                                                .font(.headline)
+                                                .font(.headline)
+                                                .foregroundColor(readStrokeColor)
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, 10)
+                            
+                            
+                            
                         }
-
-                        ScrollView(.horizontal) {
-
+                        
+                        
+                        VStack {
+                            
+                            
+                            Button {
+                                selectedIndex = 2
+                            } label: {
+                                
+                                Text("통계보기")
+                                    .font(.caption)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                    .padding(.top)
+                                    .padding(.trailing, 10)
+                            }
+                            
+                            
+                            //         ScrollView(.horizontal) {
+                            
                             HStack {
                                 ZStack{
                                     RoundedRectangle(cornerRadius: 30)
                                         .fill(.brown.opacity(0.4))
-                                        .frame(width: 150, height: 150)
-
-
-
+                                        .frame(width: 130, height: 130)
+                                    
+                                    
+                                    
                                     Text("이번달 \n회고 작성 횟수 :\n ")
                                         .font(.headline)
                                         .foregroundColor(readStrokeColor)
-
+                                    
                                 }
-
+                                
                                 .padding(.horizontal, 10)
                                 .padding(10)
-
+                                
                                 ZStack{
                                     RoundedRectangle(cornerRadius: 30)
                                         .fill(.brown.opacity(0.4))
-                                        .frame(width: 150, height: 150)
-
-
-
+                                        .frame(width: 130, height: 130)
+                                    
+                                    
+                                    
                                     Text("이번달 \n회고 작성 횟수 :\n ")
                                         .font(.headline)
                                         .foregroundColor(readStrokeColor)
-
+                                    
                                 }
                                 .padding(.horizontal, 10)
                                 .padding(10)
-
-                                ZStack{
-                                    RoundedRectangle(cornerRadius: 30)
-                                        .fill(.brown.opacity(0.4))
-                                        .frame(width: 150, height: 150)
-                                    VStack {
-                                        Text("최근 작성한 회고")
-                                            .font(.headline)
-                                            .foregroundColor(readStrokeColor)
-
-                                        NavigationLink(destination: ListItem(item: Retrospect.sampleData[0])) {
-                                            Text("보기")
-                                                .font(.headline)
-
-
-                                        }
-
-
-                                    }
-                                    .padding(.horizontal, 10)
-                                }
+                                
+                                //                                    ZStack{
+                                //                                        RoundedRectangle(cornerRadius: 30)
+                                //                                            .fill(.brown.opacity(0.4))
+                                //                                            .frame(width: 150, height: 150)
+                                //                                        VStack {
+                                //                                            Text("최근 작성한 회고")
+                                //                                                .font(.headline)
+                                //                                                .foregroundColor(readStrokeColor)
+                                //
+                                //                                            NavigationLink(destination: ListItem(item: Retrospect.sampleData[0])) {
+                                //                                                Text("보기")
+                                //                                                    .font(.headline)
+                                //
+                                //
+                                //                                            }
+                                //
+                                //
+                                //                                        }
+                                //                                        .padding(.horizontal, 10)
+                                //                                    }
                             }
+                            // }
+                            
+                            .padding(.bottom)
+                            
                         }
-                        .padding()
-
+                        .padding(10)
                     }
-                    .padding(10)
                 }
-
-
+                
+                
                 
                 NavigationLink(destination: EditView(mode: .create)) {
                     VStack {
                         HStack {
                             Spacer()
-
+                            
                             Text(Image(systemName: "pencil.and.scribble"))
                                 .foregroundColor(readStrokeColor)
                                 .bold()
-
-
+                            
+                            
                             Text("Write")
                                 .italic()
                                 .bold()
                                 .frame(alignment: .leading)
                                 .foregroundColor(readStrokeColor)
-
-
-
-
+                            
+                            
+                            
+                            
                             Spacer()
-
+                            
                         }
                         .frame(width: 300, height: 40)
                         .background(buttonStrokeColor)
                         .cornerRadius(12)
                         .frame(maxWidth: .infinity)
                         .padding(.bottom, 10)
-
+                        
                     }
                     .padding(.bottom, 40)
-
-
+                    
+                    
                 }
             }
             .scrollContentBackground(.hidden)
@@ -252,12 +354,12 @@ struct HomeView: View {
 struct StatefulPreviewWrapper<Value, Content: View>: View {
     @State var value: Value
     var content: (Binding<Value>) -> Content
-
+    
     init(_ initialValue: Value, content: @escaping (Binding<Value>) -> Content) {
         _value = State(wrappedValue: initialValue)
         self.content = content
     }
-
+    
     var body: some View {
         content($value)
     }
