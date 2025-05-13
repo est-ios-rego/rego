@@ -15,6 +15,8 @@ struct HomeView: View {
     @State private var apricotHeight: CGFloat = 40
     @State private var lavenderHeight: CGFloat = 50
 
+    @Binding var selectedIndex: Int
+
     @Environment(\.colorScheme) var colorScreme
 
     var readStrokeColor: Color {
@@ -77,7 +79,7 @@ struct HomeView: View {
                                 .foregroundColor(.brown.opacity(0.9))
                                 .frame(width: 40, height: brownHeight)
                                 .cornerRadius(6)
-                                .shadow(color: .brown.opacity(0.9), radius: 4, x: 0, y: 5)
+                                .shadow(color: .brown.opacity(0.5), radius: 4, x: 0, y: 5)
                                 .onAppear {
                                     withAnimation(infiniteAnimation) {
                                         brownHeight = 130
@@ -132,7 +134,10 @@ struct HomeView: View {
                         .frame(height: 100, alignment: .bottom)
                         .padding()
 
-                        NavigationLink(destination: ListView(items: Retrospect.sampleData)) {
+                        Button {
+                            selectedIndex = 1
+                        } label: {
+
                             Text("전체보기")
                                 .frame(maxWidth: .infinity, alignment: .trailing)
                                 .padding(.top)
@@ -243,7 +248,24 @@ struct HomeView: View {
     }
 }
 
-#Preview {
-    HomeView()
 
+struct StatefulPreviewWrapper<Value, Content: View>: View {
+    @State var value: Value
+    var content: (Binding<Value>) -> Content
+
+    init(_ initialValue: Value, content: @escaping (Binding<Value>) -> Content) {
+        _value = State(wrappedValue: initialValue)
+        self.content = content
+    }
+
+    var body: some View {
+        content($value)
+    }
 }
+
+#Preview {
+    StatefulPreviewWrapper(0) { binding in
+        HomeView(selectedIndex: binding)
+    }
+}
+
