@@ -18,7 +18,7 @@ struct MainView: View {
                 }
                 .tag(0)
 
-            ListView(items: Retrospect.sampleData)
+            ListView(retros: Retrospect.sampleData)
                 .tabItem {
                     Label("목록", systemImage: "list.bullet.clipboard")
                 }

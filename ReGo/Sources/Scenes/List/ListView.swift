@@ -8,33 +8,41 @@
 import SwiftUI
 import SwiftData
 
-enum SelectedSearch {
-    case title
-    case category
-    case date
+enum DateFilter {
+    case all
+    case filterd
+
 }
 
 struct ListView: View {
-//    @Query(sort: [SortDescriptor(\Retrospect.id, order: .forward)])
+    //    @Query(sort: [SortDescriptor(\Retrospect.id, order: .forward)])
 
-    var items: [Retrospect]
+    var retros: [Retrospect]
 
-    private var filteredDateList: [String] {
+    private var filteredRetros: [Retrospect] {
+        retros.filter { retro in
+            let title = keyword.isEmpty || retro.title.lowercased().contains(keyword.lowercased())
+            let category =  selectedCategory == "" || retro.category.rawValue == selectedCategory
+            let date = dateSelection == "전체" || selectedStartDate <= retro.date && retro.date  <= selectedEndDate
+
+            return title && category && date
+        }
+
+    }
+
+    private var dateList: [String] {
         var setDate: Set<String> = []
         var arrayDate: [String] = []
-        if items.isEmpty {
-            return []
-        } else {
-            items.forEach {
-                setDate.insert($0.date.toYearMonth)
-            }
 
-            setDate.forEach {
-                arrayDate.append($0)
-            }
-
-            return arrayDate.sorted().reversed()
+        filteredRetros.forEach {
+            setDate.insert($0.date.toYearMonth)
         }
+
+        setDate.forEach {
+            arrayDate.append($0)
+        }
+
+        return arrayDate.sorted().reversed()
     }
 
 
@@ -42,9 +50,7 @@ struct ListView: View {
     @State var selectedCategory: String = ""
     @State var selectedStartDate = Date.now
     @State var selectedEndDate = Date.now
-    @State var selectedSearch: SelectedSearch = .title
 
-    @State private var selectDateSheet = false
     @State private var showEditView = false
     @State private var dateSelection = "전체"
 
@@ -65,6 +71,7 @@ struct ListView: View {
                         }
                         .tint(.primary)
                     }
+
 
                     HStack {
                         Text("날짜")
@@ -106,9 +113,11 @@ struct ListView: View {
                         }
                         .onChange(of: selectedStartDate) {
                             setEndDate()
+                            //                            filteredDateList = setDate()
                         }
                         .onChange(of: selectedEndDate) {
                             setStartDate()
+                            //                            filteredDateList = setDate()
                         }
                     }
 
@@ -116,14 +125,15 @@ struct ListView: View {
 
 
                 ScrollView {
-                    ForEach(filteredDateList, id: \.self) { date in
+                    ForEach(dateList, id: \.self) { date in
                         VStack(alignment: .leading) {
                             Text(date)
                                 .font(.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
                             VStack(spacing: 15){
-                                ForEach(items) { item in
+
+                                ForEach(filteredRetros) { item in
                                     if item.date.toYearMonth == date {
                                         NavigationLink{
                                             DetailView(retro: item)
@@ -184,14 +194,8 @@ struct ListView: View {
             break
         }
     }
-
-    func setTitle() -> [Retrospect]{
-        return items.filter {
-            $0.title.lowercased().contains(keyword.lowercased())
-        }
-    }
-
 }
+
 
 //#Preview {
 //    let config = ModelConfiguration(isStoredInMemoryOnly: true)
@@ -203,7 +207,5 @@ struct ListView: View {
 //}
 
 #Preview {
-
-
-    ListView(items: Retrospect.sampleData)
+    ListView(retros: Retrospect.sampleData)
 }

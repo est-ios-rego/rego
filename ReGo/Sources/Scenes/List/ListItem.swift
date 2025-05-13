@@ -21,17 +21,16 @@ struct ListItem: View {
                     .padding(10)
                     .background(.green)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                Spacer()
+//                Spacer()
 
                 Text(item.title)
                     .tint(.primary)
 
                 Spacer()
 
-//                Text(item.mood.emoji)
-                Text("😀")
-                    .font(.title)
+                Text(item.mood.emoji)
                     .padding(.trailing, 10)
+
             }
 
             Text(item.date.toListDate)
