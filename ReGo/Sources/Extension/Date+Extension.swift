@@ -15,6 +15,13 @@ extension Date {
         return formatter.string(from: self)
     }
 
+    var toDetailDate: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_kr")
+        formatter.dateFormat = "yyyy년 M월 d일 a h:mm"
+        return formatter.string(from: self)
+    }
+
     var toYearMonth: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_kr")

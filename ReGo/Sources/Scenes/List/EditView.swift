@@ -18,15 +18,19 @@ struct EditView: View {
     @State private var originalTitle: String = ""
     @State private var originalContent: String = ""
     @State private var originalCategory: RetrospectCategory = .category1
+    @State private var originalMood: Mood = .neutral
 
     @State private var title: String = ""
     @State private var content: String = ""
     @State private var category: RetrospectCategory = .category1
+    @State private var mood: Mood = .neutral
 
     @State private var showCategoryPicker = false
     @State private var showDismissAlert = false
+    @State private var showTitleAlert = false
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
 
     private var navigationTitle: String {
         switch mode {
@@ -50,6 +54,7 @@ struct EditView: View {
                 Button("변경") {
                     showCategoryPicker = true
                 }
+                .tint(Color("AppAccent"))
             }
             .sheet(isPresented: $showCategoryPicker) {
                 CategoryPicker(currentCategory: $category)
@@ -63,6 +68,7 @@ struct EditView: View {
 
                 TextField("제목을 입력해주세요.", text: $title)
                     .padding(12)
+                    .background(Color("AppBackground2"))
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.gray.opacity(0.2), lineWidth: 1)
@@ -80,6 +86,7 @@ struct EditView: View {
                 TextEditor(text: $content)
                     .frame(minHeight: 180)
                     .padding(12)
+                    .background(Color("AppBackground2"))
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.gray.opacity(0.2), lineWidth: 1)
@@ -87,19 +94,9 @@ struct EditView: View {
                     .autocapitalization(.none)
                     .autocorrectionDisabled(true)
             }
-
-            Button(buttonTitle) {
-                // 작성/수정 내용 반영
-                dismiss()
-            }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(10)
-            .padding(.top)
         }
         .padding()
+        .padding(.bottom, 10)
         .scrollContentBackground(.hidden)
         .background(Color("AppBackground"))
         .navigationTitle(navigationTitle)
@@ -115,6 +112,15 @@ struct EditView: View {
                     }
                 } label: {
                     Image(systemName: "chevron.left")
+                        .foregroundStyle(Color("AppAccent"))
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    onClickSave()
+                } label: {
+                    Image(systemName: "checkmark.circle")
+                        .foregroundStyle(Color("AppPositive"))
                 }
             }
         }
@@ -130,6 +136,9 @@ struct EditView: View {
                 dismiss()
             }
         }
+        .alert("제목을 입력해주세요.", isPresented: $showTitleAlert) {
+            Button("확인") {}
+        }
     }
 }
 
@@ -137,17 +146,58 @@ extension EditView {
     private var isDataChanged: Bool {
         return title != originalTitle ||
                content != originalContent ||
-               category != originalCategory
+               category != originalCategory ||
+               mood != originalMood
     }
 
     private func initRetro(_ retro: Retrospect) {
         originalTitle = retro.title
         originalContent = retro.content
         originalCategory = retro.category
+        originalMood = retro.mood
 
         title = retro.title
         content = retro.content
         category = retro.category
+        mood = retro.mood
+    }
+
+    private func onClickSave() {
+        guard validateInput() else { return }
+
+        switch mode {
+        case .create:
+            createRetrospect()
+        case .update(let retro):
+            updateRetrospect(retro)
+        }
+
+        dismiss()
+    }
+
+    private func validateInput() -> Bool {
+        if title.isEmpty {
+            showTitleAlert = true
+            return false
+        }
+        return true
+    }
+
+    private func createRetrospect() {
+        let newRetro = Retrospect(
+            title: title,
+            content: content,
+            date: Date(),
+            category: category,
+            mood: mood
+        )
+        modelContext.insert(newRetro)
+    }
+
+    private func updateRetrospect(_ retro: Retrospect) {
+        retro.title = title
+        retro.content = content
+        retro.category = category
     }
 }
 
@@ -156,14 +206,15 @@ extension EditView {
         title: "수정할 제목",
         content: "수정할 내용입니다.",
         date: Date(),
-        category: .category3
+        category: .category3,
+        mood: .happy
     )
 
     NavigationStack {
         // 작성 프리뷰
-            EditView(mode: .create)
+//      EditView(mode: .create)
 
         // 수정 프리뷰
-//        EditView(mode: .update(retro: sampleRetro))
+        EditView(mode: .update(retro: sampleRetro))
     }
 }
