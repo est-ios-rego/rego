@@ -9,11 +9,11 @@ import SwiftUI
 
 
 struct HomeView: View {
-    @State private var mintHeight: CGFloat = 50
-    @State private var orangeHeight: CGFloat = 40
-    @State private var blueHeight: CGFloat = 50
-    @State private var pupleHeight: CGFloat = 40
-    @State private var redHeight: CGFloat = 50
+    @State private var brownHeight: CGFloat = 50
+    @State private var mintHeight: CGFloat = 40
+    @State private var beigeHeight: CGFloat = 50
+    @State private var apricotHeight: CGFloat = 40
+    @State private var lavenderHeight: CGFloat = 50
 
     @Environment(\.colorScheme) var colorScreme
 
@@ -74,57 +74,57 @@ struct HomeView: View {
                         HStack(alignment: .bottom) {
 
                             Rectangle()
-                                .foregroundColor(.mint.opacity(0.7))
+                                .foregroundColor(.brown.opacity(0.9))
+                                .frame(width: 40, height: brownHeight)
+                                .cornerRadius(6)
+                                .shadow(color: .brown.opacity(0.9), radius: 4, x: 0, y: 5)
+                                .onAppear {
+                                    withAnimation(infiniteAnimation) {
+                                        brownHeight = 130
+                                    }
+                                }
+
+                            Rectangle()
+                                .foregroundColor(.mint.opacity(0.4))
                                 .frame(width: 40, height: mintHeight)
                                 .cornerRadius(6)
-                                .shadow(color: .mint.opacity(0.6), radius: 4, x: 0, y: 5)
+                                .shadow(color: .mint.opacity(0.4), radius: 4, x: 0, y: 5)
                                 .onAppear {
                                     withAnimation(infiniteAnimation) {
-                                        mintHeight = 130
+                                        mintHeight = 120
                                     }
                                 }
 
                             Rectangle()
-                                .foregroundColor(.orange.opacity(0.7))
-                                .frame(width: 40, height: orangeHeight)
+                                .foregroundColor(.brown.opacity(0.5))
+                                .frame(width: 40, height: beigeHeight)
                                 .cornerRadius(6)
-                                .shadow(color: .orange.opacity(0.6), radius: 4, x: 0, y: 5)
+                                .shadow(color: .brown.opacity(0.4), radius: 4, x: 0, y: 5)
                                 .onAppear {
                                     withAnimation(infiniteAnimation) {
-                                        orangeHeight = 120
+                                        beigeHeight = 140
                                     }
                                 }
 
                             Rectangle()
-                                .foregroundColor(.blue.opacity(0.7))
-                                .frame(width: 40, height: blueHeight)
+                                .foregroundColor(.orange.opacity(0.4))
+                                .frame(width: 40, height: apricotHeight)
                                 .cornerRadius(6)
-                                .shadow(color: .blue.opacity(0.6), radius: 4, x: 0, y: 5)
+                                .shadow(color: .orange.opacity(0.4), radius: 4, x: 0, y: 5)
                                 .onAppear {
                                     withAnimation(infiniteAnimation) {
-                                        blueHeight = 140
+                                        apricotHeight = 110
                                     }
                                 }
 
                             Rectangle()
-                                .foregroundColor(.purple.opacity(0.7))
-                                .frame(width: 40, height: pupleHeight)
+                                .foregroundColor(.red.opacity(0.4))
+                                .frame(width: 40, height: lavenderHeight)
                                 .cornerRadius(6)
-                                .shadow(color: .purple.opacity(0.6), radius: 4, x: 0, y: 5)
+                                .shadow(color: .red.opacity(0.3), radius: 4, x: 0, y: 5)
                                 .onAppear {
                                     withAnimation(infiniteAnimation) {
-                                        pupleHeight = 110
-                                    }
-                                }
-
-                            Rectangle()
-                                .foregroundColor(.red.opacity(0.7))
-                                .frame(width: 40, height: redHeight)
-                                .cornerRadius(6)
-                                .shadow(color: .red.opacity(0.6), radius: 4, x: 0, y: 5)
-                                .onAppear {
-                                    withAnimation(infiniteAnimation) {
-                                        redHeight = 150
+                                        lavenderHeight = 150
                                     }
                                 }
                         }
