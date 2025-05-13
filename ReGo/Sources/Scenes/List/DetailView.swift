@@ -81,7 +81,6 @@ struct DetailView: View {
         .padding()
         .scrollContentBackground(.hidden)
         .background(Color("AppBackground"))
-        .navigationTitle("상세보기")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -93,24 +92,27 @@ struct DetailView: View {
                         .foregroundStyle(Color("AppAccent"))
                 }
             }
-            ToolbarItemGroup(placement: .topBarTrailing) {
-                Button {
-                    showEditView = true
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    HStack {
+                        Button {
+                            showEditView = true
+                        } label: {
+                            Label("수정", systemImage: "square.and.pencil")
+                        }
+                    }
+
+                    HStack {
+                        Button(role: .destructive) {
+                            showDeleteConfirm = true
+                        } label: {
+                            Label("삭제", systemImage: "trash")
+                        }
+                    }
                 } label: {
-                    Image(systemName: "square.and.pencil")
+                    Image(systemName: "ellipsis.circle")
                         .foregroundStyle(Color("AppAccent"))
                 }
-                .buttonStyle(.borderless)
-
-                Spacer()
-
-                Button(role: .destructive) {
-                    showDeleteConfirm = true
-                } label: {
-                    Image(systemName: "trash")
-                        .foregroundStyle(Color("AppNegative"))
-                }
-                .buttonStyle(.borderless)
             }
         }
         .navigationDestination(isPresented: $showEditView) {
