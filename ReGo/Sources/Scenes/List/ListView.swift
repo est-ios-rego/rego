@@ -112,7 +112,7 @@ struct ListView: View {
                             ForEach(items) { item in
                                 if item.date.toYearMonth == date {
                                     NavigationLink{
-                                        EmptyView()
+                                        DetailView(retro: item)
                                     } label: {
                                         ListItem(item: item)
                                             .frame(maxWidth: .infinity)
