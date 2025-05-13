@@ -25,6 +25,7 @@ struct EditView: View {
 
     @State private var showCategoryPicker = false
     @State private var showDismissAlert = false
+    @State private var showTitleAlert = false
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -114,8 +115,7 @@ struct EditView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    save()
-                    dismiss()
+                    onClickSave()
                 } label: {
                     Image(systemName: "checkmark.circle")
                         .foregroundStyle(Color("AppPositive"))
@@ -133,6 +133,9 @@ struct EditView: View {
             Button("나가기", role: .destructive) {
                 dismiss()
             }
+        }
+        .alert("제목을 입력해주세요.", isPresented: $showTitleAlert) {
+            Button("확인") {}
         }
     }
 }
@@ -154,21 +157,41 @@ extension EditView {
         category = retro.category
     }
 
-    private func save() {
+    private func onClickSave() {
+        guard validateInput() else { return }
+
         switch mode {
         case .create:
-            let newRetro = Retrospect(
-                title: title,
-                content: content,
-                date: Date(),
-                category: category
-            )
-            modelContext.insert(newRetro)
+            createRetrospect()
         case .update(let retro):
-            retro.title = title
-            retro.content = content
-            retro.category = category
+            updateRetrospect(retro)
         }
+
+        dismiss()
+    }
+
+    private func validateInput() -> Bool {
+        if title.isEmpty {
+            showTitleAlert = true
+            return false
+        }
+        return true
+    }
+
+    private func createRetrospect() {
+        let newRetro = Retrospect(
+            title: title,
+            content: content,
+            date: Date(),
+            category: category
+        )
+        modelContext.insert(newRetro)
+    }
+
+    private func updateRetrospect(_ retro: Retrospect) {
+        retro.title = title
+        retro.content = content
+        retro.category = category
     }
 }
 
