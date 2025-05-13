@@ -100,6 +100,8 @@ struct EditView: View {
             .padding(.top)
         }
         .padding()
+        .scrollContentBackground(.hidden)
+        .background(Color("AppBackground"))
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()

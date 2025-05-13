@@ -142,6 +142,8 @@ struct StatisticsView: View {
                 }
                 .padding()
             }
+            .scrollContentBackground(.hidden)
+            .background(Color("AppBackground"))
             .navigationTitle("Statistics")
             .navigationBarTitleDisplayMode(.inline)
         }

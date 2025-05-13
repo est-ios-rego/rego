@@ -29,13 +29,13 @@ struct MainView: View {
                     Label("통계", systemImage: "pencil.slash")
                 }
                 .tag(2)
+
             SettingView()
                 .tabItem {
                     Label("설정", systemImage: "gear")
                 }
                 .tag(3)
         }
-
     }
 }
 
