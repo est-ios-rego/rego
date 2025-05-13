@@ -19,7 +19,7 @@ struct ListItem: View {
                     .font(.headline)
                     .foregroundStyle(.white)
                     .padding(10)
-                    .background(.green)
+                    .background(Color.regoAcccent)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
 //                Spacer()
 

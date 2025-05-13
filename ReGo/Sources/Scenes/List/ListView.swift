@@ -113,11 +113,9 @@ struct ListView: View {
                         }
                         .onChange(of: selectedStartDate) {
                             setEndDate()
-                            //                            filteredDateList = setDate()
                         }
                         .onChange(of: selectedEndDate) {
                             setStartDate()
-                            //                            filteredDateList = setDate()
                         }
                     }
 
@@ -143,7 +141,7 @@ struct ListView: View {
                                         }
                                     }
                                 }
-                            }.background(.yellow)
+                            }.background(Color.regoBackground2)
                         }
                         .padding(.bottom, 20)
                     }
@@ -158,7 +156,7 @@ struct ListView: View {
             }
             .padding(.horizontal)
             .scrollContentBackground(.hidden)
-            .background(Color("AppBackground"))
+            .background(Color.regoBackground)
 
             .navigationTitle("회고 기록")
             .searchable(text: $keyword, prompt: "내용을 검색하세요.")
