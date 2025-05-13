@@ -26,8 +26,11 @@ struct EditView: View {
     @State private var mood: Mood = .neutral
 
     @State private var showCategoryPicker = false
+    @State private var showMoodPicker = false
     @State private var showDismissAlert = false
     @State private var showTitleAlert = false
+
+    @FocusState private var isTitleFocused: Bool
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -48,8 +51,9 @@ struct EditView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
+            // 카테고리
             HStack {
-                Text("현재 카테고리: \(category.rawValue)")
+                Text("카테고리: \(category.rawValue)")
                 Spacer()
                 Button("변경") {
                     showCategoryPicker = true
@@ -58,6 +62,19 @@ struct EditView: View {
             }
             .sheet(isPresented: $showCategoryPicker) {
                 CategoryPicker(currentCategory: $category)
+            }
+
+            // 기분
+            HStack {
+                Text("기분: \(mood.emoji) \(mood.name)")
+                Spacer()
+                Button("변경") {
+                    showMoodPicker = true
+            	}
+                .tint(Color("AppAccent"))
+            }
+            .sheet(isPresented: $showMoodPicker) {
+                MoodPicker(currentMood: $mood)
             }
 
             // 제목
@@ -75,6 +92,7 @@ struct EditView: View {
                     )
                     .autocapitalization(.none)
                     .autocorrectionDisabled(true)
+                    .focused($isTitleFocused)
             }
 
             // 내용
@@ -125,8 +143,11 @@ struct EditView: View {
             }
         }
         .onAppear {
-            if case let .update(retro) = mode {
-        		initRetro(retro)
+            switch mode {
+            case .create:
+                isTitleFocused = true
+            case .update(let retro):
+                initRetro(retro)
             }
         }
         .alert("변경사항이 저장되지 않았습니다.\n나가시겠습니까?", isPresented: $showDismissAlert) {
@@ -137,7 +158,9 @@ struct EditView: View {
             }
         }
         .alert("제목을 입력해주세요.", isPresented: $showTitleAlert) {
-            Button("확인") {}
+            Button("확인") {
+                isTitleFocused = true
+            }
         }
     }
 }
