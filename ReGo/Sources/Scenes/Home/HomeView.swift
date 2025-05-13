@@ -35,6 +35,51 @@ struct HomeView: View {
     }
 
 
+    var monthlyCount: Int {
+        let calendar = Calendar.current
+        let now = Date()
+
+        let components = calendar.dateComponents([.year, .month], from: now)
+        guard let startOfMonth = calendar.date(from: components),
+              let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth) else {
+            return 0
+        }
+
+        return Retrospect.sampleData.filter {
+            $0.date >= startOfMonth && $0.date <= endOfMonth
+        }.count
+    }
+
+
+    var weeklyCount: Int {
+        let calendar = Calendar.current
+        let now = Date()
+
+
+        let weekday = calendar.component(.weekday, from: now)
+        guard let startOfWeek = calendar.date(byAdding: .day, value: -(weekday - 1), to: now),
+              let endOfWeek = calendar.date(byAdding: .day, value: 7 - weekday, to: now) else {
+            return 0
+        }
+
+        return Retrospect.sampleData.filter {
+            $0.date >= startOfWeek && $0.date <= endOfWeek
+        }.count
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     var body: some View {
         NavigationStack {
             GeometryReader { geo in
@@ -63,8 +108,8 @@ struct HomeView: View {
                             }
                             .frame(
                                 maxWidth: geo.size.width > 600 ? 600 : .infinity,
-                                                    alignment: .center
-                                )
+                                alignment: .center
+                            )
 
                             .frame(maxWidth: .infinity)
                             .padding(.horizontal)
@@ -74,7 +119,7 @@ struct HomeView: View {
 
 
                         }
-                        
+
                         Spacer()
 
 
@@ -251,8 +296,8 @@ struct HomeView: View {
                             }
                             .frame(
                                 maxWidth: geo.size.width > 600 ? 600 : .infinity,
-                                                    alignment: .center
-                                )
+                                alignment: .center
+                            )
 
 
                             VStack {
@@ -276,14 +321,21 @@ struct HomeView: View {
                                     ZStack{
                                         RoundedRectangle(cornerRadius: 30)
                                             .fill(.brown.opacity(0.4))
-                                            .frame(width: 130, height: 130)
+                                            .frame(width: 130, height: 90)
+
+                                        VStack {
+
+                                            Text("       이번달\n회고 작성 횟수 :\n")
+                                                .font(.caption)
+                                                .foregroundColor(readStrokeColor)
+                                                .padding(1)
 
 
-
-                                        Text("이번달 \n회고 작성 횟수 :\n ")
-                                            .font(.headline)
-                                            .foregroundColor(readStrokeColor)
-
+                                            Text("\(monthlyCount)회")
+                                                .foregroundColor(readStrokeColor)
+                                        }
+                                        .padding(.bottom, 5)
+                                        .frame(width: 130, height: 80)
                                     }
 
                                     .padding(.horizontal, 10)
@@ -292,14 +344,21 @@ struct HomeView: View {
                                     ZStack{
                                         RoundedRectangle(cornerRadius: 30)
                                             .fill(.brown.opacity(0.4))
-                                            .frame(width: 130, height: 130)
+                                            .frame(width: 130, height: 90)
 
 
+                                        VStack(alignment: .center, spacing: 0) {
 
-                                        Text("이번주 \n회고 작성 횟수 :\n ")
-                                            .font(.headline)
-                                            .foregroundColor(readStrokeColor)
+                                            Text("       이번주\n회고 작성 횟수 :\n")
+                                                .font(.caption)
+                                                .foregroundColor(readStrokeColor)
+                                                .padding(1)
 
+                                            Text("\(weeklyCount)회")
+                                                .foregroundColor(readStrokeColor)
+                                        }
+                                        .padding(.bottom, 5)
+                                        .frame(width: 130, height: 80)
                                     }
                                     .padding(.horizontal, 10)
                                     .padding(10)
@@ -332,8 +391,8 @@ struct HomeView: View {
                             }
                             .frame(
                                 maxWidth: geo.size.width > 600 ? 600 : .infinity,
-                                                    alignment: .center
-                                )
+                                alignment: .center
+                            )
                             .padding(10)
                         }
                     }
