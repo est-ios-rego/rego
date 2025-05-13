@@ -116,7 +116,6 @@ struct EditView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     onClickSave()
-                    dismiss()
                 } label: {
                     Image(systemName: "checkmark.circle")
                         .foregroundStyle(Color("AppPositive"))
@@ -167,6 +166,8 @@ extension EditView {
         case .update(let retro):
             updateRetrospect(retro)
         }
+
+        dismiss()
     }
 
     private func validateInput() -> Bool {
