@@ -90,19 +90,9 @@ struct EditView: View {
                     .autocapitalization(.none)
                     .autocorrectionDisabled(true)
             }
-
-            Button(buttonTitle) {
-                // 작성/수정 내용 반영
-                dismiss()
-            }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color("AppPositive"))
-            .foregroundColor(Color.white)
-            .cornerRadius(10)
-            .padding(.top)
         }
         .padding()
+        .padding(.bottom, 10)
         .scrollContentBackground(.hidden)
         .background(Color("AppBackground"))
         .navigationTitle(navigationTitle)
@@ -118,6 +108,15 @@ struct EditView: View {
                     }
                 } label: {
                     Image(systemName: "chevron.left")
+                        .foregroundStyle(Color("AppAccent"))
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    // 저장 후 닫기
+//                    dismiss()
+                } label: {
+                    Image(systemName: "checkmark.circle")
                         .foregroundStyle(Color("AppAccent"))
                 }
             }
