@@ -296,7 +296,7 @@ struct HomeView: View {
 
 
 
-                                        Text("이번달 \n회고 작성 횟수 :\n ")
+                                        Text("이번주 \n회고 작성 횟수 :\n ")
                                             .font(.headline)
                                             .foregroundColor(readStrokeColor)
 
