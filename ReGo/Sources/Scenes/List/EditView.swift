@@ -18,10 +18,12 @@ struct EditView: View {
     @State private var originalTitle: String = ""
     @State private var originalContent: String = ""
     @State private var originalCategory: RetrospectCategory = .category1
+    @State private var originalMood: Mood = .neutral
 
     @State private var title: String = ""
     @State private var content: String = ""
     @State private var category: RetrospectCategory = .category1
+    @State private var mood: Mood = .neutral
 
     @State private var showCategoryPicker = false
     @State private var showDismissAlert = false
@@ -144,17 +146,20 @@ extension EditView {
     private var isDataChanged: Bool {
         return title != originalTitle ||
                content != originalContent ||
-               category != originalCategory
+               category != originalCategory ||
+               mood != originalMood
     }
 
     private func initRetro(_ retro: Retrospect) {
         originalTitle = retro.title
         originalContent = retro.content
         originalCategory = retro.category
+        originalMood = retro.mood
 
         title = retro.title
         content = retro.content
         category = retro.category
+        mood = retro.mood
     }
 
     private func onClickSave() {
@@ -183,7 +188,8 @@ extension EditView {
             title: title,
             content: content,
             date: Date(),
-            category: category
+            category: category,
+            mood: mood
         )
         modelContext.insert(newRetro)
     }
@@ -200,7 +206,8 @@ extension EditView {
         title: "수정할 제목",
         content: "수정할 내용입니다.",
         date: Date(),
-        category: .category3
+        category: .category3,
+        mood: .happy
     )
 
     NavigationStack {
