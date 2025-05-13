@@ -30,6 +30,8 @@ struct CategoryPicker: View {
                 }
                 .padding()
             }
+            .scrollContentBackground(.hidden)
+            .background(Color("AppBackground"))
             .navigationTitle("카테고리 선택")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
