@@ -14,6 +14,7 @@ struct DetailView: View {
     @State private var showDeleteConfirm = false
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -25,6 +26,15 @@ struct DetailView: View {
 
                 Text(retro.category.rawValue)
                     .fontWeight(.medium)
+            }
+
+            HStack {
+                Text("작성일")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
+                Text(retro.date.toDetailDate)
+                    .font(.subheadline)
             }
 
             Divider()
@@ -97,14 +107,15 @@ struct DetailView: View {
 
             Button("삭제", role: .destructive) {
                 delete()
+                dismiss()
             }
         }
     }
 }
 
 extension DetailView {
-    func delete() {
-        // TODO: 삭제 로직 구현
+    private func delete() {
+        modelContext.delete(retro)
     }
 }
 

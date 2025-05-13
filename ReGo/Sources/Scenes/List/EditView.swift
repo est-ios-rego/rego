@@ -27,6 +27,7 @@ struct EditView: View {
     @State private var showDismissAlert = false
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
 
     private var navigationTitle: String {
         switch mode {
@@ -113,11 +114,11 @@ struct EditView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    // 저장 후 닫기
-//                    dismiss()
+                    save()
+                    dismiss()
                 } label: {
                     Image(systemName: "checkmark.circle")
-                        .foregroundStyle(Color("AppAccent"))
+                        .foregroundStyle(Color("AppPositive"))
                 }
             }
         }
@@ -152,6 +153,23 @@ extension EditView {
         content = retro.content
         category = retro.category
     }
+
+    private func save() {
+        switch mode {
+        case .create:
+            let newRetro = Retrospect(
+                title: title,
+                content: content,
+                date: Date(),
+                category: category
+            )
+            modelContext.insert(newRetro)
+        case .update(let retro):
+            retro.title = title
+            retro.content = content
+            retro.category = category
+        }
+    }
 }
 
 #Preview {
@@ -164,9 +182,9 @@ extension EditView {
 
     NavigationStack {
         // 작성 프리뷰
-            EditView(mode: .create)
+//      EditView(mode: .create)
 
         // 수정 프리뷰
-//        EditView(mode: .update(retro: sampleRetro))
+        EditView(mode: .update(retro: sampleRetro))
     }
 }
