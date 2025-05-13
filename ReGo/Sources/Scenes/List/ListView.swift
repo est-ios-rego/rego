@@ -33,7 +33,7 @@ struct ListView: View {
 
 
     @State var keyword: String = ""
-    @State var selectedCategory: RetrospectCategory = .category1
+    @State var selectedCategory: String = ""
     @State var selectedDate = Date.now
     @State var selectedSearch: SelectedSearch = .title
 
@@ -43,57 +43,59 @@ struct ListView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                Text("회고 기록")
-                    .font(.largeTitle)
-                    .bold()
-                    .font(.title2)
+//                Text("회고 기록")
+//                    .font(.largeTitle)
+//                    .bold()
+//                    .font(.title2)
 
                 VStack(alignment: .leading) {
-                    Text("검색")
-                        .font(.title3)
-                    HStack {
+//                    Text("검색")
+//                        .font(.title3)
+//                    HStack {
+//
+//
+//                        TextField("제목을 검색하세요", text: $keyword)
+//
+//                        Button {
+//
+//                        } label: {
+//                            Image(systemName: "magnifyingglass")
+//                        }
+//
+//
+//
+//                    }
+//                    .padding()
+//                    .background(.secondary.opacity(0.2))
+//                    .clipShape(Capsule())
+//                    .overlay {
+//                        Capsule().stroke(Color.primary, lineWidth: 1)
 
-
-                        TextField("제목을 검색하세요", text: $keyword)
-
-                        Button {
-
-                        } label: {
-                            Image(systemName: "magnifyingglass")
-                        }
-
-
-
-                    }
-                    .padding()
-                    .background(.secondary.opacity(0.2))
-                    .clipShape(Capsule())
-                    .overlay {
-                        Capsule().stroke(Color.primary, lineWidth: 1)
-
-                    }
+//                    }
 
 
                     HStack {
                         Text("카테고리")
                         Spacer()
 
-                        Picker("카테고리", selection: $selectedCategory) {
+                        Picker("카테고리를 선택하세요", selection: $selectedCategory) {
                             ForEach(RetrospectCategory.allCases) { item in
                                 Text(item.rawValue)
                             }
                         }
+                        .tint(.primary)
                     }
                     HStack {
-                        Text("날짜")
-                        Spacer()
+//                        Text("날짜")
+//                        Spacer()
 
-                        DatePicker("", selection: $selectedDate, displayedComponents: .date)
+                        
+                        DatePicker("날짜", selection: $selectedDate, displayedComponents: .date)
 
 //                        DatePicker("날짜", selection: $selectedDate, displayedComponents: .datePickerStyle(.graphical)) {
 
                         Text("~")
-                            .padding(.leading, 10)
+                            .padding(.leading)
 
                         DatePicker("", selection: $selectedDate, displayedComponents: .date)
 
@@ -128,8 +130,8 @@ struct ListView: View {
             }
             .padding(.horizontal)
 
-//            .navigationTitle("회고 기록")
-//            .searchable(text: $keyword, prompt: "내용을 검색하세요.")
+            .navigationTitle("회고 기록")
+            .searchable(text: $keyword, prompt: "내용을 검색하세요.")
 
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

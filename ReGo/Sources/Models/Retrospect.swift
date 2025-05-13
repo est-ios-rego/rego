@@ -14,6 +14,7 @@ enum RetrospectCategory: String, Codable, CaseIterable, Identifiable {
     case category3
     case category4
     case category5
+    case category6 = ""
 
     var id: String { rawValue }
 }
