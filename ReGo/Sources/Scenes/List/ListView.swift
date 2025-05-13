@@ -15,67 +15,47 @@ enum SelectedSearch {
 }
 
 struct ListView: View {
+//    @Query(sort: [SortDescriptor(\Retrospect.id, order: .forward)])
+
     var items: [Retrospect]
-    var dateList: [String] {
+
+    private var filteredDateList: [String] {
         var setDate: Set<String> = []
         var arrayDate: [String] = []
+        if items.isEmpty {
+            return []
+        } else {
+            items.forEach {
+                setDate.insert($0.date.toYearMonth)
+            }
 
-        items.forEach {
-            setDate.insert($0.date.toYearMonth)
+            setDate.forEach {
+                arrayDate.append($0)
+            }
+
+            return arrayDate.sorted().reversed()
         }
-
-        setDate.forEach {
-            arrayDate.append($0)
-        }
-
-        return arrayDate.sorted()
     }
 
 
     @State var keyword: String = ""
     @State var selectedCategory: String = ""
-    @State var selectedDate = Date.now
+    @State var selectedStartDate = Date.now
+    @State var selectedEndDate = Date.now
     @State var selectedSearch: SelectedSearch = .title
 
+    @State private var selectDateSheet = false
     @State private var showEditView = false
-
+    @State private var dateSelection = "전체"
 
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-//                Text("회고 기록")
-//                    .font(.largeTitle)
-//                    .bold()
-//                    .font(.title2)
-
-                VStack(alignment: .leading) {
-//                    Text("검색")
-//                        .font(.title3)
-//                    HStack {
-//
-//
-//                        TextField("제목을 검색하세요", text: $keyword)
-//
-//                        Button {
-//
-//                        } label: {
-//                            Image(systemName: "magnifyingglass")
-//                        }
-//
-//
-//
-//                    }
-//                    .padding()
-//                    .background(.secondary.opacity(0.2))
-//                    .clipShape(Capsule())
-//                    .overlay {
-//                        Capsule().stroke(Color.primary, lineWidth: 1)
-
-//                    }
-
+                VStack {
 
                     HStack {
                         Text("카테고리")
+
                         Spacer()
 
                         Picker("카테고리를 선택하세요", selection: $selectedCategory) {
@@ -85,55 +65,93 @@ struct ListView: View {
                         }
                         .tint(.primary)
                     }
+
                     HStack {
-//                        Text("날짜")
-//                        Spacer()
+                        Text("날짜")
 
-                        
-                        DatePicker("날짜", selection: $selectedDate, displayedComponents: .date)
+                        Spacer()
 
-//                        DatePicker("날짜", selection: $selectedDate, displayedComponents: .datePickerStyle(.graphical)) {
-
-                        Text("~")
-                            .padding(.leading)
-
-                        DatePicker("", selection: $selectedDate, displayedComponents: .date)
-
-                    }
-                }
-
-                List{
-                    ScrollView {
-                        ForEach(dateList, id: \.self) { date in
-                            Text(date)
-                                .font(.title)
-
-
-                            ForEach(items) { item in
-                                if item.date.toYearMonth == date {
-                                    NavigationLink{
-                                        EmptyView()
-                                    } label: {
-                                        ListItem(item: item)
-                                            .frame(maxWidth: .infinity)
-                                    }
-                                }
+                        Picker("", selection: $dateSelection) {
+                            ForEach(["전체", "선택하기"], id: \.self) { item in
+                                Text(item)
                             }
+                        }
+                        .tint(.primary)
+                    }
+
+                    if dateSelection == "선택하기" {
+                        HStack  {
+                            DatePicker("", selection: $selectedStartDate, displayedComponents: .date)
+                                .environment(\.locale, Locale(identifier: "ko_kr"))
+                                .labelsHidden()
+                                .padding(.trailing, 15)
+
+
+
+                            //            DatePicker("날짜", selection: $selectedDate, displayedComponents: .datePickerStyle(.graphical)) {
+
+                            Spacer()
+
+                            Text("~")
+
+                            Spacer()
+
+
+                            DatePicker("", selection: $selectedEndDate, displayedComponents: .date)
+                                .environment(\.locale, Locale(identifier: "ko_kr"))
+                                .labelsHidden()
+                                .padding(.trailing, 15)
+
 
                         }
-
+                        .onChange(of: selectedStartDate) {
+                            setEndDate()
+                        }
+                        .onChange(of: selectedEndDate) {
+                            setStartDate()
+                        }
                     }
+
                 }
+
+
+                ScrollView {
+                    ForEach(filteredDateList, id: \.self) { date in
+                        VStack(alignment: .leading) {
+                            Text(date)
+                                .font(.title)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            VStack(spacing: 15){
+                                ForEach(items) { item in
+                                    if item.date.toYearMonth == date {
+                                        NavigationLink{
+                                            DetailView(retro: item)
+                                        } label: {
+                                            ListItem(item: item)
+
+                                        }
+                                    }
+                                }
+                            }.background(.yellow)
+                        }
+                        .padding(.bottom, 20)
+                    }
+
+                }
+
+
                 .listStyle(.plain)
+
 
 
             }
             .padding(.horizontal)
             .scrollContentBackground(.hidden)
             .background(Color("AppBackground"))
-            
-//            .navigationTitle("회고 기록")
-//            .searchable(text: $keyword, prompt: "내용을 검색하세요.")
+
+            .navigationTitle("회고 기록")
+            .searchable(text: $keyword, prompt: "내용을 검색하세요.")
 
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -149,9 +167,43 @@ struct ListView: View {
             }
         }
     }
+    func setEndDate() {
+        switch selectedStartDate.compare(selectedEndDate) {
+        case .orderedDescending:
+            selectedEndDate = selectedStartDate
+        default:
+            break
+        }
+    }
+
+    func setStartDate() {
+        switch selectedEndDate.compare(selectedStartDate) {
+        case .orderedAscending:
+            selectedStartDate = selectedEndDate
+        default:
+            break
+        }
+    }
+
+    func setTitle() -> [Retrospect]{
+        return items.filter {
+            $0.title.lowercased().contains(keyword.lowercased())
+        }
+    }
 
 }
 
+//#Preview {
+//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+//    let container = try! ModelContainer(for: Retrospect.self, configurations: config)
+//
+//
+//    ListView(items: Retrospect.sampleData)
+//        .modelContainer(container)
+//}
+
 #Preview {
+
+
     ListView(items: Retrospect.sampleData)
 }

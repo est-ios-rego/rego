@@ -27,7 +27,11 @@ struct ListItem: View {
                     .tint(.primary)
 
                 Spacer()
-                Spacer()
+
+//                Text(item.mood.emoji)
+                Text("😀")
+                    .font(.title)
+                    .padding(.trailing, 10)
             }
 
             Text(item.date.toListDate)
