@@ -87,7 +87,7 @@ struct ListView: View {
                     }
 
                     if dateSelection == "기간" {
-                        ExtractedView(
+                        DateFilterView(
                             selectedStartDate: $selectedStartDate,
                             selectedEndDate: $selectedEndDate
                         )
@@ -168,7 +168,7 @@ struct ListView: View {
     }
 }
 
-struct ExtractedView: View {
+struct DateFilterView: View {
     @Binding var selectedStartDate: Date
     @Binding var selectedEndDate: Date
 
