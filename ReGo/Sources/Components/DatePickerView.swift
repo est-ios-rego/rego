@@ -1,8 +1,11 @@
 import SwiftUI
 
+/// 날짜를 선택할 수 있는 시트형 피커 뷰
 struct DatePickerSheet: View {
+    /// 뷰가 표시되는지 여부를 제어하는 바인딩 값
     @Binding var isPresented: Bool
-	@Binding var currentDate: Date
+    /// 현재 선택된 날짜
+    @Binding var currentDate: Date
 
     var body: some View {
         NavigationStack {

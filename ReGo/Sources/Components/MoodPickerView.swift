@@ -1,7 +1,10 @@
 import SwiftUI
 
+/// 사용자가 기분(Mood)을 선택할 수 있는 시트형 피커 뷰
 struct MoodPickerView: View {
+    /// 뷰가 표시되는지 여부를 제어하는 바인딩 값
     @Binding var isPresented: Bool
+    /// 현재 선택된 기분
     @Binding var currentMood: Mood
 
     private let moods: [Mood] = Mood.allCases
@@ -39,6 +42,7 @@ struct MoodPickerView: View {
     }
 }
 
+/// 개별 기분을 선택할 수 있는 버튼
 struct MoodButton: View {
     let mood: Mood
     let isSelected: Bool
