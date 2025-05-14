@@ -48,18 +48,20 @@ struct EditView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            TitleSection(title: $title, isTitleFocused: $isTitleFocused)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                TitleSection(title: $title, isTitleFocused: $isTitleFocused)
 
-            ContentSection(content: $content)
+                ContentSection(content: $content)
 
-            CategorySection(category: $category, showCategoryPicker: $showCategoryPicker)
+                CategorySection(category: $category, showCategoryPicker: $showCategoryPicker)
 
-            DateSection(date: $date, showDatePicker: $showDatePicker)
+                DateSection(date: $date, showDatePicker: $showDatePicker)
 
-            MoodSection(mood: $mood, showMoodPicker: $showMoodPicker)
+                MoodSection(mood: $mood, showMoodPicker: $showMoodPicker)
+            }
+            .padding()
         }
-        .padding()
         .scrollContentBackground(.hidden)
         .background(Color("AppBackground"))
         .navigationTitle(navigationTitle)
@@ -220,7 +222,7 @@ struct ContentSection: View {
             
             TextEditor(text: $content)
                 .padding(12)
-                .frame(minHeight: 200)
+                .frame(minHeight: 200, maxHeight: 400)
                 .background(Color("AppBackground2"))
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)

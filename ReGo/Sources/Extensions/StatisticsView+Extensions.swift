@@ -69,7 +69,7 @@ extension StatisticsView {
         Calendar.current.component(.day, from: baseStartDate) ..< Calendar.current.component(.day, from: baseEndDate) + 1
     }
 
-    func moveDate(_ flag: String) {
+    func changePeriodCase(_ newValue: StatisticsPeriodCase) {
         let calendar = Calendar.current
 
         defer {
@@ -79,17 +79,45 @@ extension StatisticsView {
         var nextStartDate: Date = .now
         var nextEndDate: Date = .now
 
-        let weight = flag.isEmpty ? 0 : flag == "+" ? 1 : -1
+        let components = calendar.dateComponents([.year, .month], from: baseStartDate)
+
+        nextStartDate = calendar.date(from: DateComponents(year: components.year, month: components.month, weekday: 1))!
+
+        if newValue == .week {
+            let firstWeekdayOfMonth = calendar.component(.weekday, from: nextStartDate)
+
+            nextStartDate = calendar.date(byAdding: .day, value: 8 - firstWeekdayOfMonth, to: nextStartDate)!
+            nextEndDate = calendar.date(byAdding: .day, value: 6, to: nextStartDate)!
+        }
+        else {
+            nextEndDate = calendar.date(byAdding: DateComponents(month: 1, day: -1),to: nextStartDate)!
+        }
+
+        isLastWeek = nextEndDate >= .now
+
+        baseStartDate = nextStartDate
+        baseEndDate = nextEndDate
+    }
+
+    func changeDate(isNext: Bool) {
+        let calendar = Calendar.current
+
+        defer {
+            selectedDay = nil
+        }
+
+        var nextStartDate: Date = .now
+        var nextEndDate: Date = .now
 
         if statPeriod == .week {
-            nextStartDate = calendar.date(byAdding: .weekOfYear, value: weight, to: baseStartDate)!
+            nextStartDate = calendar.date(byAdding: .weekOfYear, value: isNext ? 1 : -1, to: baseStartDate)!
 
             let weekday = calendar.component(.weekday, from: nextStartDate)
 
             nextStartDate = calendar.date(byAdding: .weekday, value: 1 - weekday, to: nextStartDate)!
             nextEndDate = calendar.date(byAdding: .day, value: 6, to: nextStartDate)!
         } else {
-            nextStartDate = calendar.date(byAdding: .month, value: weight, to: baseStartDate)!
+            nextStartDate = calendar.date(byAdding: .month, value: isNext ? 1 : -1, to: baseStartDate)!
 
             let components = calendar.dateComponents([.year, .month], from: nextStartDate)
 

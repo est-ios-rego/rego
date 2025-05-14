@@ -51,25 +51,48 @@ struct ContributionChart: View {
         return result
     }
 
-    var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
+    var weekdayHeader: some View {
+        ForEach(0 ..< 7) { weekday in
+            Text(Calendar.current.shortWeekdaySymbols[weekday])
+                .foregroundStyle(.gray)
+                .padding(.bottom)
+        }
+    }
+
+    var emptyItem: some View {
+        let firstWeekday = Calendar.current.getFirstWeekDayOfMonth(in: startDate)
+
+        return ForEach(0 ..< firstWeekday - 1, id: \.self) { _ in
+            Spacer()
+        }
+    }
+
+    var contributionItem: some View {
+        ForEach(dayArray) { (item: ContributionChartItem) in
+            let day = item.day
+            let date = item.date
+
+            let count = data[day]?.count ?? 0
+
+            let isFutureDate = date > .now
+
+            if statPeriod == .week {
+                WeekContributionItem(count: count, day: day, isFutureDate: isFutureDate, selectedDay: $selectedDay)
+            } else {
+                MonthContributionItem(count: count, day: day, isFutureDate: isFutureDate, selectedDay: $selectedDay)
+            }
+        }
+    }
 
     var body: some View {
-        LazyVGrid(columns: columns) {
-            ForEach(dayArray) { (item: ContributionChartItem) in
-                let day = item.day
-                let date = item.date
+        LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 7)) {
+            weekdayHeader
 
-                let count = data[day]?.count ?? 0
-
-                let isFutureDate = date > .now
-
-                if statPeriod == .week {
-                    WeekContributionItem(count: count, day: day, isFutureDate: isFutureDate, selectedDay: $selectedDay)
-                } else {
-                    MonthContributionItem(count: count, day: day, isFutureDate: isFutureDate, selectedDay: $selectedDay)
-
-                }
+            if statPeriod == .month {
+                emptyItem
             }
+
+            contributionItem
         }
         .padding(.vertical)
         .padding(.horizontal, 8)

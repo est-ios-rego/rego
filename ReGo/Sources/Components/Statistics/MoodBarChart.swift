@@ -17,7 +17,7 @@ struct MoodBarChart: View {
                 BarMark(
                     x: .value("Mood", item.emoji),
                     y: .value("Count", Int(item.count)),
-                    width: 50,
+                    width: 25,
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .annotation(content: {
@@ -25,11 +25,11 @@ struct MoodBarChart: View {
                 })
                 .foregroundStyle(item.color)
                 // TODO: 프리뷰 고장나서 임시 주석
-                .annotation(position: .overlay) {
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.gray.opacity(0.5))
-                        .padding(-4)
-                }
+//                .annotation(position: .overlay) {
+//                    RoundedRectangle(cornerRadius: 16)
+//                        .stroke(Color.gray.opacity(0.5))
+//                        .padding(-4)
+//                }
             }
         }
         .scaledToFit()

@@ -19,14 +19,29 @@ struct ListView: View {
     @Query var retros: [Retrospect]
 
     private var filteredRetros: [Retrospect] {
-        retros.filter { retro in
+        let calendar = Calendar.current
+
+        return retros.filter { retro in
             let title = keyword.isEmpty || retro.title.lowercased().contains(keyword.lowercased())
             let category =  selectedCategory == .all || retro.category == selectedCategory
-            let date = dateSelection == "전체" || selectedStartDate <= retro.date && retro.date  <= selectedEndDate
+
+            let isSameDay = calendar.isDate(selectedStartDate, inSameDayAs: selectedEndDate)
+            let date: Bool
+            
+            if dateSelection == "전체" {
+                date = true
+            } else if isSameDay {
+            	date = calendar.isDate(retro.date, inSameDayAs: selectedStartDate)
+			} else {
+                let retroDay = calendar.startOfDay(for: retro.date)
+                let startDay = calendar.startOfDay(for: selectedStartDate)
+                let endDay = calendar.startOfDay(for: selectedEndDate)
+
+                date = (startDay <= retroDay && retroDay <= endDay)
+            }
 
             return title && category && date
         }.sorted(by: { $0.date > $1.date })
-
     }
 
     private var dateList: [String] {
