@@ -100,7 +100,8 @@ struct ListView: View {
                             .sheet(isPresented: $showCategoryPicker) {
                                 CategoryPickerView(
                                     isPresented: $showCategoryPicker,
-                                    currentCategory: $selectedCategory
+                                    currentCategory: $selectedCategory,
+                                    shouldIncludeAllCategory: true
                                 )
                             }
                         }
