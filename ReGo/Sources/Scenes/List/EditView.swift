@@ -28,6 +28,7 @@ struct EditView: View {
     @State private var mood: Mood = .neutral
 
     @State private var showCategoryPicker = false
+    @State private var showDatePicker = false
     @State private var showMoodPicker = false
     @State private var showDismissAlert = false
     @State private var showTitleAlert = false
@@ -53,113 +54,15 @@ struct EditView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // 제목
-            VStack(alignment: .leading, spacing: 8) {
-                Text("제목")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+            TitleSection(title: $title, isTitleFocused: $isTitleFocused)
 
-                TextField("제목을 입력해주세요.", text: $title)
-                    .padding(12)
-                    .background(Color("AppBackground2"))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                    )
-                    .autocapitalization(.none)
-                    .autocorrectionDisabled(true)
-                    .focused($isTitleFocused)
-            }
+            ContentSection(content: $content)
 
-            // 내용
-            VStack(alignment: .leading, spacing: 8) {
-                Text("내용")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+            CategorySection(category: $category, showCategoryPicker: $showCategoryPicker)
 
-                TextEditor(text: $content)
-                    .padding(12)
-                    .frame(minHeight: 200)
-                    .background(Color("AppBackground2"))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                    )
-                    .autocapitalization(.none)
-                    .autocorrectionDisabled(true)
-            }
+            DateSection(date: $date, showDatePicker: $showDatePicker)
 
-            // 날짜
-            VStack(alignment: .leading, spacing: 8) {
-                Text("날짜")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-
-                Button {
-
-                } label: {
-                    HStack {
-                        Text("\(date.toDetailDate)")
-                            .foregroundColor(.primary)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
-                    }
-                    .padding()
-                    .background(Color("AppBackground2"))
-                    .cornerRadius(8)
-                }
-            }
-
-            // 카테고리
-            VStack(alignment: .leading, spacing: 8) {
-                Text("카테고리")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-
-                Button {
-                    showCategoryPicker = true
-                } label: {
-                    HStack {
-                        Text("\(category.displayName)")
-                            .foregroundColor(.primary)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
-                    }
-                    .padding()
-                    .background(Color("AppBackground2"))
-                    .cornerRadius(8)
-                }
-                .sheet(isPresented: $showCategoryPicker) {
-                    CategoryPicker(currentCategory: $category)
-                }
-            }
-
-            // 오늘의 기분
-            VStack(alignment: .leading, spacing: 8) {
-                Text("오늘의 기분")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                Button {
-                    showMoodPicker = true
-                } label: {
-                    HStack {
-                        Text("\(mood.emoji) \(mood.name)")
-                            .foregroundColor(.primary)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
-                    }
-                    .padding()
-                    .background(Color("AppBackground2"))
-                    .cornerRadius(8)
-                }
-                .sheet(isPresented: $showMoodPicker) {
-                    MoodPicker(currentMood: $mood)
-                }
-            }
-
+            MoodSection(mood: $mood, showMoodPicker: $showMoodPicker)
         }
         .padding()
         .scrollContentBackground(.hidden)
@@ -212,10 +115,13 @@ struct EditView: View {
 
 extension EditView {
     private var isDataChanged: Bool {
-        // TODO: 날짜 비교 추가 (연월일만)
+        let calendar = Calendar.current
+        let isSameDay = calendar.isDate(originalDate, inSameDayAs: date)
+
         return title != originalTitle ||
                content != originalContent ||
                category != originalCategory ||
+        	   !isSameDay ||
                mood != originalMood
     }
 
@@ -223,11 +129,13 @@ extension EditView {
         originalTitle = retro.title
         originalContent = retro.content
         originalCategory = retro.category
+        originalDate = retro.date
         originalMood = retro.mood
 
         title = retro.title
         content = retro.content
         category = retro.category
+        date = retro.date
         mood = retro.mood
     }
 
@@ -270,6 +178,145 @@ extension EditView {
     }
 }
 
+struct TitleSection: View {
+    @Binding var title: String
+    @FocusState.Binding var isTitleFocused: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("제목")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            TextField("제목을 입력해주세요.", text: $title)
+                .padding(12)
+                .background(Color("AppBackground2"))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                )
+                .autocapitalization(.none)
+                .autocorrectionDisabled(true)
+                .focused($isTitleFocused)
+        }
+    }
+}
+
+struct ContentSection: View {
+    @Binding var content: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("내용")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            TextEditor(text: $content)
+                .padding(12)
+                .frame(minHeight: 200)
+                .background(Color("AppBackground2"))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                )
+                .autocapitalization(.none)
+                .autocorrectionDisabled(true)
+        }
+    }
+}
+
+struct CategorySection: View {
+    @Binding var category: RetrospectCategory
+    @Binding var showCategoryPicker: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("카테고리")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            Button {
+                showCategoryPicker = true
+            } label: {
+                HStack {
+                    Text("\(category.displayName)")
+                        .foregroundColor(.primary)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.gray)
+                }
+                .padding()
+                .background(Color("AppBackground2"))
+                .cornerRadius(8)
+            }
+            .sheet(isPresented: $showCategoryPicker) {
+                CategoryPicker(currentCategory: $category)
+            }
+        }
+    }
+}
+
+struct DateSection: View {
+    @Binding var date: Date
+    @Binding var showDatePicker: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("날짜")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            Button {
+                showDatePicker = true
+            } label: {
+                HStack {
+                    Text("\(date.toDetailDate)")
+                        .foregroundColor(.primary)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.gray)
+                }
+                .padding()
+                .background(Color("AppBackground2"))
+                .cornerRadius(8)
+            }
+            .sheet(isPresented: $showDatePicker) {
+                DatePickerSheet(currentDate: $date)
+            }
+        }
+    }
+}
+
+struct MoodSection: View {
+    @Binding var mood: Mood
+    @Binding var showMoodPicker: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("오늘의 기분")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            Button {
+                showMoodPicker = true
+            } label: {
+                HStack {
+                    Text("\(mood.emoji) \(mood.name)")
+                        .foregroundColor(.primary)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.gray)
+                }
+                .padding()
+                .background(Color("AppBackground2"))
+                .cornerRadius(8)
+            }
+            .sheet(isPresented: $showMoodPicker) {
+                MoodPicker(currentMood: $mood)
+            }
+        }
+    }
+}
+
 #Preview {
     let sampleRetro = Retrospect(
         title: "수정할 제목",
@@ -281,7 +328,7 @@ extension EditView {
 
     NavigationStack {
         // 작성 프리뷰
-      EditView(mode: .create)
+//      EditView(mode: .create)
 
         // 수정 프리뷰
         EditView(mode: .update(retro: sampleRetro))
