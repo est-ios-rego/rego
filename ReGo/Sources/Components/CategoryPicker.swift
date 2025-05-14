@@ -10,6 +10,7 @@ import SwiftUI
 struct CategoryPicker: View {
     @Environment(\.dismiss) var dismiss
     @Binding var currentCategory: RetrospectCategory
+    let isEditMode: Bool
 
     private let categories = RetrospectCategory.allCases
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
@@ -20,10 +21,33 @@ struct CategoryPicker: View {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(categories) { category in
                         let isSelected = currentCategory == category
-
-                        CategoryButton(category: category, isSelected: isSelected) {
-                            currentCategory = category
-                            dismiss()
+                        if isEditMode && category != .category6 /* category.displayName*/ {
+                            CategoryButton(category: category, isSelected: isSelected) {
+                                currentCategory = category
+                                dismiss()
+                            }
+                        } else {
+                            if category != .category6 /* category.displayName*/ {
+                                CategoryButton(category: category, isSelected: isSelected) {
+                                    currentCategory = category
+                                    dismiss()
+                                }
+                            } else {
+                                Button {
+                                    currentCategory = category
+                                    dismiss()
+                                } label: {
+                                    Text("전체" /* category.displayName*/ )
+                                        .frame(maxWidth: .infinity, minHeight: 50)
+                                        .foregroundStyle(Color("AppAccent"))
+                                        .background(isSelected ? Color("AppAccent").opacity(0.2) : Color.gray.opacity(0.1))
+                                        .cornerRadius(8)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(isSelected ? Color("AppAccent") : Color.gray.opacity(0.3), lineWidth: 1)
+                                        )
+                                }
+                            }
                         }
                     }
                 }

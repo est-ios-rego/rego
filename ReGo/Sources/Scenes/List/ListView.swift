@@ -22,7 +22,7 @@ struct ListView: View {
     private var filteredRetros: [Retrospect] {
         retros.filter { retro in
             let title = keyword.isEmpty || retro.title.lowercased().contains(keyword.lowercased())
-            let category =  selectedCategory == "" || retro.category.rawValue == selectedCategory
+            let category =  selectedCategory == .category6 || retro.category == selectedCategory
             let date = dateSelection == "전체" || selectedStartDate <= retro.date && retro.date  <= selectedEndDate
 
             return title && category && date
@@ -47,9 +47,10 @@ struct ListView: View {
 
 
     @State var keyword: String = ""
-    @State var selectedCategory: String = ""
+    @State var selectedCategory: RetrospectCategory = .category6
     @State var selectedStartDate = Date.now
     @State var selectedEndDate = Date.now
+    @State var showCategoryPicker = false
 
     @State private var showEditView = false
     @State private var dateSelection = "전체"
@@ -59,17 +60,30 @@ struct ListView: View {
             VStack(alignment: .leading) {
                 VStack {
 
-                    HStack {
-                        Text("카테고리")
+                    VStack {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("카테고리")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
 
-                        Spacer()
-
-                        Picker("카테고리를 선택하세요", selection: $selectedCategory) {
-                            ForEach(RetrospectCategory.allCases) { item in
-                                Text(item.rawValue)
+                            Button {
+                                showCategoryPicker = true
+                            } label: {
+                                HStack {
+                                    Text("\(selectedCategory.rawValue)")
+                                        .foregroundColor(.primary)
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.gray)
+                                }
+                                .padding()
+                                .background(Color("AppBackground2"))
+                                .cornerRadius(8)
+                            }
+                            .sheet(isPresented: $showCategoryPicker) {
+                                CategoryPicker(currentCategory: $selectedCategory, isEditMode: false)
                             }
                         }
-                        .tint(.primary)
                     }
 
 

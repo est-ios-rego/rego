@@ -213,18 +213,18 @@ struct iOS: PreviewProvider {
     }
 }
 
-struct iPadOSPortrait: PreviewProvider {
-    static var previews: some View {
-        StatisticsView(statPeriod: .week)
-            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
-            .previewInterfaceOrientation(.portrait)
-    }
-}
-
-struct iPadOSLandscape: PreviewProvider {
-    static var previews: some View {
-        StatisticsView(statPeriod: .week)
-            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
-            .previewInterfaceOrientation(.landscapeLeft)
-    }
-}
+//struct iPadOSPortrait: PreviewProvider {
+//    static var previews: some View {
+//        StatisticsView(statPeriod: .week)
+//            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
+//            .previewInterfaceOrientation(.portrait)
+//    }
+//}
+//
+//struct iPadOSLandscape: PreviewProvider {
+//    static var previews: some View {
+//        StatisticsView(statPeriod: .week)
+//            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
+//            .previewInterfaceOrientation(.landscapeLeft)
+//    }
+//}
