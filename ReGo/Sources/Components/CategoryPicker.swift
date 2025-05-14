@@ -79,7 +79,7 @@ struct CategoryButton: View {
         Button {
             onTap()
         } label: {
-            Text(category.rawValue)
+            Text(category.displayName)
                 .frame(maxWidth: .infinity, minHeight: 50)
                 .foregroundStyle(Color("AppAccent"))
                 .background(isSelected ? Color("AppAccent").opacity(0.2) : Color.gray.opacity(0.1))

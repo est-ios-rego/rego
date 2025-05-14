@@ -18,13 +18,13 @@ struct EditView: View {
     @State private var originalTitle: String = ""
     @State private var originalContent: String = ""
     @State private var originalDate: Date = Date()
-    @State private var originalCategory: RetrospectCategory = .category1
+    @State private var originalCategory: RetrospectCategory = .daily
     @State private var originalMood: Mood = .neutral
 
     @State private var title: String = ""
     @State private var content: String = ""
     @State private var date: Date = Date()
-    @State private var category: RetrospectCategory = .category1
+    @State private var category: RetrospectCategory = .daily
     @State private var mood: Mood = .neutral
 
     @State private var showCategoryPicker = false
@@ -91,7 +91,7 @@ struct EditView: View {
 
             // 날짜
             VStack(alignment: .leading, spacing: 8) {
-                Text("카테고리")
+                Text("날짜")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
 
@@ -121,7 +121,7 @@ struct EditView: View {
                     showCategoryPicker = true
                 } label: {
                     HStack {
-                        Text("\(category.rawValue)")
+                        Text("\(category.displayName)")
                             .foregroundColor(.primary)
                         Spacer()
                         Image(systemName: "chevron.right")
@@ -275,7 +275,7 @@ extension EditView {
         title: "수정할 제목",
         content: "수정할 내용입니다.",
         date: Date(),
-        category: .category3,
+        category: .daily,
         mood: .happy
     )
 
@@ -284,6 +284,6 @@ extension EditView {
       EditView(mode: .create)
 
         // 수정 프리뷰
-//        EditView(mode: .update(retro: sampleRetro))
+        EditView(mode: .update(retro: sampleRetro))
     }
 }

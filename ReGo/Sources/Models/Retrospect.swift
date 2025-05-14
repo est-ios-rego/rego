@@ -9,14 +9,27 @@ import Foundation
 import SwiftData
 
 enum RetrospectCategory: String, Codable, CaseIterable, Identifiable {
-	case category1
-    case category2
-    case category3
-    case category4
-    case category5
-    case category6 = ""
+    case daily
+    case work
+    case study
+    case relationship
+    case goal
+    case lesson
+    case all
 
     var id: String { rawValue }
+
+    var displayName: String {
+        switch self {
+        case .daily: return "일상"
+        case .work: return "업무"
+        case .study: return "학습"
+        case .relationship: return "관계"
+        case .goal: return "목표"
+        case .lesson: return "교훈"
+        case .all: return "전체"
+        }
+    }
 }
 
 enum Mood: String, CaseIterable, Identifiable, Codable, Equatable {

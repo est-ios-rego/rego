@@ -143,7 +143,7 @@ extension DetailView {
         여러 줄의 텍스트
         """,
         date: Date(),
-        category: .category2,
+        category: .daily,
         mood: .happy
     )
 
