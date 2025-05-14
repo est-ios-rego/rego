@@ -46,11 +46,11 @@ struct ListView: View {
     }
 
 
-    @State var keyword: String = ""
-    @State var selectedCategory: RetrospectCategory = .all
-    @State var selectedStartDate = Date.now
-    @State var selectedEndDate = Date.now
-    @State var showCategoryPicker = false
+    @State private var keyword: String = ""
+    @State private var selectedCategory: RetrospectCategory = .all
+    @State private var selectedStartDate = Date.now
+    @State private var selectedEndDate = Date.now
+    @State private var showCategoryPicker = false
 
     @State private var showEditView = false
     @State private var dateSelection = "전체"
@@ -63,8 +63,6 @@ struct ListView: View {
                     VStack {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("카테고리")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
 
                             Button {
                                 showCategoryPicker = true

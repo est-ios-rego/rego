@@ -250,7 +250,7 @@ struct CategorySection: View {
                 .cornerRadius(8)
             }
             .sheet(isPresented: $showCategoryPicker) {
-                CategoryPicker(currentCategory: $category)
+                CategoryPicker(currentCategory: $category, isEditMode: true)
             }
         }
     }
