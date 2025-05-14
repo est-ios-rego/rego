@@ -14,6 +14,8 @@ struct HomeView: View {
     @State private var beigeHeight: CGFloat = 50
     @State private var apricotHeight: CGFloat = 40
     @State private var lavenderHeight: CGFloat = 50
+    @State private var recentRetros: [Retrospect] = []
+    
 
     @Binding var selectedIndex: Int
 
@@ -33,6 +35,8 @@ struct HomeView: View {
     var infiniteAnimation: Animation {
         Animation.easeInOut(duration: 4).repeatForever(autoreverses: true)
     }
+
+
 
 
     var monthlyCount: Int {
@@ -65,6 +69,13 @@ struct HomeView: View {
             $0.date >= startOfWeek && $0.date <= endOfWeek
         }.count
     }
+
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.MM.dd"
+        return formatter
+    }
+
 
     var body: some View {
         NavigationStack {
@@ -203,8 +214,11 @@ struct HomeView: View {
                                     }
 
                                 }
+                                
 
-                                if Retrospect.sampleData.isEmpty {
+
+                                if recentRetros.isEmpty {
+                                    
 
                                     ZStack {
 
@@ -219,15 +233,9 @@ struct HomeView: View {
                                     }
                                 } else {
 
-                                    let recentRetros = Retrospect.sampleData
-                                        .sorted(by: { $0.date > $1.date })
-                                        .prefix(4)
+                                        HStack(spacing: 7) {
 
-                                    ScrollView(.horizontal, showsIndicators: false) {
-
-                                        HStack(spacing: 10) {
-
-                                            ForEach(Array(recentRetros), id: \.id) { retrospect in
+                                            ForEach(recentRetros, id: \.id) { retrospect in
                                                 NavigationLink(destination: DetailView(retro: retrospect)) {
 
                                                     ZStack {
@@ -237,19 +245,32 @@ struct HomeView: View {
                                                             .frame(width: 120, height: 80)
                                                             .shadow(color: .white.opacity(0.3), radius: 3, x: 0, y: 2)
 
-                                                        Text(retrospect.title)
-                                                            .font(.headline)
-                                                            .foregroundColor(readStrokeColor)
-                                                            .multilineTextAlignment(.center)
-                                                            .lineLimit(2)
-                                                            .padding(.horizontal, 5)
+                                                        VStack {
+                                                            Text(dateFormatter.string(from: retrospect.date))
+                                                                .font(.caption2)
+                                                                .foregroundColor(readStrokeColor)
+
+
+
+                                                            Text(retrospect.title)
+                                                                .font(.headline)
+                                                                .foregroundColor(readStrokeColor)
+                                                                .multilineTextAlignment(.center)
+                                                                .lineLimit(2)
+                                                                .padding(.horizontal, 5)
+                                                                .padding(.bottom, 15)
+                                                        }
                                                     }
                                                 }
+
                                             }
+
                                         }
                                         .padding(.horizontal, 10)
-                                    }
+
+
                                 }
+                                
 
 
 
@@ -279,7 +300,7 @@ struct HomeView: View {
                                     ZStack{
 
                                         RoundedRectangle(cornerRadius: 30)
-                                            .fill(Color(red: 1.0, green: 0.85, blue: 0.8).opacity(0.35))
+                                            .fill(Color(red: 1.0, green: 0.85, blue: 0.8).opacity(0.4))
                                             .frame(width: 130, height: 90)
                                             .shadow(color: .white.opacity(0.3), radius: 3, x: 0, y: 2)
 
@@ -295,7 +316,7 @@ struct HomeView: View {
                                             Text("\(monthlyCount)회")
                                                 .font(.headline)
                                                 .bold()
-                                                .foregroundColor(.pink.opacity(0.8))
+                                                .foregroundColor(Color(red: 0.75, green: 0.65, blue: 0.55))
                                         }
                                         .padding(.bottom, 5)
                                         .frame(width: 130, height: 80)
@@ -307,7 +328,7 @@ struct HomeView: View {
                                     ZStack{
 
                                         RoundedRectangle(cornerRadius: 30)
-                                            .fill(Color(red: 0.78, green: 0.9, blue: 0.82).opacity(0.35))
+                                            .fill(Color(red: 1.0, green: 0.85, blue: 0.8).opacity(0.3))
                                             .frame(width: 130, height: 90)
                                             .shadow(color: .white.opacity(0.3), radius: 3, x: 0, y: 2)
 
@@ -323,7 +344,7 @@ struct HomeView: View {
                                             Text("\(weeklyCount)회")
                                                 .font(.headline)
                                                 .bold()
-                                                .foregroundColor(.mint.opacity(0.8))
+                                                .foregroundColor(Color(red: 0.75, green: 0.65, blue: 0.55))
                                         }
                                         .padding(.bottom, 5)
                                         .frame(width: 130, height: 80)
@@ -384,6 +405,13 @@ struct HomeView: View {
 
 
                     }
+                }
+
+                .onAppear {
+                    recentRetros = Retrospect.sampleData
+                        .sorted(by: { $0.date > $1.date })
+                        .prefix(3)
+                        .map { $0 }
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color("AppBackground"))
