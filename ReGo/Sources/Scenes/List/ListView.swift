@@ -15,9 +15,8 @@ enum DateFilter {
 }
 
 struct ListView: View {
-    //    @Query(sort: [SortDescriptor(\Retrospect.id, order: .forward)])
 
-    var retros: [Retrospect]
+    @Query var retros: [Retrospect]
 
     private var filteredRetros: [Retrospect] {
         retros.filter { retro in
@@ -45,19 +44,24 @@ struct ListView: View {
         return arrayDate.sorted().reversed()
     }
 
+    @Environment(\.modelContext) private var modelContext
 
     @State private var keyword: String = ""
+    @State private var dateSelection = "전체"
     @State private var selectedCategory: RetrospectCategory = .all
     @State private var selectedStartDate = Date.now
     @State private var selectedEndDate = Date.now
-    @State private var showCategoryPicker = false
 
+    @State private var showFilterView = false
+    @State private var showCategoryPicker = false
     @State private var showEditView = false
-    @State private var dateSelection = "전체"
 
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 20) {
+
+                
+
                 VStack {
 
                     VStack {
@@ -157,30 +161,9 @@ struct ListView: View {
                 }
             }
             .navigationDestination(isPresented: $showEditView) {
-                EditView(mode: .create)
+                EditView(mode: .create, retro: Retrospect.sampleData[0])
             }
         }
-    }
-    func setEndDate() {
-        switch selectedStartDate.compare(selectedEndDate) {
-        case .orderedDescending:
-            selectedEndDate = selectedStartDate
-        default:
-            break
-        }
-    }
-
-    func setStartDate() {
-        switch selectedEndDate.compare(selectedStartDate) {
-        case .orderedAscending:
-            selectedStartDate = selectedEndDate
-        default:
-            break
-        }
-    }
-
-    func setLatest() {
-
     }
 }
 
@@ -207,7 +190,10 @@ struct DateFilterView: View {
                 .background(Color("AppBackground2"))
                 .cornerRadius(8)
             }
-            
+            .onChange(of: selectedStartDate) {
+                setEndDate()
+            }
+
             Button {
                 showEndDateSheet = true
             } label: {
@@ -222,6 +208,9 @@ struct DateFilterView: View {
                 .background(Color("AppBackground2"))
                 .cornerRadius(8)
             }
+            .onChange(of: selectedEndDate) {
+                setStartDate()
+            }
         }
         .sheet(isPresented: $showStartDateSheet) {
             DatePickerSheet(currentDate: $selectedStartDate)
@@ -230,17 +219,28 @@ struct DateFilterView: View {
             DatePickerSheet(currentDate: $selectedEndDate)
         }
     }
-}
 
-//#Preview {
-//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-//    let container = try! ModelContainer(for: Retrospect.self, configurations: config)
-//
-//
-//    ListView(items: Retrospect.sampleData)
-//        .modelContainer(container)
-//}
+    func setEndDate() {
+        switch selectedStartDate.compare(selectedEndDate) {
+        case .orderedDescending:
+            selectedEndDate = selectedStartDate
+        default:
+            break
+        }
+    }
+
+    func setStartDate() {
+        switch selectedEndDate.compare(selectedStartDate) {
+        case .orderedAscending:
+            selectedStartDate = selectedEndDate
+        default:
+            break
+        }
+    }
+}
 
 #Preview {
-    ListView(retros: Retrospect.sampleData)
+    ListView()
+        .modelContainer(for: Retrospect.self)
 }
+

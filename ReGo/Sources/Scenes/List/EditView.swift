@@ -9,11 +9,13 @@ import SwiftUI
 
 enum EditMode {
     case create
-    case update(retro: Retrospect)
+    case update
 }
 
 struct EditView: View {
     let mode: EditMode
+
+    @Bindable var retro: Retrospect
 
     @State private var originalTitle: String = ""
     @State private var originalContent: String = ""
@@ -85,6 +87,7 @@ struct EditView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button("저장") {
+                    print("date: \(date), retro.date: \(retro.date)")
                     onClickSave()
                 }
                 .foregroundStyle(Color("AppAccent"))
@@ -94,8 +97,8 @@ struct EditView: View {
             switch mode {
             case .create:
                 isTitleFocused = true
-            case .update(let retro):
-                initRetro(retro)
+            case .update:
+                initRetro()
             }
         }
         .alert("변경사항이 저장되지 않았습니다.\n나가시겠습니까?", isPresented: $showDismissAlert) {
@@ -114,6 +117,7 @@ struct EditView: View {
 }
 
 extension EditView {
+
     private var isDataChanged: Bool {
         let calendar = Calendar.current
         let isSameDay = calendar.isDate(originalDate, inSameDayAs: date)
@@ -121,11 +125,11 @@ extension EditView {
         return title != originalTitle ||
                content != originalContent ||
                category != originalCategory ||
-        	   !isSameDay ||
+               !isSameDay ||
                mood != originalMood
     }
 
-    private func initRetro(_ retro: Retrospect) {
+    private func initRetro() {
         originalTitle = retro.title
         originalContent = retro.content
         originalCategory = retro.category
@@ -145,8 +149,8 @@ extension EditView {
         switch mode {
         case .create:
             createRetrospect()
-        case .update(let retro):
-            updateRetrospect(retro)
+        case .update:
+            updateRetrospect()
         }
 
         dismiss()
@@ -164,17 +168,25 @@ extension EditView {
         let newRetro = Retrospect(
             title: title,
             content: content,
-            date: Date(),
+            date: date,
             category: category,
             mood: mood
         )
         modelContext.insert(newRetro)
+        saveData()
     }
 
-    private func updateRetrospect(_ retro: Retrospect) {
+    private func updateRetrospect() {
         retro.title = title
         retro.content = content
         retro.category = category
+        retro.date = date
+        retro.mood = mood
+        saveData()
+    }
+
+    private func saveData() {
+        try? modelContext.save()
     }
 }
 
@@ -331,6 +343,6 @@ struct MoodSection: View {
 //      EditView(mode: .create)
 
         // 수정 프리뷰
-        EditView(mode: .update(retro: sampleRetro))
+        EditView(mode: .update, retro: sampleRetro)
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MainView: View {
     @SceneStorage("selectedTab") private var selectedIndex = 0
@@ -18,7 +19,7 @@ struct MainView: View {
                 }
                 .tag(0)
 
-            ListView(retros: Retrospect.sampleData)
+            ListView()
                 .tabItem {
                     Label("목록", systemImage: "list.bullet.clipboard")
                 }

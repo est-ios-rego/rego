@@ -63,8 +63,7 @@ enum Mood: String, CaseIterable, Identifiable, Codable, Equatable {
 }
 
 @Model
-class Retrospect: Identifiable {
-    var id: UUID = UUID()
+class Retrospect {
     var title: String
     var content: String
     var date: Date

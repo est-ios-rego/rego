@@ -11,12 +11,21 @@ import SwiftData
 @main
 struct ReGoApp: App {
     @AppStorage("appTheme") private var appThemeRaw: String = AppTheme.system.rawValue
-    
+
+    private let container: ModelContainer = {
+        do {
+            return try ModelContainer(for: Retrospect.self)
+        } catch {
+            fatalError("Model container initialization failed: \(error)")
+        }
+    }()
+
+
     var body: some Scene {
         WindowGroup {
             MainView()
                 .preferredColorScheme(AppTheme(rawValue: appThemeRaw)?.colorScheme)
         }
-        .modelContainer(for: Retrospect.self)
+        .modelContainer(container)
     }
 }

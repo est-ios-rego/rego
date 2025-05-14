@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DetailView: View {
     let retro: Retrospect
@@ -17,113 +18,115 @@ struct DetailView: View {
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                // 카테고리
-                HStack {
-                    Text("카테고리")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    Text(retro.category.displayName)
-                        .fontWeight(.medium)
+        NavigationStack{
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    // 카테고리
+                    HStack {
+                        Text("카테고리")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
+                        Text(retro.category.displayName)
+                            .fontWeight(.medium)
+                    }
+
+                    // 날짜
+                    HStack {
+                        Text("날짜")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
+                        Text(retro.date.toDetailDate)
+                            .font(.subheadline)
+                    }
+
+                    // 기분
+                    HStack(spacing: 8) {
+                        Text("기분")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
+                        Text("\(retro.mood.emoji) \(retro.mood.name)")
+                            .font(.subheadline)
+                            .foregroundColor(.primary)
+                    }
+
+                    Divider()
+
+                    // 제목
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("제목")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
+                        Text(retro.title)
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .multilineTextAlignment(.leading)
+                    }
+
+                    // 내용
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("내용")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
+                        Text(retro.content)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .multilineTextAlignment(.leading)
+                    }
+
+                    Spacer()
                 }
-                
-                // 날짜
-                HStack {
-                    Text("날짜")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    Text(retro.date.toDetailDate)
-                        .font(.subheadline)
-                }
-                
-                // 기분
-                HStack(spacing: 8) {
-                    Text("기분")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    Text("\(retro.mood.emoji) \(retro.mood.name)")
-                        .font(.subheadline)
-                        .foregroundColor(.primary)
-                }
-                
-                Divider()
-                
-                // 제목
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("제목")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    Text(retro.title)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .multilineTextAlignment(.leading)
-                }
-                
-                // 내용
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("내용")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    Text(retro.content)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .multilineTextAlignment(.leading)
-                }
-                
-                Spacer()
             }
-        }
-        .padding()
-        .scrollContentBackground(.hidden)
-        .background(Color("AppBackground"))
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
+            .padding()
+            .scrollContentBackground(.hidden)
+            .background(Color("AppBackground"))
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden()
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .foregroundStyle(Color("AppAccent"))
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        HStack {
+                            Button {
+                                showEditView = true
+                            } label: {
+                                Label("수정", systemImage: "square.and.pencil")
+                            }
+                        }
+
+                        HStack {
+                            Button(role: .destructive) {
+                                showDeleteConfirm = true
+                            } label: {
+                                Label("삭제", systemImage: "trash")
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                            .foregroundStyle(Color("AppAccent"))
+                    }
+                }
+            }
+            .navigationDestination(isPresented: $showEditView) {
+                EditView(mode: .update, retro: retro)
+            }
+            .alert("삭제하시겠습니까?", isPresented: $showDeleteConfirm) {
+                Button("취소", role: .cancel) {}
+
+                Button("삭제", role: .destructive) {
+                    delete()
                     dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .foregroundStyle(Color("AppAccent"))
                 }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    HStack {
-                        Button {
-                            showEditView = true
-                        } label: {
-                            Label("수정", systemImage: "square.and.pencil")
-                        }
-                    }
-
-                    HStack {
-                        Button(role: .destructive) {
-                            showDeleteConfirm = true
-                        } label: {
-                            Label("삭제", systemImage: "trash")
-                        }
-                    }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                        .foregroundStyle(Color("AppAccent"))
-                }
-            }
-        }
-        .navigationDestination(isPresented: $showEditView) {
-            EditView(mode: .update(retro: retro))
-        }
-        .alert("삭제하시겠습니까?", isPresented: $showDeleteConfirm) {
-            Button("취소", role: .cancel) {}
-
-            Button("삭제", role: .destructive) {
-                delete()
-                dismiss()
             }
         }
     }

@@ -403,7 +403,7 @@ struct HomeView: View {
 
 
 
-                    NavigationLink(destination: EditView(mode: .create)) {
+                    NavigationLink(destination: EditView(mode: .create, retro: Retrospect.sampleData[0])) {
                         VStack {
                             HStack {
                                 Spacer()
