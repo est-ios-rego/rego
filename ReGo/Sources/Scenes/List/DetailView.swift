@@ -77,8 +77,8 @@ struct DetailView: View {
                 
                 Spacer()
             }
+            .padding()
         }
-        .padding()
         .scrollContentBackground(.hidden)
         .background(Color("AppBackground"))
         .navigationTitle("상세보기")
