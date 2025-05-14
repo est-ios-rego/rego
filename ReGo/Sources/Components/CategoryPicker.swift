@@ -21,38 +21,34 @@ struct CategoryPicker: View {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(categories) { category in
                         let isSelected = currentCategory == category
-                        if isEditMode && category != .category6 /* category.displayName*/ {
-                            CategoryButton(category: category, isSelected: isSelected) {
-                                currentCategory = category
-                                dismiss()
-                            }
-                        } else {
-                            if category != .category6 /* category.displayName*/ {
+                        if isEditMode {
+                            if category != .all {
                                 CategoryButton(category: category, isSelected: isSelected) {
                                     currentCategory = category
                                     dismiss()
                                 }
-                            } else {
-                                Button {
+                            }
+                        } else {
+                            if category != .all {
+                                CategoryButton(category: category, isSelected: isSelected) {
                                     currentCategory = category
                                     dismiss()
-                                } label: {
-                                    Text("전체" /* category.displayName*/ )
-                                        .frame(maxWidth: .infinity, minHeight: 50)
-                                        .foregroundStyle(Color("AppAccent"))
-                                        .background(isSelected ? Color("AppAccent").opacity(0.2) : Color.gray.opacity(0.1))
-                                        .cornerRadius(8)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .stroke(isSelected ? Color("AppAccent") : Color.gray.opacity(0.3), lineWidth: 1)
-                                        )
                                 }
                             }
                         }
                     }
                 }
-                .padding()
+                .padding(.bottom, 7)
+
+                if !isEditMode {
+                    CategoryButton(category: .all, isSelected: currentCategory == .all) {
+                        currentCategory = .all
+                        dismiss()
+                    }
+                }
+
             }
+            .padding()
             .scrollContentBackground(.hidden)
             .background(Color("AppBackground"))
             .navigationTitle("카테고리 선택")

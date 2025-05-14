@@ -22,11 +22,11 @@ struct ListView: View {
     private var filteredRetros: [Retrospect] {
         retros.filter { retro in
             let title = keyword.isEmpty || retro.title.lowercased().contains(keyword.lowercased())
-            let category =  selectedCategory == .category6 || retro.category == selectedCategory
+            let category =  selectedCategory == .all || retro.category == selectedCategory
             let date = dateSelection == "전체" || selectedStartDate <= retro.date && retro.date  <= selectedEndDate
 
             return title && category && date
-        }
+        }.sorted(by: { $0.date > $1.date })
 
     }
 
@@ -47,7 +47,7 @@ struct ListView: View {
 
 
     @State var keyword: String = ""
-    @State var selectedCategory: RetrospectCategory = .category6
+    @State var selectedCategory: RetrospectCategory = .all
     @State var selectedStartDate = Date.now
     @State var selectedEndDate = Date.now
     @State var showCategoryPicker = false
@@ -70,14 +70,14 @@ struct ListView: View {
                                 showCategoryPicker = true
                             } label: {
                                 HStack {
-                                    Text("\(selectedCategory.rawValue)")
+                                    Text(selectedCategory.displayName)
                                         .foregroundColor(.primary)
                                     Spacer()
                                     Image(systemName: "chevron.right")
                                         .foregroundColor(.gray)
                                 }
                                 .padding()
-                                .background(Color("AppBackground2"))
+                                .background(Color.regoBackground2)
                                 .cornerRadius(8)
                             }
                             .sheet(isPresented: $showCategoryPicker) {
@@ -106,10 +106,6 @@ struct ListView: View {
                                 .environment(\.locale, Locale(identifier: "ko_kr"))
                                 .labelsHidden()
                                 .padding(.trailing, 15)
-
-
-
-                            //            DatePicker("날짜", selection: $selectedDate, displayedComponents: .datePickerStyle(.graphical)) {
 
                             Spacer()
 
@@ -173,14 +169,14 @@ struct ListView: View {
             .background(Color.regoBackground)
 
             .navigationTitle("회고 기록")
-            .searchable(text: $keyword, prompt: "내용을 검색하세요.")
+            .searchable(text: $keyword, prompt: "제목을 검색하세요.")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showEditView = true
                     } label: {
                         Image(systemName: "plus")
-                            .foregroundStyle(Color("AppAccent"))
+                            .foregroundStyle(Color.regoAccent)
                     }
                 }
             }
@@ -205,6 +201,10 @@ struct ListView: View {
         default:
             break
         }
+    }
+
+    func setLatest() {
+
     }
 }
 

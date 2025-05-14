@@ -8,11 +8,12 @@
 import SwiftUI
 
 extension Color {
-    static let regoAcccent: Color = .init("AppAccent")
+    static let regoAccent: Color = .init("AppAccent")
     static let regoBackground: Color = .init("AppBackground")
     static let regoBackground2: Color = .init("AppBackground2")
     static let regoNegative: Color = .init("AppNegative")
-    static let rogoPositive: Color = .init("AppPositive")
+    static let regoPositive: Color = .init("AppPositive")
+    static let regoCategoryBg: Color = .init("AppCategoryBg")
 }
 
 

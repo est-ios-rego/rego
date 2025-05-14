@@ -15,13 +15,12 @@ struct ListItem: View {
 
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text(item.category.rawValue)
+                Text(item.category.displayName)
                     .font(.headline)
                     .foregroundStyle(.white)
                     .padding(10)
-                    .background(Color.regoAcccent)
+                    .background(Color.regoCategoryBg)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-//                Spacer()
 
                 Text(item.title)
                     .tint(.primary)
@@ -36,11 +35,7 @@ struct ListItem: View {
             Text(item.date.toListDate)
                 .tint(.secondary)
         }
-//        .background(.blue)
     }
 }
 
-#Preview {
-    ListItem(item: Retrospect.sampleData[0])
-        .environment(\.locale, Locale(identifier: "ko_kr"))
-}
+
