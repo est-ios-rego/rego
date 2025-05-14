@@ -50,7 +50,6 @@ struct HomeView: View {
         }.count
     }
 
-
     var weeklyCount: Int {
         let calendar = Calendar.current
         let now = Date()
@@ -66,19 +65,6 @@ struct HomeView: View {
             $0.date >= startOfWeek && $0.date <= endOfWeek
         }.count
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     var body: some View {
         NavigationStack {
@@ -207,90 +193,107 @@ struct HomeView: View {
                                     }
 
                                 }
-                                ScrollView(.horizontal) {
-                                    HStack {
 
-                                        if let firstTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).first?.title, !firstTitle.isEmpty {
-                                            ZStack{
-                                                RoundedRectangle(cornerRadius: 30)
-                                                    .fill(.orange.opacity(0.4))
-                                                    .frame(width: 120, height: 80)
-                                                    .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+                                if Retrospect.sampleData.isEmpty {
+                                    ZStack{
+                                        RoundedRectangle(cornerRadius: 30)
+                                            .fill(.orange.opacity(0.4))
+                                            .frame(width: 120, height: 80)
+                                            .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
 
-                                                Button {
-                                                    selectedIndex = 1
-                                                } label: {
+                                        Text("회고를 작성해주세요")
+                                            .font(.caption)
+                                            .foregroundColor(readStrokeColor)
+                                    }
 
-                                                    Text(firstTitle)
-                                                        .font(.headline)
+                                } else {
 
-                                                        .foregroundColor(readStrokeColor)
+                                    ScrollView(.horizontal) {
+                                        HStack {
+
+                                            if let firstTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).first?.title, !firstTitle.isEmpty {
+                                                ZStack{
+                                                    RoundedRectangle(cornerRadius: 30)
+                                                        .fill(.orange.opacity(0.4))
+                                                        .frame(width: 120, height: 80)
+                                                        .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+
+                                                    Button {
+                                                        selectedIndex = 1
+                                                    } label: {
+
+                                                        Text(firstTitle)
+                                                            .font(.headline)
+
+                                                            .foregroundColor(readStrokeColor)
+                                                    }
                                                 }
                                             }
-                                        }
 
-                                        if let secondTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst().first?.title, !secondTitle.isEmpty {
-                                            ZStack{
-                                                RoundedRectangle(cornerRadius: 30)
-                                                    .fill(.orange.opacity(0.4))
-                                                    .frame(width: 120, height: 80)
-                                                    .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+                                            if let secondTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst().first?.title, !secondTitle.isEmpty {
+                                                ZStack{
+                                                    RoundedRectangle(cornerRadius: 30)
+                                                        .fill(.orange.opacity(0.4))
+                                                        .frame(width: 120, height: 80)
+                                                        .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
 
-                                                Button {
-                                                    selectedIndex = 1
+                                                    Button {
+                                                        selectedIndex = 1
 
-                                                } label: {
+                                                    } label: {
 
-                                                    Text(secondTitle)
-                                                        .font(.headline)
+                                                        Text(secondTitle)
+                                                            .font(.headline)
 
-                                                        .foregroundColor(readStrokeColor)
+                                                            .foregroundColor(readStrokeColor)
+                                                    }
                                                 }
                                             }
-                                        }
 
-                                        if let thirdTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst(2).first?.title, !thirdTitle.isEmpty {
-                                            ZStack{
-                                                RoundedRectangle(cornerRadius: 30)
-                                                    .fill(.orange.opacity(0.4))
-                                                    .frame(width: 120, height: 80)
-                                                    .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+                                            if let thirdTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst(2).first?.title, !thirdTitle.isEmpty {
+                                                ZStack{
+                                                    RoundedRectangle(cornerRadius: 30)
+                                                        .fill(.orange.opacity(0.4))
+                                                        .frame(width: 120, height: 80)
+                                                        .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
 
-                                                Button {
-                                                    selectedIndex = 1
-                                                } label: {
+                                                    Button {
+                                                        selectedIndex = 1
+                                                    } label: {
 
-                                                    Text(thirdTitle)
-                                                        .font(.headline)
+                                                        Text(thirdTitle)
+                                                            .font(.headline)
 
-                                                        .foregroundColor(readStrokeColor)
+                                                            .foregroundColor(readStrokeColor)
+                                                    }
+
                                                 }
-
                                             }
-                                        }
 
-                                        if let fourthTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst(3).first?.title, !fourthTitle.isEmpty {
-                                            ZStack{
-                                                RoundedRectangle(cornerRadius: 30)
-                                                    .fill(.orange.opacity(0.4))
-                                                    .frame(width: 120, height: 80)
-                                                    .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+                                            if let fourthTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst(3).first?.title, !fourthTitle.isEmpty {
+                                                ZStack{
+                                                    RoundedRectangle(cornerRadius: 30)
+                                                        .fill(.orange.opacity(0.4))
+                                                        .frame(width: 120, height: 80)
+                                                        .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
 
-                                                Button {
-                                                    selectedIndex = 1
-                                                } label: {
+                                                    Button {
+                                                        selectedIndex = 1
+                                                    } label: {
 
-                                                    Text(fourthTitle)
-                                                        .font(.headline)
+                                                        Text(fourthTitle)
+                                                            .font(.headline)
 
-                                                        .foregroundColor(readStrokeColor)
+                                                            .foregroundColor(readStrokeColor)
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                }
 
-                                .padding(.horizontal, 10)
+                                    .padding(.horizontal, 10)
+
+                                }
 
 
 
