@@ -25,7 +25,7 @@ struct HomeView: View {
     }
 
     var buttonStrokeColor: Color {
-        colorScreme == .dark ? .brown.opacity(0.4) : .brown.opacity(0.2)
+        colorScreme == .dark ? .brown.opacity(0.7) : Color("AppCategoryBg2").opacity(0.7)
 
     }
 
@@ -82,12 +82,13 @@ struct HomeView: View {
                                     .foregroundStyle(.orange)
                                     .bold()
 
-                                VStack(alignment: .leading,spacing: 4) {
-                                    Text("앱이름")
+                                VStack(alignment: .center, spacing: 4) {
+                                    Text("ReGo")
                                         .italic()
                                         .font(.largeTitle)
                                         .bold()
                                         .foregroundStyle(.orange)
+
 
                                     Text("오늘보다 발전된 내일이 되기")
                                         .font(.subheadline)
@@ -96,6 +97,8 @@ struct HomeView: View {
                                 }
 
                             }
+                            .shadow(color: .white.opacity(0.3), radius: 1, x: 0, y: 2)
+
                             .frame(
                                 maxWidth: geo.size.width > 600 ? 600 : .infinity,
                                 alignment: .center
@@ -103,7 +106,7 @@ struct HomeView: View {
 
                             .frame(maxWidth: .infinity)
                             .padding(.top, 45)
-                            .padding(.horizontal)
+                            .padding(.trailing, 50)
 
 
 
@@ -122,7 +125,7 @@ struct HomeView: View {
                                     .foregroundColor(.brown.opacity(0.9))
                                     .frame(width: 40, height: brownHeight)
                                     .cornerRadius(6)
-                                    .shadow(color: .brown.opacity(0.5), radius: 4, x: 0, y: 5)
+                                    .shadow(color: .brown.opacity(0.5), radius: 2, x: 0, y: 5)
                                     .onAppear {
                                         withAnimation(infiniteAnimation) {
                                             brownHeight = 130
@@ -133,7 +136,7 @@ struct HomeView: View {
                                     .foregroundColor(.mint.opacity(0.4))
                                     .frame(width: 40, height: mintHeight)
                                     .cornerRadius(6)
-                                    .shadow(color: .mint.opacity(0.4), radius: 4, x: 0, y: 5)
+                                    .shadow(color: .mint.opacity(0.4), radius: 2, x: 0, y: 5)
                                     .onAppear {
                                         withAnimation(infiniteAnimation) {
                                             mintHeight = 120
@@ -144,7 +147,7 @@ struct HomeView: View {
                                     .foregroundColor(.brown.opacity(0.5))
                                     .frame(width: 40, height: beigeHeight)
                                     .cornerRadius(6)
-                                    .shadow(color: .brown.opacity(0.4), radius: 4, x: 0, y: 5)
+                                    .shadow(color: .brown.opacity(0.4), radius: 2, x: 0, y: 5)
                                     .onAppear {
                                         withAnimation(infiniteAnimation) {
                                             beigeHeight = 140
@@ -155,7 +158,7 @@ struct HomeView: View {
                                     .foregroundColor(.orange.opacity(0.4))
                                     .frame(width: 40, height: apricotHeight)
                                     .cornerRadius(6)
-                                    .shadow(color: .orange.opacity(0.4), radius: 4, x: 0, y: 5)
+                                    .shadow(color: .orange.opacity(0.4), radius: 2, x: 0, y: 5)
                                     .onAppear {
                                         withAnimation(infiniteAnimation) {
                                             apricotHeight = 110
@@ -166,7 +169,7 @@ struct HomeView: View {
                                     .foregroundColor(.red.opacity(0.4))
                                     .frame(width: 40, height: lavenderHeight)
                                     .cornerRadius(6)
-                                    .shadow(color: .red.opacity(0.3), radius: 4, x: 0, y: 5)
+                                    .shadow(color: .red.opacity(0.3), radius: 2, x: 0, y: 5)
                                     .onAppear {
                                         withAnimation(infiniteAnimation) {
                                             lavenderHeight = 150
@@ -232,7 +235,7 @@ struct HomeView: View {
                                                         RoundedRectangle(cornerRadius: 30)
                                                             .fill(.orange.opacity(0.4))
                                                             .frame(width: 120, height: 80)
-                                                            .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+                                                            .shadow(color: .white.opacity(0.3), radius: 3, x: 0, y: 2)
 
                                                         Text(retrospect.title)
                                                             .font(.headline)
@@ -276,19 +279,23 @@ struct HomeView: View {
                                     ZStack{
 
                                         RoundedRectangle(cornerRadius: 30)
-                                            .fill(.brown.opacity(0.4))
+                                            .fill(Color(red: 1.0, green: 0.85, blue: 0.8).opacity(0.35))
                                             .frame(width: 130, height: 90)
+                                            .shadow(color: .white.opacity(0.3), radius: 3, x: 0, y: 2)
 
                                         VStack {
 
                                             Text("       이번달\n회고 작성 횟수 :\n")
                                                 .font(.caption)
+                                                .bold()
                                                 .foregroundColor(readStrokeColor)
                                                 .padding(1)
 
 
                                             Text("\(monthlyCount)회")
-                                                .foregroundColor(readStrokeColor)
+                                                .font(.headline)
+                                                .bold()
+                                                .foregroundColor(.pink.opacity(0.8))
                                         }
                                         .padding(.bottom, 5)
                                         .frame(width: 130, height: 80)
@@ -300,19 +307,23 @@ struct HomeView: View {
                                     ZStack{
 
                                         RoundedRectangle(cornerRadius: 30)
-                                            .fill(.brown.opacity(0.4))
+                                            .fill(Color(red: 0.78, green: 0.9, blue: 0.82).opacity(0.35))
                                             .frame(width: 130, height: 90)
+                                            .shadow(color: .white.opacity(0.3), radius: 3, x: 0, y: 2)
 
 
                                         VStack(alignment: .center, spacing: 0) {
 
                                             Text("       이번주\n회고 작성 횟수 :\n")
                                                 .font(.caption)
+                                                .bold()
                                                 .foregroundColor(readStrokeColor)
                                                 .padding(1)
 
                                             Text("\(weeklyCount)회")
-                                                .foregroundColor(readStrokeColor)
+                                                .font(.headline)
+                                                .bold()
+                                                .foregroundColor(.mint.opacity(0.8))
                                         }
                                         .padding(.bottom, 5)
                                         .frame(width: 130, height: 80)
