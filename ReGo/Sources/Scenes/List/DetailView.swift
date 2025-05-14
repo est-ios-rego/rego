@@ -118,7 +118,7 @@ struct DetailView: View {
             }
         }
         .navigationDestination(isPresented: $showEditView) {
-            EditView(mode: .update(retro: retro))
+            EditView(mode: .update, retro: retro)
         }
         .alert("삭제하시겠습니까?", isPresented: $showDeleteConfirm) {
             Button("취소", role: .cancel) {}

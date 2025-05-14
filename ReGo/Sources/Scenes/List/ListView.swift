@@ -98,7 +98,10 @@ struct ListView: View {
                                 .cornerRadius(8)
                             }
                             .sheet(isPresented: $showCategoryPicker) {
-                                CategoryPicker(currentCategory: $selectedCategory, isEditMode: false)
+                                CategoryPickerView(
+                                    isPresented: $showCategoryPicker,
+                                    currentCategory: $selectedCategory
+                                )
                             }
                         }
                     }
@@ -228,10 +231,16 @@ struct DateFilterView: View {
             }
         }
         .sheet(isPresented: $showStartDateSheet) {
-            DatePickerSheet(currentDate: $selectedStartDate)
+            DatePickerSheet(
+                isPresented: $showStartDateSheet,
+                currentDate: $selectedStartDate
+            )
         }
         .sheet(isPresented: $showEndDateSheet) {
-            DatePickerSheet(currentDate: $selectedEndDate)
+            DatePickerSheet(
+                isPresented: $showEndDateSheet,
+                currentDate: $selectedEndDate
+            )
         }
     }
 

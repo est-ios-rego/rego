@@ -1,10 +1,3 @@
-//
-//  EditMode.swift
-//  ReGo
-//
-//  Created by 김종성 on 5/12/25.
-//
-
 import SwiftUI
 
 enum EditMode {
@@ -259,7 +252,7 @@ struct CategorySection: View {
                 .cornerRadius(8)
             }
             .sheet(isPresented: $showCategoryPicker) {
-                CategoryPicker(currentCategory: $category, isEditMode: true)
+                CategoryPickerView(isPresented: $showCategoryPicker, currentCategory: $category)
             }
         }
     }
@@ -290,7 +283,7 @@ struct DateSection: View {
                 .cornerRadius(8)
             }
             .sheet(isPresented: $showDatePicker) {
-                DatePickerSheet(currentDate: $date)
+                DatePickerSheet(isPresented: $showDatePicker, currentDate: $date)
             }
         }
     }
@@ -320,7 +313,7 @@ struct MoodSection: View {
                 .cornerRadius(8)
             }
             .sheet(isPresented: $showMoodPicker) {
-                MoodPicker(currentMood: $mood)
+                MoodPickerView(isPresented: $showMoodPicker, currentMood: $mood)
             }
         }
     }

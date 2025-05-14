@@ -1,14 +1,7 @@
-//
-//  DatePickerSheet.swift
-//  ReGo
-//
-//  Created by 김종성 on 5/14/25.
-//
-
 import SwiftUI
 
 struct DatePickerSheet: View {
-    @Environment(\.dismiss) var dismiss
+    @Binding var isPresented: Bool
 	@Binding var currentDate: Date
 
     var body: some View {
@@ -17,6 +10,9 @@ struct DatePickerSheet: View {
                 DatePicker("", selection: $currentDate, displayedComponents: .date)
                 .datePickerStyle(.graphical)
                 .labelsHidden()
+                .onChange(of: currentDate) {
+                    isPresented = false
+                }
             }
             .scrollContentBackground(.hidden)
             .background(Color("AppBackground"))
@@ -25,7 +21,7 @@ struct DatePickerSheet: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("닫기") {
-                        dismiss()
+                        isPresented = false
                     }
                     .tint(Color("AppAccent"))
                 }

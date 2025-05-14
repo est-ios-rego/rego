@@ -1,18 +1,11 @@
-//
-//  CategoryPicker.swift
-//  ReGo
-//
-//  Created by 김종성 on 5/12/25.
-//
-
 import SwiftUI
 
-struct CategoryPicker: View {
-    @Environment(\.dismiss) var dismiss
+struct CategoryPickerView: View {
+    @Binding var isPresented: Bool
     @Binding var currentCategory: RetrospectCategory
-    let isEditMode: Bool
+    @State var shouldIncludeAllCategory = false
 
-    private let categories = RetrospectCategory.allCases
+    private let categories = RetrospectCategory.allCases.filter { $0 != .all }
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
@@ -21,29 +14,18 @@ struct CategoryPicker: View {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(categories) { category in
                         let isSelected = currentCategory == category
-                        if isEditMode {
-                            if category != .all {
-                                CategoryButton(category: category, isSelected: isSelected) {
-                                    currentCategory = category
-                                    dismiss()
-                                }
-                            }
-                        } else {
-                            if category != .all {
-                                CategoryButton(category: category, isSelected: isSelected) {
-                                    currentCategory = category
-                                    dismiss()
-                                }
-                            }
+                        CategoryButton(category: category, isSelected: isSelected) {
+                            currentCategory = category
+                            isPresented = false
                         }
                     }
                 }
                 .padding(.bottom, 7)
 
-                if !isEditMode {
+                if shouldIncludeAllCategory {
                     CategoryButton(category: .all, isSelected: currentCategory == .all) {
                         currentCategory = .all
-                        dismiss()
+                        isPresented = false
                     }
                 }
 
@@ -56,12 +38,12 @@ struct CategoryPicker: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("닫기") {
-                        dismiss()
+                        isPresented = false
                     }
                     .tint(Color("AppAccent"))
                 }
             }
-            .presentationDetents([.fraction(isEditMode ? 0.5 : 0.7)])
+            .presentationDetents([.fraction(shouldIncludeAllCategory ? 0.7 : 0.5)])
         }
     }
 }

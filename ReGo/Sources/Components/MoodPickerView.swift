@@ -1,14 +1,7 @@
-//
-//  MoodPicker.swift
-//  ReGo
-//
-//  Created by 김종성 on 5/13/25.
-//
-
 import SwiftUI
 
-struct MoodPicker: View {
-    @Environment(\.dismiss) var dismiss
+struct MoodPickerView: View {
+    @Binding var isPresented: Bool
     @Binding var currentMood: Mood
 
     private let moods: [Mood] = Mood.allCases
@@ -23,7 +16,7 @@ struct MoodPicker: View {
 
                         MoodButton(mood: mood, isSelected: isSelected) {
                             currentMood = mood
-                            dismiss()
+                            isPresented = false
                         }
                     }
                 }
@@ -36,7 +29,7 @@ struct MoodPicker: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("닫기") {
-                        dismiss()
+                        isPresented = false
                     }
                     .tint(Color("AppAccent"))
                 }
