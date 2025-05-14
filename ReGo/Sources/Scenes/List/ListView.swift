@@ -57,7 +57,7 @@ struct ListView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 20) {
                 VStack {
 
                     VStack {
@@ -93,40 +93,18 @@ struct ListView: View {
                         Spacer()
 
                         Picker("", selection: $dateSelection) {
-                            ForEach(["전체", "선택하기"], id: \.self) { item in
+                            ForEach(["전체", "기간"], id: \.self) { item in
                                 Text(item)
                             }
                         }
                         .tint(.primary)
                     }
 
-                    if dateSelection == "선택하기" {
-                        HStack  {
-                            DatePicker("", selection: $selectedStartDate, displayedComponents: .date)
-                                .environment(\.locale, Locale(identifier: "ko_kr"))
-                                .labelsHidden()
-                                .padding(.trailing, 15)
-
-                            Spacer()
-
-                            Text("~")
-
-                            Spacer()
-
-
-                            DatePicker("", selection: $selectedEndDate, displayedComponents: .date)
-                                .environment(\.locale, Locale(identifier: "ko_kr"))
-                                .labelsHidden()
-                                .padding(.trailing, 15)
-
-
-                        }
-                        .onChange(of: selectedStartDate) {
-                            setEndDate()
-                        }
-                        .onChange(of: selectedEndDate) {
-                            setStartDate()
-                        }
+                    if dateSelection == "기간" {
+                        DateFilterView(
+                            selectedStartDate: $selectedStartDate,
+                            selectedEndDate: $selectedEndDate
+                        )
                     }
 
                 }
@@ -208,6 +186,53 @@ struct ListView: View {
     }
 }
 
+struct DateFilterView: View {
+    @Binding var selectedStartDate: Date
+    @Binding var selectedEndDate: Date
+
+    @State private var showStartDateSheet = false
+    @State private var showEndDateSheet = false
+
+    var body: some View {
+        VStack(spacing: 8) {
+            Button {
+                showStartDateSheet = true
+            } label: {
+                HStack {
+                    Text("시작일: \(selectedStartDate.toDetailDate)")
+                        .foregroundColor(.primary)
+                    Spacer()
+                    Image(systemName: "calendar")
+                        .foregroundStyle(Color("AppAccent"))
+                }
+                .padding()
+                .background(Color("AppBackground2"))
+                .cornerRadius(8)
+            }
+            
+            Button {
+                showEndDateSheet = true
+            } label: {
+                HStack {
+                    Text("종료일: \(selectedEndDate.toDetailDate)")
+                        .foregroundColor(.primary)
+                    Spacer()
+                    Image(systemName: "calendar")
+                        .foregroundStyle(Color("AppAccent"))
+                }
+                .padding()
+                .background(Color("AppBackground2"))
+                .cornerRadius(8)
+            }
+        }
+        .sheet(isPresented: $showStartDateSheet) {
+            DatePickerSheet(currentDate: $selectedStartDate)
+        }
+        .sheet(isPresented: $showEndDateSheet) {
+            DatePickerSheet(currentDate: $selectedEndDate)
+        }
+    }
+}
 
 //#Preview {
 //    let config = ModelConfiguration(isStoredInMemoryOnly: true)
