@@ -40,14 +40,7 @@ struct EditView: View {
 
     private var navigationTitle: String {
         switch mode {
-        case .create: return "작성하기"
-        case .update: return "수정하기"
-        }
-    }
-
-    private var buttonTitle: String {
-        switch mode {
-        case .create: return "작성하기"
+        case .create: return "생성하기"
         case .update: return "수정하기"
         }
     }
@@ -174,7 +167,9 @@ extension EditView {
     private func updateRetrospect(_ retro: Retrospect) {
         retro.title = title
         retro.content = content
+        retro.date = date
         retro.category = category
+        retro.mood = mood
     }
 }
 

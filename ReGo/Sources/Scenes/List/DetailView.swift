@@ -81,6 +81,7 @@ struct DetailView: View {
         .padding()
         .scrollContentBackground(.hidden)
         .background(Color("AppBackground"))
+        .navigationTitle("상세보기")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -122,7 +123,7 @@ struct DetailView: View {
             Button("취소", role: .cancel) {}
 
             Button("삭제", role: .destructive) {
-                delete()
+                deleteRetrospect()
                 dismiss()
             }
         }
@@ -130,7 +131,7 @@ struct DetailView: View {
 }
 
 extension DetailView {
-    private func delete() {
+    private func deleteRetrospect() {
         modelContext.delete(retro)
     }
 }
