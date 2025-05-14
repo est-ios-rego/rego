@@ -89,28 +89,6 @@ struct EditView: View {
                     .autocorrectionDisabled(true)
             }
 
-            // 날짜
-            VStack(alignment: .leading, spacing: 8) {
-                Text("날짜")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-
-                Button {
-
-                } label: {
-                    HStack {
-                        Text("\(date.toDetailDate)")
-                            .foregroundColor(.primary)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
-                    }
-                    .padding()
-                    .background(Color("AppBackground2"))
-                    .cornerRadius(8)
-                }
-            }
-
             // 카테고리
             VStack(alignment: .leading, spacing: 8) {
                 Text("카테고리")
@@ -133,6 +111,28 @@ struct EditView: View {
                 }
                 .sheet(isPresented: $showCategoryPicker) {
                     CategoryPicker(currentCategory: $category)
+                }
+            }
+
+            // 날짜
+            VStack(alignment: .leading, spacing: 8) {
+                Text("날짜")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
+                Button {
+
+                } label: {
+                    HStack {
+                        Text("\(date.toDetailDate)")
+                            .foregroundColor(.primary)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(.gray)
+                    }
+                    .padding()
+                    .background(Color("AppBackground2"))
+                    .cornerRadius(8)
                 }
             }
 
@@ -281,7 +281,7 @@ extension EditView {
 
     NavigationStack {
         // 작성 프리뷰
-      EditView(mode: .create)
+//      EditView(mode: .create)
 
         // 수정 프리뷰
         EditView(mode: .update(retro: sampleRetro))

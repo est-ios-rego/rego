@@ -25,13 +25,13 @@ struct DetailView: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     
-                    Text(retro.category.rawValue)
+                    Text(retro.category.displayName)
                         .fontWeight(.medium)
                 }
                 
-                // 작성일
+                // 날짜
                 HStack {
-                    Text("작성일")
+                    Text("날짜")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     
