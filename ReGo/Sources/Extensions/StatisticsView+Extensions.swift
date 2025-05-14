@@ -22,21 +22,21 @@ extension StatisticsView {
         }
     }
 
-    var dataCountByDay: [Int: Int] {
+    var dataCountByDay: [Int: (date: Date, count: Int)] {
         let calendar: Calendar = Calendar.current
 
         return dataFilteredByPeriod
             .reduce(into: [:]) { result, item in
                 let day = calendar.component(.day, from: item.date)
 
-                result[day, default: 0] += 1
+                result[day, default: (date: item.date, count: 0)].count += 1
             }
     }
 
     var moodChartData: [MoodChartItem] {
         var moodChartItems = [MoodChartItem]()
 
-        let countDict = dataFilteredByDay.reduce(into: [:]) {
+        let countDict = (selectedDay == nil ? dataFilteredByPeriod : dataFilteredByDay).reduce(into: [:]) {
             $0[$1.mood, default: 0] += 1
         }
 

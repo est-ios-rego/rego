@@ -30,13 +30,13 @@ struct CountByCategoryChart: View {
 
     var chartData: [(category: String, count: Int)]
 
-    init(startDate: Date, endDate: Date, data: [Retrospect], cumulativeSalesRangesForStyle: [(category: RetrospectCategory, range: Range<Double>)]? = nil) {
+    init(startDate: Date, endDate: Date, data: [Retrospect], cumulativeSalesRangesForStyle: [(category: String, range: Range<Double>)]? = nil) {
         self.startDate = startDate
         self.endDate = endDate
         self.data = data
 
         self.chartData = data.reduce(into: [:]) { result, data in
-            result[data.category.rawValue, default: 0] += 1
+            result[data.category.displayName, default: 0] += 1
         }.map {
             (category: $0.key, count: $0.value)
         }.sorted(by: { $0.category < $1.category })
@@ -82,7 +82,7 @@ struct CountByCategoryChart: View {
                                 .font(.callout)
 
                         } else {
-                            Text("이번주엔\n어떤 카테고리들로\n작성했을까요?")
+                            Text("어떤 카테고리들로\n작성했을까요?\n눌러서 확인해 보세요!")
                                 .multilineTextAlignment(.center)
 
                         }

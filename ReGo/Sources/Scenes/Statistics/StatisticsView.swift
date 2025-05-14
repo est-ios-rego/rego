@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 import Charts
 
 enum StatisticsPeriodCase {
@@ -22,6 +23,8 @@ struct MoodChartItem {
 }
 
 struct StatisticsView: View {
+    @Environment(\.modelContext) private var modelContext
+
     @State var statPeriod: StatisticsPeriodCase = .week
 
     let numOfWeekKr = ["첫", "둘", "셋", "넷", "다섯"]
@@ -33,12 +36,14 @@ struct StatisticsView: View {
 
     @State var selectedDay: Int? = nil
 
+//    @Query var data: [Retrospect]
     @State var data = Retrospect.detailSampleData
 
-    init(statPeriod: StatisticsPeriodCase = .week, baseStartDate: Date = .now, baseEndDate: Date = .now, isLastWeek: Bool = true, data: [Retrospect] = Retrospect.detailSampleData) {
+    @State var showEditView = false
+
+    init(statPeriod: StatisticsPeriodCase = .week, baseStartDate: Date = .now, baseEndDate: Date = .now, isLastWeek: Bool = true) {
         self.statPeriod = statPeriod
         self.isLastWeek = isLastWeek
-        self.data = data
 
         var calendar = Calendar.current
         calendar.locale = Locale(identifier: "ko_Kr")
@@ -96,66 +101,65 @@ struct StatisticsView: View {
 
                 ScrollView {
                     VStack {
-                        Text("\(baseStartDate.toListDate) ~ \(baseEndDate.toListDate)")
+//                        Text("\(baseStartDate.toListDate) ~ \(baseEndDate.toListDate)")
 
+                        ContributionChart(startDate: baseStartDate, endDate: baseEndDate, statPeriod: statPeriod, data: dataCountByDay, selectedDay: $selectedDay)
+                            .animation(.easeOut, value: [baseStartDate, baseEndDate])
+
+                        // 선택 기간내 회고 작성건이 없는 case
                         if dataFilteredByPeriod.isEmpty {
                             VStack {
-                                Spacer()
-
-                                Text("이번주엔 아직 회고를 작성하지 않으셨어요 😢")
+                                Text("아직 회고를 작성하지 않으셨어요 😢")
                                     .font(.title3)
                                     .bold()
+                                    .padding()
 
-                                Button {
+                                Text("ReGo와 나누고 싶은 소중한 이야기가 있으신가요? 작은 발견도 좋아요.")
+                                    .multilineTextAlignment(.center)
+                                    .font(.headline)
+                                    .bold()
+                                    .padding(.vertical, 32)
 
-                                } label: {
-                                    Text("회고 작성하러 가기")
-                                }
-
-                                Spacer()
+                                CreateButton(buttonText: "나의 이야기 남기기", showEditView: $showEditView)
                             }
 
                         } else {
-                            ContributionChart(startDate: baseStartDate, endDate: baseEndDate, statPeriod: statPeriod, data: dataFilteredByPeriod, selectedDay: $selectedDay)
-
                             if let selectedDay = selectedDay {
                                 if let countByDay = dataCountByDay[selectedDay] {
                                     VStack {
-                                        Button("test") {
-                                            print(moodChartData)
-                                        }
-
                                         HStack {
-                                            Text("\(selectedDay)일에는 회고를 총 \(String(countByDay))회 작성하셨어요! 🤲")
+                                            Text("\(selectedDay)일에는 회고를 \(String(countByDay.count))건 작성하셨어요! 🤲")
                                                 .font(.title3)
                                                 .bold()
                                         }
                                         .padding()
 
-                                        Chart {
-                                            ForEach(moodChartData, id: \.id) { (item: MoodChartItem) in
-                                                BarMark(
-                                                    x: .value("Mood", item.emoji),
-                                                    y: .value("Count", Int(item.count)),
-                                                    width: 50
-                                                )
-                                                .cornerRadius(16)
-                                                .annotation(content: {
-                                                    Text(item.emoji)
-                                                })
-                                                .foregroundStyle(item.color)
-                                            }
-                                        }
-                                        .chartYAxis(.hidden)
-                                        .chartXAxis(.hidden)
+                                        MoodBarChart(moodChartData: moodChartData)
+                                            .animation(.snappy, value: self.selectedDay)
+
+                                        Text("혹시 이 날, 미처 다 적지 못했던 또 다른 기억이나 생각이 있으신가요?")
+                                            .multilineTextAlignment(.center)
+                                            .font(.headline)
+                                            .bold()
+                                            .padding(.vertical, 32)
+
+                                        CreateButton(buttonText: "이 날의 이야기 더하기", showEditView: $showEditView)
 
                                     }
                                 } else {
-                                    HStack {
-                                        Text("\(selectedDay)일에는 아직 회고를 작성하지 않으셨어요 😢")
+                                    VStack {
+                                        Text("\(selectedDay)일에는 아직 회고를\n작성하지 않으셨어요 😢")
                                             .font(.title3)
                                             .bold()
+                                            .padding()
 
+                                        Text("ReGo와 나누고 싶은 소중한 이야기가 있으신가요? 작은 발견도 좋아요.")
+                                            .multilineTextAlignment(.center)
+                                            .font(.headline)
+                                            .bold()
+                                            .padding(.vertical, 32)
+
+                                        CreateButton(buttonText: "나의 이야기 남기기", showEditView: $showEditView)
                                     }
                                     .padding()
                                 }
@@ -163,19 +167,23 @@ struct StatisticsView: View {
 
                             } else {
                                 let weekTotalCount = dataCountByDay.values.reduce(into: 0) {
-                                    $0 += $1
+                                    $0 += $1.count
                                 }
 
                                 HStack {
-                                    Text("총 \(weekTotalCount)회 회고를 작성하셨어요 🤲")
+                                    Text("총 회고를 \(weekTotalCount)건 작성하셨어요 🤲")
                                         .font(.title3)
                                         .bold()
 
                                 }
                                 .padding()
 
+                                Mood1DBarChart(moodChartData: moodChartData)
+                                    .padding(.bottom)
+                                    .animation(.snappy, value: [baseStartDate, baseEndDate])
+
                                 CountByCategoryChart(startDate: baseStartDate, endDate: baseEndDate, data: dataFilteredByPeriod)
-                                    .animation(.easeInOut, value: selectedDay)
+                                    .animation(.snappy, value: [baseStartDate, baseEndDate])
                             }
 
 
@@ -189,19 +197,43 @@ struct StatisticsView: View {
                         //                    }
 
                     }
+                    .padding(.bottom)
                 }
                 .navigationTitle("Statistics")
                 .navigationBarTitleDisplayMode(.inline)
                 .onTapGesture {
-                    withAnimation(.easeInOut) {
-                        selectedDay = nil
-                    }
+                    selectedDay = nil
                 }
             }
             .padding(.horizontal)
             .scrollIndicators(.hidden)
             .scrollContentBackground(.hidden)
             .background(Color("AppBackground"))
+        }
+    }
+}
+
+struct CreateButton: View {
+    var buttonText: String
+
+    @Binding var showEditView: Bool
+
+    var body: some View {
+        Button {
+            showEditView = true
+        } label: {
+            Text(buttonText)
+                .tint(.appAccent)
+                .bold()
+                .padding()
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.gray.opacity(0.7))
+                }
+        }
+        .navigationDestination(isPresented: $showEditView) {
+            EditView(mode: .create)
         }
     }
 }

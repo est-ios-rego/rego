@@ -9,33 +9,39 @@ import Foundation
 import SwiftUI
 import SwiftData
 
+struct ContributionChartItem: Hashable, Identifiable {
+    var id: UUID = UUID()
+    var day: Int
+    var date: Date
+}
+
 struct ContributionChart: View {
     var startDate: Date
     var endDate: Date
 
     var statPeriod: StatisticsPeriodCase
 
-    var data: [Retrospect]
+    var data: [Int: (date: Date, count: Int)]
 
     @Binding var selectedDay: Int?
 
-    var dayArray: [Int] {
-        var result: [Int] = [Int]()
+    var dayArray: [ContributionChartItem] {
+        var result: [ContributionChartItem] = [ContributionChartItem]()
 
         let calendar = Calendar.current
 
-        var curosor = startDate
+        var cursor = startDate
 
         var interval: Double = 0
 
         var count = 0
 
         repeat {
-            curosor.addTimeInterval(interval)
+            cursor.addTimeInterval(interval)
 
-            let day = calendar.component(.day, from: curosor)
+            let day = calendar.component(.day, from: cursor)
 
-            result.append(day)
+            result.append(.init(day: day, date: cursor))
 
             interval = 86400
 
@@ -45,39 +51,24 @@ struct ContributionChart: View {
         return result
     }
 
-    var filteredData: [Int: Int] {
-        let calendar: Calendar = Calendar.current
-
-        return data
-            .reduce(into: [:]) { result, item in
-                let day = calendar.component(.day, from: item.date)
-
-                result[day, default: 0] += 1
-            }
-    }
-
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
 
     var body: some View {
         LazyVGrid(columns: columns) {
-            ForEach(dayArray, id: \.self) { day in
-                let count = filteredData[day] ?? 0
+            ForEach(dayArray) { (item: ContributionChartItem) in
+                let day = item.day
+                let date = item.date
+
+                let count = data[day]?.count ?? 0
+
+                let isFutureDate = date > .now
 
                 if statPeriod == .week {
-                    WeekContributionItem(count: count, day: day, selectedDay: selectedDay)
-                        .onTapGesture {
-                            withAnimation(.easeInOut) {
-                                if selectedDay == day {
-                                    selectedDay = nil
-                                } else {
-                                    selectedDay = day
-                                }
-                            }
-                        }
+                    WeekContributionItem(count: count, day: day, isFutureDate: isFutureDate, selectedDay: $selectedDay)
                 } else {
-                    MonthContributionItem(count: count, day: day)
-                }
+                    MonthContributionItem(count: count, day: day, isFutureDate: isFutureDate, selectedDay: $selectedDay)
 
+                }
             }
         }
         .padding(.vertical)
