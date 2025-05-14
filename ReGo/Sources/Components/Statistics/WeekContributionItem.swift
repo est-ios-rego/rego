@@ -19,11 +19,17 @@ struct WeekContributionItem: View {
     let count: Int
     let day: Int
 
-    var selectedDay: Int? = nil
+    let isFutureDate: Bool
+
+    var fillColor: Color {
+        (isFutureDate ? Color.gray : Color.white).opacity(0.1)
+    }
+
+    @Binding var selectedDay: Int?
 
     var body: some View {
         RoundedRectangle(cornerRadius: 16)
-            .fill(.white.opacity(0.1))
+            .fill(fillColor)
             .stroke(.black, lineWidth: 1)
             .frame(height: 90)
             .overlay {
@@ -38,6 +44,17 @@ struct WeekContributionItem: View {
                 }
 
             }
-            .scaleEffect(selectedDay == day ? 1.2 : selectedDay == nil ? 1 : 0.7)
+            .scaleEffect(selectedDay == day ? 1.2 : selectedDay == nil ? 1 : 0.7, anchor: .center)
+            .onTapGesture {
+                if isFutureDate {
+                    return
+                }
+
+                if selectedDay == day {
+                    selectedDay = nil
+                } else {
+                    selectedDay = day
+                }
+            }
     }
 }

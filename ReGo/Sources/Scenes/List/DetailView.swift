@@ -80,60 +80,59 @@ struct DetailView: View {
                     Spacer()
                 }
             }
-            .padding()
-            .scrollContentBackground(.hidden)
-            .background(Color("AppBackground"))
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden()
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundStyle(Color("AppAccent"))
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        HStack {
-                            Button {
-                                showEditView = true
-                            } label: {
-                                Label("수정", systemImage: "square.and.pencil")
-                            }
-                        }
-
-                        HStack {
-                            Button(role: .destructive) {
-                                showDeleteConfirm = true
-                            } label: {
-                                Label("삭제", systemImage: "trash")
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
-                            .foregroundStyle(Color("AppAccent"))
-                    }
-                }
-            }
-            .navigationDestination(isPresented: $showEditView) {
-                EditView(mode: .update, retro: retro)
-            }
-            .alert("삭제하시겠습니까?", isPresented: $showDeleteConfirm) {
-                Button("취소", role: .cancel) {}
-
-                Button("삭제", role: .destructive) {
-                    delete()
+        }
+        .padding()
+        .scrollContentBackground(.hidden)
+        .background(Color("AppBackground"))
+        .navigationTitle("상세보기")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .tabBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
                     dismiss()
                 }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    HStack {
+                        Button {
+                            showEditView = true
+                        } label: {
+                            Label("수정", systemImage: "square.and.pencil")
+                        }
+                    }
+
+                    HStack {
+                        Button(role: .destructive) {
+                            showDeleteConfirm = true
+                        } label: {
+                            Label("삭제", systemImage: "trash")
+                        }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .foregroundStyle(Color("AppAccent"))
+                }
+            }
+        }
+        .navigationDestination(isPresented: $showEditView) {
+            EditView(mode: .update(retro: retro))
+        }
+        .alert("삭제하시겠습니까?", isPresented: $showDeleteConfirm) {
+            Button("취소", role: .cancel) {}
+
+            Button("삭제", role: .destructive) {
+                deleteRetrospect()
+                dismiss()
             }
         }
     }
 }
 
 extension DetailView {
-    private func delete() {
+    private func deleteRetrospect() {
         modelContext.delete(retro)
     }
 }

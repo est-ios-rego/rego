@@ -61,7 +61,7 @@ struct CategoryPicker: View {
                     .tint(Color("AppAccent"))
                 }
             }
-            .presentationDetents([.fraction(0.5)])
+            .presentationDetents([.fraction(isEditMode ? 0.5 : 0.7)])
         }
     }
 }

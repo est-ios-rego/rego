@@ -42,14 +42,7 @@ struct EditView: View {
 
     private var navigationTitle: String {
         switch mode {
-        case .create: return "작성하기"
-        case .update: return "수정하기"
-        }
-    }
-
-    private var buttonTitle: String {
-        switch mode {
-        case .create: return "작성하기"
+        case .create: return "생성하기"
         case .update: return "수정하기"
         }
     }
@@ -72,6 +65,7 @@ struct EditView: View {
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -179,6 +173,7 @@ extension EditView {
     private func updateRetrospect() {
         retro.title = title
         retro.content = content
+        retro.date = date
         retro.category = category
         retro.date = date
         retro.mood = mood
