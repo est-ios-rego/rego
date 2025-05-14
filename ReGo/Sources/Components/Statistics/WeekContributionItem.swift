@@ -13,7 +13,7 @@ struct WeekContributionItem: View {
     @Environment(\.colorScheme) var colorScheme
 
     var color: Color {
-        colorScheme == .light ? Color.appPositive : Color.appNegative
+        return colorScheme == .light ? Color.appPositive : Color.appNegative
     }
 
     let count: Int
@@ -28,33 +28,28 @@ struct WeekContributionItem: View {
     @Binding var selectedDay: Int?
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 16)
-            .fill(fillColor)
-            .stroke(.black, lineWidth: 1)
-            .frame(height: 90)
-            .overlay {
-                VStack {
-                    Text("\(day)")
-                        .bold()
+        Button {
+            self.selectedDay = (selectedDay == day ? nil : day)
+        } label: {
+            RoundedRectangle(cornerRadius: 16)
+                .fill(fillColor)
+                .stroke(.black, lineWidth: 1)
+                .frame(height: 90)
+                .overlay {
+                    VStack {
+                        Text("\(day)")
+                            .bold()
 
-                    Circle()
-                        .fill(color.opacity(0.2 * Double(count)))
-                        .frame(width: 20)
+                        Circle()
+                            .fill(color.opacity(0.2 * Double(count)))
+                            .frame(width: 20)
+                    }
 
                 }
+                .scaleEffect(selectedDay == day ? 1.2 : selectedDay == nil ? 1 : 0.7)
+        }
+        .tint(.appAccent)
+        .disabled(isFutureDate)
 
-            }
-            .scaleEffect(selectedDay == day ? 1.2 : selectedDay == nil ? 1 : 0.7, anchor: .center)
-            .onTapGesture {
-                if isFutureDate {
-                    return
-                }
-
-                if selectedDay == day {
-                    selectedDay = nil
-                } else {
-                    selectedDay = day
-                }
-            }
     }
 }
