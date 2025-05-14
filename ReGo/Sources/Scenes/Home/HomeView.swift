@@ -70,9 +70,13 @@ struct HomeView: View {
         NavigationStack {
             GeometryReader { geo in
                 VStack {
+
                     VStack {
+
                         VStack {
+
                             HStack {
+
                                 Image(systemName: "scribble.variable")
                                     .font(.largeTitle)
                                     .foregroundStyle(.orange)
@@ -111,6 +115,7 @@ struct HomeView: View {
 
 
                         VStack(alignment: .center) {
+
                             HStack(alignment: .bottom) {
 
                                 Rectangle()
@@ -173,7 +178,9 @@ struct HomeView: View {
                             .padding()
 
                             VStack {
+
                                 HStack {
+
                                     Text("최근 작성한 회고")
                                         .font(.headline)
                                         .foregroundColor(readStrokeColor)
@@ -195,7 +202,9 @@ struct HomeView: View {
                                 }
 
                                 if Retrospect.sampleData.isEmpty {
-                                    ZStack{
+
+                                    ZStack {
+
                                         RoundedRectangle(cornerRadius: 30)
                                             .fill(.orange.opacity(0.4))
                                             .frame(width: 120, height: 80)
@@ -205,94 +214,38 @@ struct HomeView: View {
                                             .font(.caption)
                                             .foregroundColor(readStrokeColor)
                                     }
-
                                 } else {
 
-                                    ScrollView(.horizontal) {
-                                        HStack {
+                                    let recentRetros = Retrospect.sampleData
+                                        .sorted(by: { $0.date > $1.date })
+                                        .prefix(4)
 
-                                            if let firstTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).first?.title, !firstTitle.isEmpty {
-                                                ZStack{
-                                                    RoundedRectangle(cornerRadius: 30)
-                                                        .fill(.orange.opacity(0.4))
-                                                        .frame(width: 120, height: 80)
-                                                        .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+                                    ScrollView(.horizontal, showsIndicators: false) {
 
-                                                    Button {
-                                                        selectedIndex = 1
-                                                    } label: {
+                                        HStack(spacing: 10) {
 
-                                                        Text(firstTitle)
+                                            ForEach(Array(recentRetros), id: \.id) { retrospect in
+                                                NavigationLink(destination: DetailView(retro: retrospect)) {
+
+                                                    ZStack {
+
+                                                        RoundedRectangle(cornerRadius: 30)
+                                                            .fill(.orange.opacity(0.4))
+                                                            .frame(width: 120, height: 80)
+                                                            .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+
+                                                        Text(retrospect.title)
                                                             .font(.headline)
-
                                                             .foregroundColor(readStrokeColor)
-                                                    }
-                                                }
-                                            }
-
-                                            if let secondTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst().first?.title, !secondTitle.isEmpty {
-                                                ZStack{
-                                                    RoundedRectangle(cornerRadius: 30)
-                                                        .fill(.orange.opacity(0.4))
-                                                        .frame(width: 120, height: 80)
-                                                        .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
-
-                                                    Button {
-                                                        selectedIndex = 1
-
-                                                    } label: {
-
-                                                        Text(secondTitle)
-                                                            .font(.headline)
-
-                                                            .foregroundColor(readStrokeColor)
-                                                    }
-                                                }
-                                            }
-
-                                            if let thirdTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst(2).first?.title, !thirdTitle.isEmpty {
-                                                ZStack{
-                                                    RoundedRectangle(cornerRadius: 30)
-                                                        .fill(.orange.opacity(0.4))
-                                                        .frame(width: 120, height: 80)
-                                                        .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
-
-                                                    Button {
-                                                        selectedIndex = 1
-                                                    } label: {
-
-                                                        Text(thirdTitle)
-                                                            .font(.headline)
-
-                                                            .foregroundColor(readStrokeColor)
-                                                    }
-
-                                                }
-                                            }
-
-                                            if let fourthTitle = Retrospect.sampleData.sorted(by: { $0.date > $1.date }).dropFirst(3).first?.title, !fourthTitle.isEmpty {
-                                                ZStack{
-                                                    RoundedRectangle(cornerRadius: 30)
-                                                        .fill(.orange.opacity(0.4))
-                                                        .frame(width: 120, height: 80)
-                                                        .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
-
-                                                    Button {
-                                                        selectedIndex = 1
-                                                    } label: {
-
-                                                        Text(fourthTitle)
-                                                            .font(.headline)
-
-                                                            .foregroundColor(readStrokeColor)
+                                                            .multilineTextAlignment(.center)
+                                                            .lineLimit(2)
+                                                            .padding(.horizontal, 5)
                                                     }
                                                 }
                                             }
                                         }
+                                        .padding(.horizontal, 10)
                                     }
-
-                                    .padding(.horizontal, 10)
-
                                 }
 
 
@@ -318,11 +271,10 @@ struct HomeView: View {
                                         .padding(.trailing, 20)
                                 }
 
-
-                                //         ScrollView(.horizontal) {
-
                                 HStack {
+
                                     ZStack{
+
                                         RoundedRectangle(cornerRadius: 30)
                                             .fill(.brown.opacity(0.4))
                                             .frame(width: 130, height: 90)
@@ -346,6 +298,7 @@ struct HomeView: View {
                                     .padding(10)
 
                                     ZStack{
+
                                         RoundedRectangle(cornerRadius: 30)
                                             .fill(.brown.opacity(0.4))
                                             .frame(width: 130, height: 90)
@@ -367,28 +320,8 @@ struct HomeView: View {
                                     .padding(.horizontal, 10)
                                     .padding(10)
 
-                                    //                                    ZStack{
-                                    //                                        RoundedRectangle(cornerRadius: 30)
-                                    //                                            .fill(.brown.opacity(0.4))
-                                    //                                            .frame(width: 150, height: 150)
-                                    //                                        VStack {
-                                    //                                            Text("최근 작성한 회고")
-                                    //                                                .font(.headline)
-                                    //                                                .foregroundColor(readStrokeColor)
-                                    //
-                                    //                                            NavigationLink(destination: ListItem(item: Retrospect.sampleData[0])) {
-                                    //                                                Text("보기")
-                                    //                                                    .font(.headline)
-                                    //
-                                    //
-                                    //                                            }
-                                    //
-                                    //
-                                    //                                        }
-                                    //                                        .padding(.horizontal, 10)
-                                    //                                    }
                                 }
-                                // }
+
 
                                 .padding(.bottom)
 
@@ -404,8 +337,11 @@ struct HomeView: View {
 
 
                     NavigationLink(destination: EditView(mode: .create)) {
+
                         VStack {
+
                             HStack {
+
                                 Spacer()
 
                                 Text(Image(systemName: "pencil.and.scribble"))
