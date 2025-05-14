@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+extension Font {
+    static var extraLargeTitle: Font {
+        .system(size: 55, weight: .bold)
+    }
+}
 
 struct HomeView: View {
     @State private var brownHeight: CGFloat = 50
@@ -29,6 +34,10 @@ struct HomeView: View {
     var buttonStrokeColor: Color {
         colorScreme == .dark ? .brown.opacity(0.7) : Color("AppCategoryBg2").opacity(0.7)
 
+    }
+
+    var barStrokeColor: Color {
+        colorScreme == .dark ? Color(red: 1.0, green: 0.85, blue: 0.8).opacity(0.45) : Color(red: 1.0, green: 0.85, blue: 0.8).opacity(0.9).opacity(0.9)
     }
 
 
@@ -89,14 +98,14 @@ struct HomeView: View {
                             HStack {
 
                                 Image(systemName: "scribble.variable")
-                                    .font(.largeTitle)
+                                    .font(Font.extraLargeTitle)
                                     .foregroundStyle(.orange)
                                     .bold()
 
                                 VStack(alignment: .center, spacing: 4) {
                                     Text("ReGo")
                                         .italic()
-                                        .font(.largeTitle)
+                                        .font(Font.extraLargeTitle)
                                         .bold()
                                         .foregroundStyle(.orange)
 
@@ -189,7 +198,7 @@ struct HomeView: View {
                             }
 
                             .frame(height: 100, alignment: .bottom)
-                            .padding()
+                            .padding(.bottom, 10)
 
                             VStack {
 
@@ -198,9 +207,10 @@ struct HomeView: View {
                                     Text("최근 작성한 회고")
                                         .font(.headline)
                                         .foregroundColor(readStrokeColor)
-                                        .padding(.leading, 20)
 
 
+
+                                    Spacer()
 
                                     Button {
                                         selectedIndex = 1
@@ -208,13 +218,13 @@ struct HomeView: View {
 
                                         Text("목록보기")
                                             .font(.caption)
-                                            .frame(maxWidth: .infinity, alignment: .trailing)
-                                            .padding(.top)
-                                            .padding(.trailing, 20)
+                                            .frame(alignment: .trailing)
+
                                     }
 
                                 }
-                                
+                                .padding(.horizontal, 20)
+
 
 
                                 if recentRetros.isEmpty {
@@ -242,7 +252,7 @@ struct HomeView: View {
 
                                                         RoundedRectangle(cornerRadius: 30)
                                                             .fill(.orange.opacity(0.4))
-                                                            .frame(width: 120, height: 80)
+                                                            .frame(height: 80)
                                                             .shadow(color: .white.opacity(0.3), radius: 3, x: 0, y: 2)
 
                                                         VStack {
@@ -279,82 +289,85 @@ struct HomeView: View {
                                 maxWidth: geo.size.width > 600 ? 600 : .infinity,
                                 alignment: .center
                             )
+                            .padding(.horizontal, 5)
+                            .padding(.top, 30)
 
 
                             VStack {
 
+                                HStack {
 
-                                Button {
-                                    selectedIndex = 2
-                                } label: {
+                                    Spacer()
 
-                                    Text("통계보기")
-                                        .font(.caption)
-                                        .frame(maxWidth: .infinity, alignment: .trailing)
-                                        .padding(.top)
-                                        .padding(.trailing, 20)
+                                    Button {
+                                        selectedIndex = 2
+                                    } label: {
+
+                                        Text("통계보기")
+                                            .font(.caption)
+                                            .frame(alignment: .trailing)
+
+                                    }
                                 }
+                                .padding(.horizontal, 20)
 
                                 HStack {
 
                                     ZStack{
 
                                         RoundedRectangle(cornerRadius: 30)
-                                            .fill(Color(red: 1.0, green: 0.85, blue: 0.8).opacity(0.4))
-                                            .frame(width: 130, height: 90)
-                                            .shadow(color: .white.opacity(0.3), radius: 3, x: 0, y: 2)
+                                            .fill(barStrokeColor)
+                                            .frame(height: 80)
+                                            .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
 
                                         VStack {
 
-                                            Text("       이번달\n회고 작성 횟수 :\n")
+                                            Text("이번달 회고 작성 횟수 :\n")
                                                 .font(.caption)
                                                 .bold()
                                                 .foregroundColor(readStrokeColor)
-                                                .padding(1)
+                                                .padding(.top, 5)
 
 
                                             Text("\(monthlyCount)회")
                                                 .font(.headline)
                                                 .bold()
-                                                .foregroundColor(Color(red: 0.75, green: 0.65, blue: 0.55))
+                                                .foregroundColor(Color(red: 0.85, green: 0.55, blue: 0.55).opacity(0.9))
                                         }
-                                        .padding(.bottom, 5)
-                                        .frame(width: 130, height: 80)
+                                        .padding(.bottom, 15)
+                                        .frame(height: 80)
                                     }
 
-                                    .padding(.horizontal, 10)
-                                    .padding(10)
+
 
                                     ZStack{
 
                                         RoundedRectangle(cornerRadius: 30)
-                                            .fill(Color(red: 1.0, green: 0.85, blue: 0.8).opacity(0.3))
-                                            .frame(width: 130, height: 90)
-                                            .shadow(color: .white.opacity(0.3), radius: 3, x: 0, y: 2)
+                                            .fill(barStrokeColor)
+                                            .frame(height: 80)
+                                            .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
 
 
                                         VStack(alignment: .center, spacing: 0) {
 
-                                            Text("       이번주\n회고 작성 횟수 :\n")
+                                            Text("이번주 회고 작성 횟수 :\n")
                                                 .font(.caption)
                                                 .bold()
                                                 .foregroundColor(readStrokeColor)
-                                                .padding(1)
+                                                .padding(.top, 5)
 
                                             Text("\(weeklyCount)회")
                                                 .font(.headline)
                                                 .bold()
-                                                .foregroundColor(Color(red: 0.75, green: 0.65, blue: 0.55))
+                                                .foregroundColor(Color(red: 0.85, green: 0.55, blue: 0.55).opacity(0.9))
                                         }
-                                        .padding(.bottom, 5)
-                                        .frame(width: 130, height: 80)
+                                        .padding(.bottom, 15)
+                                        .frame(height: 80)
                                     }
-                                    .padding(.horizontal, 10)
-                                    .padding(10)
+
 
                                 }
-
-
+                                .padding(.horizontal, 5)
                                 .padding(.bottom)
 
                             }
@@ -419,6 +432,8 @@ struct HomeView: View {
         }
     }
 }
+
+
 
 
 struct StatefulPreviewWrapper<Value, Content: View>: View {
