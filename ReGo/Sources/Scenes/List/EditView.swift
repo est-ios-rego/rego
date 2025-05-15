@@ -257,7 +257,8 @@ struct ContentSection: View {
             TextEditor(text: $content)
                 .padding(12)
                 .frame(minHeight: 200, maxHeight: 400)
-                .background(Color("AppBackground2"))
+                .scrollContentBackground(.hidden)
+                .background(Color.regoBackground2)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.gray.opacity(0.2), lineWidth: 1)
