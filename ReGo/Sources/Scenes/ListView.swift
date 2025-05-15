@@ -8,16 +8,18 @@
 import SwiftUI
 import SwiftData
 
-enum DateFilter {
-    case all
-    case filterd
-
+/// 날짜 메뉴를 나타내는 열거형
+enum DateMenuOption: String, CaseIterable {
+    case all = "전체"
+    case filtered = "기간"
 }
 
+/// 회고 목록을 가져오는 뷰
 struct ListView: View {
-
+    /// SwiftData와 연결된 객체
     @Query var retros: [Retrospect]
 
+    /// SwiftData 객체를 Filtering한 속성
     private var filteredRetros: [Retrospect] {
         let calendar = Calendar.current
 
@@ -27,12 +29,12 @@ struct ListView: View {
 
             let isSameDay = calendar.isDate(selectedStartDate, inSameDayAs: selectedEndDate)
             let date: Bool
-            
-            if dateSelection == "전체" {
+
+            if selectedDateMenu == .all {
                 date = true
             } else if isSameDay {
-            	date = calendar.isDate(retro.date, inSameDayAs: selectedStartDate)
-			} else {
+                date = calendar.isDate(retro.date, inSameDayAs: selectedStartDate)
+            } else {
                 let retroDay = calendar.startOfDay(for: retro.date)
                 let startDay = calendar.startOfDay(for: selectedStartDate)
                 let endDay = calendar.startOfDay(for: selectedEndDate)
@@ -44,6 +46,7 @@ struct ListView: View {
         }.sorted(by: { $0.date > $1.date })
     }
 
+    /// 목록을 불러올 때 년-월로 묶어주는 속성
     private var dateList: [String] {
         var setDate: Set<String> = []
         var arrayDate: [String] = []
@@ -59,113 +62,48 @@ struct ListView: View {
         return arrayDate.sorted().reversed()
     }
 
-    @Environment(\.modelContext) private var modelContext
 
+    /// Filtering할 값
     @State private var keyword: String = ""
-    @State private var dateSelection = "전체"
+    @State private var selectedDateMenu: DateMenuOption = .all
     @State private var selectedCategory: RetrospectCategory = .all
     @State private var selectedStartDate = Date.now
     @State private var selectedEndDate = Date.now
 
+    /// Filtering 시 불러올 피커와 시트 제어
     @State private var showFilterView = false
     @State private var showCategoryPicker = false
     @State private var showEditView = false
-    @State private var showdatePicker = false
+    @State private var showDatePicker = false
+
+    // 샘플데이터 Create시 사용  @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 20) {
 
-//                샘플데이터 추가
-//                Button {
-//                    Retrospect.sampleData.forEach { item in
-//                        modelContext.insert(item)
-//                    }
-//                    Retrospect.sampleDataForStatistics.forEach { item in
-//                        modelContext.insert(item)
-//                    }
-//                    try? modelContext.save()
-//                } label: {
-//                    Text("샘플데이터 추가")
-//                        .font(.largeTitle)
-//                }
-
+                //                샘플데이터 Createt시 사용
+                //                Button {
+                //                    Retrospect.sampleData.forEach { item in
+                //                        modelContext.insert(item)
+                //                    }
+                //                    Retrospect.sampleDataForStatistics.forEach { item in
+                //                        modelContext.insert(item)
+                //                    }
+                //                    try? modelContext.save()
+                //                } label: {
+                //                    Text("샘플데이터 추가")
+                //                        .font(.largeTitle)
+                //                }
 
                 VStack {
+                    CategoryView(showCategoryPicker: $showCategoryPicker, selectedCategory: $selectedCategory)
 
-                    VStack {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("카테고리")
-
-                            Button {
-                                showCategoryPicker = true
-                            } label: {
-                                HStack {
-                                    Text(selectedCategory.displayName)
-                                        .foregroundColor(.primary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.gray)
-                                }
-                                .padding()
-                                .background(Color.regoBackground2)
-                                .cornerRadius(8)
-                            }
-                            .sheet(isPresented: $showCategoryPicker) {
-                                CategoryPickerView(
-                                    isPresented: $showCategoryPicker,
-                                    currentCategory: $selectedCategory,
-                                    shouldIncludeAllCategory: true
-                                )
-                            }
-                        }
-                    }
-
-
-                    HStack {
-                        Text("날짜")
-
-                        Spacer()
-
-                        if dateSelection == "기간" {
-                            HStack {
-                                Text(selectedStartDate.toListDate)
-                                    .labelsHidden()
-
-                                Text("~")
-
-                                Text(selectedEndDate.toListDate)
-                                    .labelsHidden()
-                            }
-                        }
-
-                        Picker("", selection: $dateSelection) {
-                            ForEach(["전체", "기간"], id: \.self) { item in
-                                Text(item)
-
-                            }
-                        }
-                        .tint(.primary)
-                        .onChange(of: dateSelection) {
-                            if $0 == "기간" {
-                                showdatePicker = true
-                            }
-                        }
-                    }
-
-                    if dateSelection == "기간" {
-                        if showdatePicker{
-                            DateFilterView(
-                                selectedStartDate: $selectedStartDate,
-                                selectedEndDate: $selectedEndDate,
-                                showdatePicker: $showdatePicker
-                            )
-                        }
-                    }
+                    DateView(selectedDateMenu: $selectedDateMenu, selectedStartDate: $selectedStartDate, selectedEndDate: $selectedEndDate, showDatePicker: $showDatePicker)
 
                 }
 
-
+                /// filteredRetros을 불러오는 ScrollView
                 ScrollView {
                     ForEach(dateList, id: \.self) { date in
                         VStack(alignment: .leading) {
@@ -191,12 +129,7 @@ struct ListView: View {
                     }
 
                 }
-
-
                 .listStyle(.plain)
-
-
-
             }
             .padding(.horizontal)
             .scrollContentBackground(.hidden)
@@ -221,13 +154,118 @@ struct ListView: View {
     }
 }
 
+// MARK: - Filtering하는 Sheet와 Picker를 불러오는 UI
+/// Category
+struct CategoryView: View {
+    /// CategoryPicker 표시여부  바인딩
+    @Binding var showCategoryPicker: Bool
+    /// 선택된 Category 바인딩
+    @Binding var selectedCategory: RetrospectCategory
 
-struct DateFilterView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("카테고리")
+
+            Button {
+                showCategoryPicker = true
+            } label: {
+                HStack {
+                    Text(selectedCategory.displayName)
+                        .foregroundColor(.primary)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.gray)
+                }
+                .padding()
+                .background(Color.regoBackground2)
+                .cornerRadius(8)
+            }
+            .sheet(isPresented: $showCategoryPicker) {
+                CategoryPickerView(
+                    isPresented: $showCategoryPicker,
+                    currentCategory: $selectedCategory,
+                    shouldIncludeAllCategory: true
+                )
+            }
+        }
+    }
+}
+
+/// DateMenu
+struct DateView: View {
+    /// 전체를 보여줄지 일부 날짜를 보여줄지 선택하는 열거형 바인딩
+    @Binding var selectedDateMenu: DateMenuOption
+    /// Filtering 시작 날짜 바인딩
     @Binding var selectedStartDate: Date
+    /// Filtering 끝나는  날짜 바인딩
     @Binding var selectedEndDate: Date
-    @Binding var showdatePicker: Bool
+    /// DatePicker 표시 여부 바인딩
+    @Binding var showDatePicker: Bool
 
+    var body: some View {
+        VStack{
+            HStack {
+                Text("날짜")
+
+                Spacer()
+
+                if selectedDateMenu == .filtered {
+                    HStack {
+                        Text(selectedStartDate.toListDate)
+                            .labelsHidden()
+
+                        Text("~")
+
+                        Text(selectedEndDate.toListDate)
+                            .labelsHidden()
+                    }
+                }
+
+                Menu {
+                    Button("전체") {
+                        selectedDateMenu = .all
+                    }
+
+                    Button("기간") {
+                        selectedDateMenu = .filtered
+                        showDatePicker = true
+                    }
+                } label: {
+                    HStack(spacing: 2) {
+                        Text(selectedDateMenu.rawValue)
+
+                        Image(systemName: "chevron.right")
+                    }
+                    .tint(.regoAccent)
+                }
+            }
+
+            if selectedDateMenu == .filtered {
+                if showDatePicker{
+                    DateFilterView(
+                        selectedStartDate: $selectedStartDate,
+                        selectedEndDate: $selectedEndDate,
+                        showDatePicker: $showDatePicker
+                    )
+                }
+            }
+        }
+
+    }
+}
+
+/// DatePicker
+struct DateFilterView: View {
+    /// Filtering 시작 날짜 바인딩
+    @Binding var selectedStartDate: Date
+    /// Filtering 끝나는  날짜 바인딩
+    @Binding var selectedEndDate: Date
+    /// DatePicker 표시 여부 바인딩
+    @Binding var showDatePicker: Bool
+
+    /// DateSheet에 시작날짜
     @State private var showStartDateSheet = false
+    /// DateSheet에 끝나는 날짜
     @State private var showEndDateSheet = false
 
     var body: some View {
@@ -269,7 +307,7 @@ struct DateFilterView: View {
             }
 
             Button {
-                showdatePicker = false
+                showDatePicker = false
             } label: {
                 Text("완료")
                     .foregroundStyle(Color.regoAccent)
@@ -288,7 +326,7 @@ struct DateFilterView: View {
             )
         }
     }
-
+    /// 시작 날짜를 끝나는 날짜보다 미래를 선택하면 끝나는 날짜를 시작 날짜와 같아지는 기능을 지원합니다.
     func setEndDate() {
         switch selectedStartDate.compare(selectedEndDate) {
         case .orderedDescending:
@@ -297,7 +335,7 @@ struct DateFilterView: View {
             break
         }
     }
-
+    /// 끝나는 날짜가  시작 날짜보다 과거를 선택하면 시작 날짜를 끝나는 날짜와 같아지는 기능을 지원합니다.
     func setStartDate() {
         switch selectedEndDate.compare(selectedStartDate) {
         case .orderedAscending:
