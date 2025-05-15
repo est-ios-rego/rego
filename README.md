@@ -33,9 +33,9 @@ ReGo/
 ├── Assets.xcassets/           # 앱 색상, 아이콘 등의 에셋
 ├── Resources/                 # 샘플 데이터, 색상 정의
 ├── Sources/                   # 주요 소스코드
-│   ├── Components/            # 각 화면(View) 구성
-│   ├── Extensions/            # 각 화면(View) 구성
-│   ├── Models/                # 각 화면(View) 구성
+│   ├── Components/
+│   ├── Extensions/
+│   ├── Models/
 │   └── Scenes/                # 각 화면(View) 구성
 │       ├── MainView.swift
 │       ├── HomeView.swift
