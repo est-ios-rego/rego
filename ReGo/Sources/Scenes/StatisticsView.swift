@@ -10,11 +10,13 @@ import SwiftUI
 import SwiftData
 import Charts
 
+/// 통계 기간 (주간, 월간) 열거형.
 enum StatisticsPeriodCase {
     case week
     case month
 }
 
+/// Mood 차트 항목 정의 구조체.
 struct MoodChartItem {
     var id: UUID = UUID()
     var emoji: String
@@ -22,44 +24,53 @@ struct MoodChartItem {
     var color: Color
 }
 
-
-//월변경시 fade in-out
-// pad ui
+/// 회고 통계 뷰.
+///
+/// 주간 또는 월간 회고 작성 현황, 감정 및 카테고리별 통계 시각화 제공.
 struct StatisticsView: View {
+    /// SwiftData 모델 컨텍스트 환경 변수.
     @Environment(\.modelContext) private var modelContext
 
+    /// 현재 선택된 통계 기간 (주간/월간) 상태 변수.
     @State var statPeriod: StatisticsPeriodCase = .week
 
+    /// 시작 날짜 상태 변수.
     @State var baseStartDate: Date
+    /// 종료 날짜 상태 변수.
     @State var baseEndDate: Date
 
+    /// 현재 조회 기간의 마지막 주/월 여부 상태 변수.
     @State var isLastWeek: Bool = true
 
+    /// Contribution Chart에서 선택된 날짜(일) 상태 변수.
     @State var selectedDay: Int? = nil
 
+    // FIXME: 수정필요
 //    @Query var data: [Retrospect]
-    @State var data = Retrospect.detailSampleData
+    /// 표시할 회고 데이터. (현재 샘플 데이터 사용)
+    @State var data = Retrospect.detailSampleData // FIXME: 추후 @Query로 실제 데이터 연결 필요
 
+    /// 회고 등록 화면 표시 여부 상태 변수.
     @State var showEditView = false
 
+    /// 뷰 내 애니메이션 효과 상태 변수.
     @State var isAnimated: Bool = false
 
+    /// 주차 한글 표시용 배열 (예: "첫", "둘").
     let numOfWeekKr = ["첫", "둘", "셋", "넷", "다섯"]
 
-    init(statPeriod: StatisticsPeriodCase = .week, baseStartDate: Date = .now, baseEndDate: Date = .now, isLastWeek: Bool = true) {
-        self.statPeriod = statPeriod
-        self.isLastWeek = isLastWeek
-
+    init() {
         let calendar = Calendar.current
-
         let weekday = calendar.component(.weekday, from: .now)
 
+        // 기본값을 현재 날짜가 속한 주의 시작일과 종료일로 설정.
         self.baseStartDate = calendar.date(byAdding: .weekday, value: 1 - weekday, to: .now)!
         self.baseEndDate = calendar.date(byAdding: .weekday, value: 7 - weekday, to: .now)!
     }
 
-    @State var offset: CGSize = CGSize()
-
+    /// 통계 화면 헤더 뷰.
+    ///
+    /// 기간 선택 피커(주/월) 및 날짜 이동 버튼 포함.
     var statisticsHeader: some View {
         VStack {
             Picker(selection: $statPeriod) {
@@ -68,14 +79,11 @@ struct StatisticsView: View {
 
                 Text("월")
                     .tag(StatisticsPeriodCase.month)
-            } label: {
-
-            }
+            } label: { }
             .pickerStyle(.palette)
             .onChange(of: statPeriod) {
                 changePeriodCase($1)
             }
-            
 
             HStack {
                 Button {
@@ -102,9 +110,10 @@ struct StatisticsView: View {
             }
             .padding()
         }
-        .frame(width: UIDevice.isPad ? 500 : nil)
+        .frame(width: UIDevice.isPad ? 500 : nil) // iPad 헤더 너비 제한.
     }
 
+    /// 데이터가 없을 시 표시 뷰.
     var noDataView: some View {
         VStack {
             Text("아직 회고를 작성하지 않으셨어요 😢")
@@ -130,18 +139,18 @@ struct StatisticsView: View {
 
                     VStack {
                         ContributionChart(startDate: baseStartDate, endDate: baseEndDate, statPeriod: statPeriod, data: dataCountByDay, selectedDay: $selectedDay)
-                            .frame(maxWidth: UIDevice.isPad ? 500 : .infinity)
+                            .frame(maxWidth: UIDevice.isPad ? 500 : .infinity) // iPad 차트 너비 제한.
 
 
-                            // 선택 기간내 회고 작성건이 없는 case
+                            // 선택 기간 내 회고 작성 건 없는 경우
                             if dataFilteredByPeriod.isEmpty {
                                 noDataView
                             } else {
 
-                                // Contribution Chart(잔디밭)에서 날짜를 선택한 경우
+                                // Contribution Chart (잔디밭) 날짜 선택 시
                                 if let selectedDay = selectedDay {
 
-                                        // 선택한 날짜에 회고 작성한 건이 있는 경우
+                                        // 선택 날짜에 회고 작성 건 있는 경우
                                         if let countByDay = dataCountByDay[selectedDay] {
                                             VStack {
                                                 HStack {
@@ -170,11 +179,12 @@ struct StatisticsView: View {
                                                 isAnimated = false
                                             }
                                         } else {
-                                            // 선택한 날짜에 회고 작성한 건이 없는 경우
+                                            // 선택 날짜에 회고 작성 건 없는 경우
                                             noDataView
                                         }
 
                                 } else {
+                                    // 날짜 미선택 (기간 전체 통계)
                                     let weekTotalCount = dataCountByDay.values.reduce(into: 0) {
                                         $0 += $1.count
                                     }
@@ -185,17 +195,17 @@ struct StatisticsView: View {
                                             .bold()
                                             .padding()
 
-                                        Text("ReGo와 나누고 싶은 소중한 이야기가 있으신가요? 작은 발견도 좋아요.")
-                                            .multilineTextAlignment(.center)
-                                            .font(.headline)
-                                            .bold()
-                                            .padding(.vertical, 32)
-
-                                        CreateButton(buttonText: "나의 이야기 남기기", showEditView: $showEditView)
+//                                         Text("ReGo와 나누고 싶은 소중한 이야기가 있으신가요? 작은 발견도 좋아요.")
+//                                             .multilineTextAlignment(.center)
+//                                             .font(.headline)
+//                                             .bold()
+//                                             .padding(.vertical, 32)
+//
+//                                         CreateButton(buttonText: "나의 이야기 남기기", showEditView: $showEditView)
                                     }
                                     .padding()
 
-                                    if UIDevice.isPad {
+                                    if UIDevice.isPad { // iPad 레이아웃
                                         HStack() {
                                             MoodBarChart(moodChartData: moodChartData)
                                                 .animation(.snappy, value: self.selectedDay)
@@ -210,7 +220,7 @@ struct StatisticsView: View {
                                                 .frame(maxWidth: .infinity)
 
                                         }
-                                    } else {
+                                    } else { // iPhone 레이아웃
                                         Mood1DBarChart(moodChartData: moodChartData)
                                             .padding(.bottom)
                                             .animation(.easeInOut, value: [baseStartDate, baseEndDate])
@@ -236,50 +246,30 @@ struct StatisticsView: View {
     }
 }
 
-struct CreateButton: View {
-    var buttonText: String
 
-    @Binding var showEditView: Bool
-
-    var body: some View {
-        Button {
-            showEditView = true
-        } label: {
-            Text(buttonText)
-                .tint(.appAccent)
-                .bold()
-                .padding()
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.gray.opacity(0.7))
-                }
-        }
-        .navigationDestination(isPresented: $showEditView) {
-            EditView(mode: .create, retro: Retrospect.emptyData)
-        }
-    }
-}
+// MARK: - SwiftUI Previews
 
 struct iOS: PreviewProvider {
     static var previews: some View {
-        StatisticsView(statPeriod: .week)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 16 Pro"))
+        StatisticsView()
+            .previewDevice(PreviewDevice(rawValue: "iPhone 16 Pro")) // 최신 기기 또는 일반 기기명 사용 권장.
     }
 }
 
+/// iPad 세로 모드 미리보기용 구조체.
 struct iPadOSPortrait: PreviewProvider {
     static var previews: some View {
-        StatisticsView(statPeriod: .week)
-            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
+        StatisticsView()
+            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)")) // 최신 기기 또는 일반 기기명 사용 권장.
             .previewInterfaceOrientation(.portrait)
     }
 }
 
+/// iPad 가로 모드 미리보기용 구조체.
 struct iPadOSLandscape: PreviewProvider {
     static var previews: some View {
-        StatisticsView(statPeriod: .week)
-            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
+        StatisticsView()
+            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)")) // 최신 기기 또는 일반 기기명 사용 권장.
             .previewInterfaceOrientation(.landscapeLeft)
     }
 }
