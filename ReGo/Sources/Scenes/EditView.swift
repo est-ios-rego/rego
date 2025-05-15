@@ -36,6 +36,8 @@ struct EditView: View {
 
     @FocusState private var isTitleFocused: Bool
 
+    @EnvironmentObject private var toastManager: ToastManager
+
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
@@ -186,6 +188,7 @@ extension EditView {
         )
         modelContext.insert(newRetro)
         saveData()
+        toastManager.show(message: "생성되었습니다.")
     }
 
     /// 기존 회고 데이터를 현재 입력값으로 수정하고 저장합니다.
@@ -199,6 +202,7 @@ extension EditView {
         retro.date = date
         retro.mood = mood
         saveData()
+        toastManager.show(message: "수정되었습니다.")
     }
 
     /// SwiftData의 모델 컨텍스트를 사용하여 변경 사항을 저장합니다.

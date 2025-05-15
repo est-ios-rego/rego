@@ -14,6 +14,8 @@ struct DetailView: View {
     @State private var showEditView = false
     @State private var showDeleteConfirm = false
 
+    @EnvironmentObject private var toastManager: ToastManager
+
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
@@ -137,6 +139,7 @@ struct DetailView: View {
 extension DetailView {
     private func deleteRetrospect() {
         modelContext.delete(retro)
+        toastManager.show(message: "삭제되었습니다.")
     }
 }
 

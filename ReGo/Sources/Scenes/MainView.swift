@@ -10,6 +10,7 @@ import SwiftData
 
 struct MainView: View {
     @SceneStorage("selectedTab") private var selectedIndex = 0
+    @StateObject private var toastManager = ToastManager()
 
     var body: some View {
         TabView(selection: $selectedIndex) {
@@ -37,6 +38,8 @@ struct MainView: View {
                 }
                 .tag(3)
         }
+        .environmentObject(toastManager)
+        .modifier(ToastModifier(isPresented: $toastManager.isPresented, message: toastManager.message))
     }
 }
 

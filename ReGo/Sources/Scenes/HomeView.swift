@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import _SwiftData_SwiftUI
 
 extension Font {
     static var extraLargeTitle: Font {
@@ -14,11 +15,13 @@ extension Font {
 }
 
 struct HomeView: View {
+    @Query(sort: \Retrospect.date, order: .reverse) var allRetros: [Retrospect]
+
     @State private var brownHeight: CGFloat = 50
     @State private var mintHeight: CGFloat = 40
     @State private var beigeHeight: CGFloat = 50
     @State private var apricotHeight: CGFloat = 40
-    @State private var lavenderHeight: CGFloat = 50
+    @State private var lavenderHeight: CGFloat = 40
     @State private var recentRetros: [Retrospect] = []
     
 
@@ -58,7 +61,7 @@ struct HomeView: View {
             return 0
         }
 
-        return Retrospect.sampleData.filter {
+        return allRetros.filter {
             $0.date >= startOfMonth && $0.date <= endOfMonth
         }.count
     }
@@ -74,7 +77,7 @@ struct HomeView: View {
             return 0
         }
 
-        return Retrospect.sampleData.filter {
+        return allRetros.filter {
             $0.date >= startOfWeek && $0.date <= endOfWeek
         }.count
     }
@@ -136,115 +139,129 @@ struct HomeView: View {
 
                         Spacer()
 
-
-                        VStack(alignment: .center) {
-
-                            HStack(alignment: .bottom) {
-
-                                Rectangle()
-                                    .foregroundColor(.brown.opacity(0.9))
-                                    .frame(width: 40, height: brownHeight)
-                                    .cornerRadius(6)
-                                    .shadow(color: .brown.opacity(0.5), radius: 2, x: 0, y: 5)
-                                    .onAppear {
-                                        withAnimation(infiniteAnimation) {
-                                            brownHeight = 130
-                                        }
-                                    }
-
-                                Rectangle()
-                                    .foregroundColor(.mint.opacity(0.4))
-                                    .frame(width: 40, height: mintHeight)
-                                    .cornerRadius(6)
-                                    .shadow(color: .mint.opacity(0.4), radius: 2, x: 0, y: 5)
-                                    .onAppear {
-                                        withAnimation(infiniteAnimation) {
-                                            mintHeight = 120
-                                        }
-                                    }
-
-                                Rectangle()
-                                    .foregroundColor(.brown.opacity(0.5))
-                                    .frame(width: 40, height: beigeHeight)
-                                    .cornerRadius(6)
-                                    .shadow(color: .brown.opacity(0.4), radius: 2, x: 0, y: 5)
-                                    .onAppear {
-                                        withAnimation(infiniteAnimation) {
-                                            beigeHeight = 140
-                                        }
-                                    }
-
-                                Rectangle()
-                                    .foregroundColor(.orange.opacity(0.4))
-                                    .frame(width: 40, height: apricotHeight)
-                                    .cornerRadius(6)
-                                    .shadow(color: .orange.opacity(0.4), radius: 2, x: 0, y: 5)
-                                    .onAppear {
-                                        withAnimation(infiniteAnimation) {
-                                            apricotHeight = 110
-                                        }
-                                    }
-
-                                Rectangle()
-                                    .foregroundColor(.red.opacity(0.4))
-                                    .frame(width: 40, height: lavenderHeight)
-                                    .cornerRadius(6)
-                                    .shadow(color: .red.opacity(0.3), radius: 2, x: 0, y: 5)
-                                    .onAppear {
-                                        withAnimation(infiniteAnimation) {
-                                            lavenderHeight = 150
-                                        }
-                                    }
-                            }
-
-                            .frame(height: 100, alignment: .bottom)
-                            .padding(.bottom, 10)
-
-                            VStack {
-
-                                HStack {
-
-                                    Text("최근 작성한 회고")
-                                        .font(.headline)
-                                        .foregroundColor(readStrokeColor)
+                        VStack {
+                            VStack(alignment: .center) {
 
 
 
+
+                                HStack(alignment: .bottom, spacing: 10) {
                                     Spacer()
 
-                                    Button {
-                                        selectedIndex = 1
-                                    } label: {
+                                    Rectangle()
+                                        .foregroundColor(.brown.opacity(0.9))
+                                        .frame(height: brownHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .brown.opacity(0.5), radius: 2, x: 0, y: 5)
+                                        .onAppear {
+                                            withAnimation(infiniteAnimation) {
+                                                brownHeight = 130
+                                            }
+                                        }
 
-                                        Text("목록보기")
-                                            .font(.caption)
-                                            .frame(alignment: .trailing)
-                                            .foregroundStyle(Color.regoAccent)
+                                    Rectangle()
+                                        .foregroundColor(.mint.opacity(0.4))
+                                        .frame(height: mintHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .mint.opacity(0.4), radius: 2, x: 0, y: 5)
+                                        .onAppear {
+                                            withAnimation(infiniteAnimation) {
+                                                mintHeight = 110
+                                            }
+                                        }
 
-                                    }
+                                    Rectangle()
+                                        .foregroundColor(.brown.opacity(0.5))
+                                        .frame(height: beigeHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .brown.opacity(0.4), radius: 2, x: 0, y: 5)
+                                        .onAppear {
+                                            withAnimation(infiniteAnimation) {
+                                                beigeHeight = 120
+                                            }
+                                        }
 
+                                    Rectangle()
+                                        .foregroundColor(.orange.opacity(0.4))
+                                        .frame(height: apricotHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .orange.opacity(0.4), radius: 2, x: 0, y: 5)
+                                        .onAppear {
+                                            withAnimation(infiniteAnimation) {
+                                                apricotHeight = 130
+                                            }
+                                        }
+
+                                    Rectangle()
+                                        .foregroundColor(.red.opacity(0.4))
+                                        .frame(height: lavenderHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .red.opacity(0.3), radius: 2, x: 0, y: 5)
+                                        .onAppear {
+                                            withAnimation(infiniteAnimation) {
+                                                lavenderHeight = 110
+                                            }
+                                        }
+                                    Spacer()
                                 }
-                                .padding(.horizontal, 20)
+                                .padding(.horizontal, 40)
+                                .frame(width: geo.size.width > 600 &&
+                                       geo.size.height > geo.size.width ? 600 : nil,
+                                    height: 100, alignment: .bottom)
+                                .padding(.bottom, 5)
 
+                                if geo.size.width > 600 && geo.size.height > geo.size.width {
+                                    Spacer().frame(height: 150)
+                                }
 
+                                VStack {
 
-                                if recentRetros.isEmpty {
-                                    
+                                    HStack {
 
-                                    ZStack {
-
-                                        RoundedRectangle(cornerRadius: 30)
-                                            .fill(.orange.opacity(0.4))
-                                            .frame(width: 120, height: 80)
-                                            .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
-
-                                        Text("회고를 작성해주세요")
-                                            .font(.caption)
+                                        Text("최근 작성한 회고")
+                                            .font(.headline)
                                             .foregroundColor(readStrokeColor)
-                                    }
-                                } else {
 
-                                        HStack(spacing: 7) {
+
+
+                                        Spacer()
+
+                                        Button {
+                                            selectedIndex = 1
+                                        } label: {
+
+                                            Text("목록보기")
+                                                .font(.caption)
+                                                .frame(alignment: .trailing)
+                                                .foregroundStyle(Color.regoAccent)
+
+                                        }
+
+                                    }
+                                    .padding(.horizontal, 20)
+
+
+
+                                    if recentRetros.isEmpty {
+
+
+                                        ZStack {
+
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .fill(.orange.opacity(0.4))
+                                                .frame(height: 80)
+                                                .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+
+
+                                            Text("최근 작성한 회고가 없습니다")
+                                                .font(.headline)
+                                                .foregroundColor(readStrokeColor)
+                                        }
+                                        .padding(.horizontal, 10)
+
+                                    } else {
+
+                                        HStack(spacing: 40) {
 
                                             ForEach(recentRetros, id: \.id) { retrospect in
                                                 NavigationLink(destination: DetailView(retro: retrospect)) {
@@ -267,7 +284,7 @@ struct HomeView: View {
                                                                 .font(.headline)
                                                                 .foregroundColor(readStrokeColor)
                                                                 .multilineTextAlignment(.center)
-                                                                .lineLimit(2)
+                                                                .lineLimit(1)
                                                                 .padding(.horizontal, 5)
                                                                 .padding(.bottom, 15)
                                                         }
@@ -280,105 +297,117 @@ struct HomeView: View {
                                         .padding(.horizontal, 10)
 
 
-                                }
-                                
-
-
-
-                            }
-                            .frame(
-                                maxWidth: geo.size.width > 600 ? 600 : .infinity,
-                                alignment: .center
-                            )
-                            .padding(.horizontal, 5)
-                            .padding(.top, 30)
-
-
-                            VStack {
-
-                                HStack {
-
-                                    Spacer()
-
-                                    Button {
-                                        selectedIndex = 2
-                                    } label: {
-
-                                        Text("통계보기")
-                                            .font(.caption)
-                                            .frame(alignment: .trailing)
-                                            .foregroundStyle(Color.regoAccent)
-
-                                    }
-                                }
-                                .padding(.horizontal, 20)
-
-                                HStack {
-
-                                    ZStack{
-
-                                        RoundedRectangle(cornerRadius: 30)
-                                            .fill(barStrokeColor)
-                                            .frame(height: 80)
-                                            .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
-
-                                        VStack {
-
-                                            Text("이번달 회고 작성 횟수 :\n")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(readStrokeColor)
-                                                .padding(.top, 5)
-
-
-                                            Text("\(monthlyCount)회")
-                                                .font(.headline)
-                                                .bold()
-                                                .foregroundColor(Color(red: 0.85, green: 0.55, blue: 0.55).opacity(0.9))
-                                        }
-                                        .padding(.bottom, 15)
-                                        .frame(height: 80)
                                     }
 
 
 
-                                    ZStack{
-
-                                        RoundedRectangle(cornerRadius: 30)
-                                            .fill(barStrokeColor)
-                                            .frame(height: 80)
-                                            .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
-
-
-                                        VStack(alignment: .center, spacing: 0) {
-
-                                            Text("이번주 회고 작성 횟수 :\n")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(readStrokeColor)
-                                                .padding(.top, 5)
-
-                                            Text("\(weeklyCount)회")
-                                                .font(.headline)
-                                                .bold()
-                                                .foregroundColor(Color(red: 0.85, green: 0.55, blue: 0.55).opacity(0.9))
-                                        }
-                                        .padding(.bottom, 15)
-                                        .frame(height: 80)
-                                    }
-
 
                                 }
+                                .frame(
+                                    maxWidth: geo.size.width > 600 ? 600 : .infinity,
+                                    alignment: .center
+                                )
                                 .padding(.horizontal, 5)
-                                .padding(.bottom)
+                                .padding(.top, 30)
+                                
+                                if geo.size.width > 600 && geo.size.height > geo.size.width {
+                                    Spacer().frame(height: 40)
+                                }
 
+                                VStack {
+
+                                    HStack {
+
+                                        Text("회고 작성 횟수")
+                                            .font(.headline)
+                                            .foregroundColor(readStrokeColor)
+
+                                        Spacer()
+
+                                        Button {
+                                            selectedIndex = 2
+                                        } label: {
+
+                                            Text("통계보기")
+                                                .font(.caption)
+                                                .frame(alignment: .trailing)
+                                                .foregroundStyle(Color.regoAccent)
+
+                                        }
+                                    }
+                                    .padding(.horizontal, 20)
+
+                                    HStack(spacing: 40) {
+
+                                        ZStack{
+
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .fill(barStrokeColor)
+                                                .frame(height: 80)
+                                                .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
+
+
+                                            VStack(alignment: .center, spacing: 0) {
+
+                                                Text("이번달:")
+                                                    .font(.headline)
+                                                    .bold()
+                                                    .foregroundColor(readStrokeColor)
+                                                    .padding(.vertical, 5)
+
+                                                Text("\(monthlyCount)회")
+                                                    .font(.headline)
+                                                    .bold()
+                                                    .foregroundColor(readStrokeColor)
+                                            }
+                                            .padding(.bottom, 15)
+                                            .frame(height: 80)
+                                        }
+
+
+
+                                        ZStack{
+
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .fill(barStrokeColor)
+                                                .frame(height: 80)
+                                                .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
+
+
+                                            VStack(alignment: .center, spacing: 0) {
+
+                                                Text("이번주: \n")
+                                                    .font(.headline)
+                                                    .bold()
+                                                    .foregroundColor(readStrokeColor)
+                                                    .padding(.vertical, 5)
+
+                                                Text("\(weeklyCount)회")
+                                                    .font(.headline)
+                                                    .bold()
+                                                    .foregroundColor(readStrokeColor)
+                                            }
+                                            .padding(.bottom, 15)
+                                            .frame(height: 80)
+                                        }
+
+
+                                    }
+                                    .padding(.horizontal, 5)
+                                    .padding(.bottom)
+
+                                }
+                                .frame(
+                                    maxWidth: geo.size.width > 600 ? 600 : .infinity,
+                                    alignment: .center
+                                )
+                                .padding(10)
                             }
-                            .frame(
-                                maxWidth: geo.size.width > 600 ? 600 : .infinity,
-                                alignment: .center
-                            )
-                            .padding(10)
                         }
+                    }
+
+                    if geo.size.width > 600 && geo.size.height > geo.size.width {
+                        Spacer().frame(height: 30)
                     }
 
 
@@ -407,12 +436,16 @@ struct HomeView: View {
                                 Spacer()
 
                             }
-                            .frame(width: 300, height: 40)
+                            .frame(
+                                width: geo.size.width > 600 && geo.size.height > geo.size.width ? 600 : nil,
+                                height: 40
+                            )
                             .background(buttonStrokeColor)
                             .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
                             .cornerRadius(12)
                             .frame(maxWidth: .infinity)
                             .padding(.bottom, 10)
+                            .padding(.horizontal, 10)
 
                         }
                         .padding(.bottom, 40)
@@ -422,10 +455,7 @@ struct HomeView: View {
                 }
 
                 .onAppear {
-                    recentRetros = Retrospect.sampleData
-                        .sorted(by: { $0.date > $1.date })
-                        .prefix(3)
-                        .map { $0 }
+                    recentRetros = Array(allRetros.prefix(3))
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color.regoBackground)
@@ -454,6 +484,7 @@ struct StatefulPreviewWrapper<Value, Content: View>: View {
 #Preview {
     StatefulPreviewWrapper(0) { binding in
         HomeView(selectedIndex: binding)
+            .modelContainer(for: Retrospect.self)
     }
 }
 
