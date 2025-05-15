@@ -100,10 +100,12 @@ struct HomeView: View {
 
                             HStack {
 
+                              
                                 Image(systemName: "scribble.variable")
                                     .font(Font.extraLargeTitle)
                                     .foregroundStyle(.orange)
                                     .bold()
+
 
                                 VStack(alignment: .center, spacing: 4) {
                                     Text("ReGo")
@@ -277,7 +279,6 @@ struct HomeView: View {
                                                             Text(dateFormatter.string(from: retrospect.date))
                                                                 .font(.caption2)
                                                                 .foregroundColor(readStrokeColor)
-
 
 
                                                             Text(retrospect.title)

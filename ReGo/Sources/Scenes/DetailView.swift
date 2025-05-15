@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct DetailView: View {
-    let retro: Retrospect
+    @Bindable var retro: Retrospect
 
     @State private var showEditView = false
     @State private var showDeleteConfirm = false
@@ -139,6 +139,8 @@ struct DetailView: View {
 extension DetailView {
     private func deleteRetrospect() {
         modelContext.delete(retro)
+        try? modelContext.save()
+        
         toastManager.show(message: "삭제되었습니다.")
     }
 }

@@ -317,6 +317,8 @@ struct DateSection: View {
     @Binding var date: Date
     /// 날짜 피커 표시 여부 바인딩
     @Binding var showDatePicker: Bool
+    /// 미래시점의 Date 값 선택시 alert창 표시여부
+    @State var showAlert = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -326,6 +328,7 @@ struct DateSection: View {
             
             Button {
                 showDatePicker = true
+
             } label: {
                 HStack {
                     Text("\(date.toDetailDate)")
@@ -341,6 +344,17 @@ struct DateSection: View {
             .sheet(isPresented: $showDatePicker) {
                 DatePickerSheet(isPresented: $showDatePicker, currentDate: $date)
             }
+            .onChange(of: date) { value in
+                if Date.now < value {
+                    showAlert = true
+                }
+            }
+            .alert("미래의 회고를 작성할 수 없습니다.", isPresented: $showAlert) {
+                Button("확인") {
+                    showDatePicker = true
+                }
+            }
+
         }
     }
 }
