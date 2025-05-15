@@ -35,7 +35,22 @@ struct ListItem: View {
             Text(item.date.toListDate)
                 .tint(.secondary)
         }
+        .padding(.horizontal)
+        .padding(.vertical, 4)
     }
 }
 
+#Preview {
+    let sampleRetro = Retrospect(
+        title: "회고 제목 샘플",
+        content: """
+        회고 작성 중입니다.
+        여러 줄의 텍스트
+        """,
+        date: Date(),
+        category: .daily,
+        mood: .happy
+    )
 
+    ListItem(item: sampleRetro)
+}

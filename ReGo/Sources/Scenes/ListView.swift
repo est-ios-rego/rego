@@ -95,19 +95,25 @@ struct ListView: View {
                                 .font(.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                            VStack(spacing: 15){
-
+                            VStack {
                                 ForEach(filteredRetros) { item in
                                     if item.date.toYearMonth == date {
-                                        NavigationLink{
-                                            DetailView(retro: item)
-                                        } label: {
-                                            ListItem(item: item)
+                                        VStack {
+                                            NavigationLink {
+                                                DetailView(retro: item)
+                                            } label: {
+                                                ListItem(item: item)
+                                            }
 
+                                            Divider()
+                                                .padding(.horizontal, 16)
                                         }
                                     }
                                 }
-                            }.background(Color.regoBackground2)
+                            }
+                            .padding(.top, 10)
+                            .background(Color.regoBackground2)
+                            .cornerRadius(8)
                         }
                         .padding(.bottom, 20)
                     }
