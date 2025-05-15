@@ -86,7 +86,7 @@ struct EditView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button("저장") {
-                    print("date: \(date), retro.date: \(retro.date)")
+                    
                     onClickSave()
                 }
                 .foregroundStyle(Color.regoAccent)

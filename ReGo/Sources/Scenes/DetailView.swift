@@ -24,7 +24,7 @@ struct DetailView: View {
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
-        NavigationStack{
+//        NavigationStack{
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     // 카테고리
@@ -87,7 +87,7 @@ struct DetailView: View {
                 }
             }
             .padding()
-        }
+//        }
         .scrollContentBackground(.hidden)
         .background(Color.regoBackground)
         .navigationTitle("상세보기")

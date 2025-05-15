@@ -13,7 +13,7 @@ import Foundation
 extension StatisticsView {
     /// 현재 설정된 기간(`baseStartDate` ~ `baseEndDate`)으로 필터링된 회고 데이터 배열.
     var dataFilteredByPeriod: [Retrospect] {
-        return self.data.filter {
+        return self.retros.filter {
             return $0.date >= self.baseStartDate && $0.date <= self.baseEndDate
         }
     }
@@ -24,7 +24,7 @@ extension StatisticsView {
     var dataFilteredByDay: [Retrospect] {
         let calendar = Calendar.current
 
-        return data.filter {
+        return retros.filter {
             // 포함 조건: 회고 날짜의 '일' 요소가 selectedDay와 동일.
             selectedDay == calendar.component(.day, from: $0.date)
         }

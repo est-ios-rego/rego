@@ -68,7 +68,7 @@ struct StatisticsView: View {
     }
 
     /// SwiftData를 통해 저장된 회고 객체 불러와서 바인딩
-    @Query var data: [Retrospect]
+    let retros: [Retrospect]
 
     /// 회고 등록 화면 표시 여부 상태 변수.
     @State var showEditView = false
@@ -79,7 +79,7 @@ struct StatisticsView: View {
     /// 주차를 한글로 표시하기 위한 배열 (예: "첫째 주", "둘째 주").
     let numOfWeekKr = ["첫", "둘", "셋", "넷", "다섯"]
 
-    init() {
+    init(retros: [Retrospect]) {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: .now)
 
@@ -92,6 +92,7 @@ struct StatisticsView: View {
         // 기본값을 현재 날짜가 속한 주의 시작일과 종료일로 설정.
         self.baseStartDate = startDate
         self.baseEndDate = calendar.date(byAdding: .weekday, value: 6, to: startDate)!
+        self.retros = retros
     }
 
     /// 통계 화면 헤더 뷰.
@@ -285,25 +286,25 @@ struct StatisticsView: View {
 
 struct iOS: PreviewProvider {
     static var previews: some View {
-        StatisticsView()
+        StatisticsView(retros: Retrospect.detailSampleData)
             .previewDevice(PreviewDevice(rawValue: "iPhone 16 Pro")) // 최신 기기 또는 일반 기기명 사용 권장.
     }
 }
 
 /// iPad 세로 모드 미리보기용 구조체.
-struct iPadOSPortrait: PreviewProvider {
-    static var previews: some View {
-        StatisticsView()
-            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)")) // 최신 기기 또는 일반 기기명 사용 권장.
-            .previewInterfaceOrientation(.portrait)
-    }
-}
+//struct iPadOSPortrait: PreviewProvider {
+//    static var previews: some View {
+//        StatisticsView()
+//            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)")) // 최신 기기 또는 일반 기기명 사용 권장.
+//            .previewInterfaceOrientation(.portrait)
+//    }
+//}
 
 /// iPad 가로 모드 미리보기용 구조체.
-struct iPadOSLandscape: PreviewProvider {
-    static var previews: some View {
-        StatisticsView()
-            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)")) // 최신 기기 또는 일반 기기명 사용 권장.
-            .previewInterfaceOrientation(.landscapeLeft)
-    }
-}
+//struct iPadOSLandscape: PreviewProvider {
+//    static var previews: some View {
+//        StatisticsView()
+//            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)")) // 최신 기기 또는 일반 기기명 사용 권장.
+//            .previewInterfaceOrientation(.landscapeLeft)
+//    }
+//}

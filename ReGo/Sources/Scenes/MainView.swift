@@ -18,21 +18,24 @@ struct MainView: View {
     /// 토스트 메시지의 상태를 관리하는 객체입니다.
     @StateObject private var toastManager = ToastManager()
 
+    @Query var retros: [Retrospect]
+
+
     var body: some View {
         TabView(selection: $selectedIndex) {
-            HomeView(selectedIndex: $selectedIndex)
+            HomeView(retros: retros, selectedIndex: $selectedIndex)
                 .tabItem {
                     Label("홈", systemImage: "house")
                 }
                 .tag(0)
 
-            ListView()
+            ListView(retros: retros)
                 .tabItem {
                     Label("목록", systemImage: "list.bullet.clipboard")
                 }
                 .tag(1)
 
-            StatisticsView()
+            StatisticsView(retros: retros)
                 .tabItem {
                     Label("통계", systemImage: "pencil.slash")
                 }

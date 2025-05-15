@@ -17,7 +17,7 @@ enum DateMenuOption: String, CaseIterable {
 /// 회고 목록을 가져오는 뷰
 struct ListView: View {
     /// SwiftData와 연결된 객체
-    @Query var retros: [Retrospect]
+    let retros: [Retrospect]
 
     /// SwiftData 객체를 Filtering한 속성
     private var filteredRetros: [Retrospect] {
@@ -331,8 +331,7 @@ struct DateFilterView: View {
 }
 
 #Preview {
-    ListView()
-        .modelContainer(for: Retrospect.self)
+    ListView(retros: Retrospect.detailSampleData)
 }
 
 

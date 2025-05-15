@@ -15,7 +15,8 @@ extension Font {
 }
 
 struct HomeView: View {
-    @Query(sort: \Retrospect.date, order: .reverse) var allRetros: [Retrospect]
+//    @Query(sort: \Retrospect.date, order: .reverse)
+    var retros: [Retrospect]
 
     @State private var brownHeight: CGFloat = 50
     @State private var mintHeight: CGFloat = 40
@@ -61,7 +62,7 @@ struct HomeView: View {
             return 0
         }
 
-        return allRetros.filter {
+        return retros.filter {
             $0.date >= startOfMonth && $0.date <= endOfMonth
         }.count
     }
@@ -77,7 +78,7 @@ struct HomeView: View {
             return 0
         }
 
-        return allRetros.filter {
+        return retros.filter {
             $0.date >= startOfWeek && $0.date <= endOfWeek
         }.count
     }
@@ -447,7 +448,7 @@ struct HomeView: View {
                 }
 
                 .onAppear {
-                    recentRetros = Array(allRetros.prefix(3))
+                    recentRetros = Array(retros.prefix(3))
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color.regoBackground)
@@ -475,7 +476,7 @@ struct StatefulPreviewWrapper<Value, Content: View>: View {
 
 #Preview {
     StatefulPreviewWrapper(0) { binding in
-        HomeView(selectedIndex: binding)
+        HomeView(retros: Retrospect.detailSampleData, selectedIndex: binding)
             .modelContainer(for: Retrospect.self)
     }
 }
