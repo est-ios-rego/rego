@@ -89,11 +89,6 @@ struct DetailView: View {
         .navigationBarBackButtonHidden()
         .toolbar(.hidden, for: .tabBar)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                }
-            }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     HStack {
