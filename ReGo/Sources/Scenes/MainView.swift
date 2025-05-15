@@ -1,15 +1,21 @@
-//
-//  Tabiew.swift
-//  ReGo
-//
-//  Created by  서재효 on 5/12/25.
-//
-
 import SwiftUI
 import SwiftData
 
+/// 앱의 메인 화면을 구성하는 뷰입니다.
+///
+/// `TabView`를 사용하여 홈, 목록, 통계, 설정 화면 간의 탭 전환을 제공합니다.
+/// 선택된 탭 인덱스는 `@SceneStorage`를 통해 상태가 유지되며,
+/// `ToastManager`를 전역 환경으로 공유하여 토스트 메시지를 표시합니다.
+///
+/// - 주요 탭:
+///   - 홈 (HomeView)
+///   - 목록 (ListView)
+///   - 통계 (StatisticsView)
+///   - 설정 (SettingView)
 struct MainView: View {
+    /// 현재 선택된 탭의 인덱스를 저장하며, 앱 종료 후에도 상태를 유지합니다.
     @SceneStorage("selectedTab") private var selectedIndex = 0
+    /// 토스트 메시지의 상태를 관리하는 객체입니다.
     @StateObject private var toastManager = ToastManager()
 
     var body: some View {
