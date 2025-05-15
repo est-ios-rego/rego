@@ -269,8 +269,7 @@ struct StatisticsView: View {
                         ))
                     }
                 }
-                .navigationTitle("Statistics")
-                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("통계")
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal)
