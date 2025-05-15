@@ -21,7 +21,7 @@ struct HomeView: View {
     @State private var mintHeight: CGFloat = 40
     @State private var beigeHeight: CGFloat = 50
     @State private var apricotHeight: CGFloat = 40
-    @State private var lavenderHeight: CGFloat = 50
+    @State private var lavenderHeight: CGFloat = 40
     @State private var recentRetros: [Retrospect] = []
     
 
@@ -142,15 +142,15 @@ struct HomeView: View {
                         VStack {
                             VStack(alignment: .center) {
 
-                                if geo.size.width > 600 && geo.size.height > geo.size.width {
-                                    Spacer()
-                                }
 
-                                HStack(alignment: .bottom) {
+
+
+                                HStack(alignment: .bottom, spacing: 10) {
+                                    Spacer()
 
                                     Rectangle()
                                         .foregroundColor(.brown.opacity(0.9))
-                                        .frame(width: 40, height: brownHeight)
+                                        .frame(height: brownHeight)
                                         .cornerRadius(6)
                                         .shadow(color: .brown.opacity(0.5), radius: 2, x: 0, y: 5)
                                         .onAppear {
@@ -161,56 +161,59 @@ struct HomeView: View {
 
                                     Rectangle()
                                         .foregroundColor(.mint.opacity(0.4))
-                                        .frame(width: 40, height: mintHeight)
+                                        .frame(height: mintHeight)
                                         .cornerRadius(6)
                                         .shadow(color: .mint.opacity(0.4), radius: 2, x: 0, y: 5)
                                         .onAppear {
                                             withAnimation(infiniteAnimation) {
-                                                mintHeight = 120
+                                                mintHeight = 110
                                             }
                                         }
 
                                     Rectangle()
                                         .foregroundColor(.brown.opacity(0.5))
-                                        .frame(width: 40, height: beigeHeight)
+                                        .frame(height: beigeHeight)
                                         .cornerRadius(6)
                                         .shadow(color: .brown.opacity(0.4), radius: 2, x: 0, y: 5)
                                         .onAppear {
                                             withAnimation(infiniteAnimation) {
-                                                beigeHeight = 140
+                                                beigeHeight = 120
                                             }
                                         }
 
                                     Rectangle()
                                         .foregroundColor(.orange.opacity(0.4))
-                                        .frame(width: 40, height: apricotHeight)
+                                        .frame(height: apricotHeight)
                                         .cornerRadius(6)
                                         .shadow(color: .orange.opacity(0.4), radius: 2, x: 0, y: 5)
                                         .onAppear {
                                             withAnimation(infiniteAnimation) {
-                                                apricotHeight = 110
+                                                apricotHeight = 130
                                             }
                                         }
 
                                     Rectangle()
                                         .foregroundColor(.red.opacity(0.4))
-                                        .frame(width: 40, height: lavenderHeight)
+                                        .frame(height: lavenderHeight)
                                         .cornerRadius(6)
                                         .shadow(color: .red.opacity(0.3), radius: 2, x: 0, y: 5)
                                         .onAppear {
                                             withAnimation(infiniteAnimation) {
-                                                lavenderHeight = 150
+                                                lavenderHeight = 110
                                             }
                                         }
-                                }
-
-                                .frame(height: 100, alignment: .bottom)
-                                .padding(.bottom, 10)
-
-                                if geo.size.width > 600 && geo.size.height > geo.size.width {
                                     Spacer()
                                 }
-                                
+                                .padding(.horizontal, 40)
+                                .frame(width: geo.size.width > 600 &&
+                                       geo.size.height > geo.size.width ? 600 : nil,
+                                    height: 100, alignment: .bottom)
+                                .padding(.bottom, 5)
+
+                                if geo.size.width > 600 && geo.size.height > geo.size.width {
+                                    Spacer().frame(height: 150)
+                                }
+
                                 VStack {
 
                                     HStack {
@@ -249,14 +252,16 @@ struct HomeView: View {
                                                 .frame(height: 80)
                                                 .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
 
+
                                             Text("최근 작성한 회고가 없습니다")
                                                 .font(.headline)
                                                 .foregroundColor(readStrokeColor)
                                         }
                                         .padding(.horizontal, 10)
+
                                     } else {
 
-                                        HStack(spacing: 7) {
+                                        HStack(spacing: 40) {
 
                                             ForEach(recentRetros, id: \.id) { retrospect in
                                                 NavigationLink(destination: DetailView(retro: retrospect)) {
@@ -304,11 +309,18 @@ struct HomeView: View {
                                 )
                                 .padding(.horizontal, 5)
                                 .padding(.top, 30)
-
+                                
+                                if geo.size.width > 600 && geo.size.height > geo.size.width {
+                                    Spacer().frame(height: 40)
+                                }
 
                                 VStack {
 
                                     HStack {
+
+                                        Text("회고 작성 횟수")
+                                            .font(.headline)
+                                            .foregroundColor(readStrokeColor)
 
                                         Spacer()
 
@@ -325,7 +337,7 @@ struct HomeView: View {
                                     }
                                     .padding(.horizontal, 20)
 
-                                    HStack {
+                                    HStack(spacing: 40) {
 
                                         ZStack{
 
@@ -334,19 +346,19 @@ struct HomeView: View {
                                                 .frame(height: 80)
                                                 .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
 
-                                            VStack {
 
-                                                Text("이번달 회고 작성 횟수 :\n")
-                                                    .font(.caption)
+                                            VStack(alignment: .center, spacing: 0) {
+
+                                                Text("이번달:")
+                                                    .font(.headline)
                                                     .bold()
                                                     .foregroundColor(readStrokeColor)
-                                                    .padding(.top, 5)
-
+                                                    .padding(.vertical, 5)
 
                                                 Text("\(monthlyCount)회")
                                                     .font(.headline)
                                                     .bold()
-                                                    .foregroundColor(Color(red: 0.85, green: 0.55, blue: 0.55).opacity(0.9))
+                                                    .foregroundColor(readStrokeColor)
                                             }
                                             .padding(.bottom, 15)
                                             .frame(height: 80)
@@ -364,16 +376,16 @@ struct HomeView: View {
 
                                             VStack(alignment: .center, spacing: 0) {
 
-                                                Text("이번주 회고 작성 횟수 :\n")
-                                                    .font(.caption)
+                                                Text("이번주: \n")
+                                                    .font(.headline)
                                                     .bold()
                                                     .foregroundColor(readStrokeColor)
-                                                    .padding(.top, 5)
+                                                    .padding(.vertical, 5)
 
                                                 Text("\(weeklyCount)회")
                                                     .font(.headline)
                                                     .bold()
-                                                    .foregroundColor(Color(red: 0.85, green: 0.55, blue: 0.55).opacity(0.9))
+                                                    .foregroundColor(readStrokeColor)
                                             }
                                             .padding(.bottom, 15)
                                             .frame(height: 80)
@@ -392,6 +404,10 @@ struct HomeView: View {
                                 .padding(10)
                             }
                         }
+                    }
+
+                    if geo.size.width > 600 && geo.size.height > geo.size.width {
+                        Spacer().frame(height: 30)
                     }
 
 
@@ -420,12 +436,16 @@ struct HomeView: View {
                                 Spacer()
 
                             }
-                            .frame(width: 300, height: 40)
+                            .frame(
+                                width: geo.size.width > 600 && geo.size.height > geo.size.width ? 600 : nil,
+                                height: 40
+                            )
                             .background(buttonStrokeColor)
                             .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
                             .cornerRadius(12)
                             .frame(maxWidth: .infinity)
                             .padding(.bottom, 10)
+                            .padding(.horizontal, 10)
 
                         }
                         .padding(.bottom, 40)
