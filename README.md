@@ -4,6 +4,8 @@
 
 ReGo는 자기 성찰이나 업무 회고를 습관화하고 싶은 개인 사용자 혹은 팀을 위한 iOS 앱입니다. 일상의 감정 변화나 업무 피드백을 기록함으로써 자기 인식을 높이고 성장 패턴을 시각화할 수 있습니다.
 
+<br/>
+
 ## ✨ 주요 기능
 
 ### 홈 탭
@@ -28,6 +30,8 @@ ReGo는 자기 성찰이나 업무 회고를 습관화하고 싶은 개인 사�
 ### 생성/수정 화면
 - 제목과 내용을 입력하고, 카테고리와 날짜, 오늘의 기분을 선택할 수 있습니다.
 
+<br/>
+
 ## 🛠 설치 방법
 
 1. 이 저장소를 클론합니다.
@@ -38,11 +42,15 @@ ReGo는 자기 성찰이나 업무 회고를 습관화하고 싶은 개인 사�
 2. Xcode 15 이상을 실행한 후 ReGo.xcodeproj 또는 ReGo.xcworkspace를 엽니다.
 3. 시뮬레이터 또는 실제 디바이스에서 실행합니다.
 
+<br/>
+
 ## 📦 의존 라이브러리
 - SwiftUI
 - SwiftData
 - Foundation
 - Charts - Apple 공식 라이브러리로 통계 데이터를 시각적으로 표현
+
+<br/>
 
 ## 📁 폴더 구조
 ```
@@ -63,6 +71,8 @@ ReGo/
 │       └── DetailView.swift
 ├── ReGoApp.swift              # App 진입점
 ```
+
+<br/>   
 
 ## 🧱 데이터 모델
 
@@ -89,12 +99,16 @@ enum Mood: String, CaseIterable, Identifiable, Codable, Equatable {
 }
 ```
 
+<br/>   
+
 ## 💾 저장 방식 (SwiftData)
 ReGo는 Apple이 제공하는 최신 영속성 프레임워크인 SwiftData를 사용합니다.
 - @Model을 통해 모델 정의
 - @Query로 회고 목록 바인딩
 - CRUD 작업은 SwiftData API로 처리
 - 변경사항은 실시간으로 UI에 반영됨
+
+<br/>
 
 ## 🌗 UI/UX 지원 사항
 ReGo는 다양한 사용자 환경을 고려하여 다음과 같은 기능을 제공합니다.
@@ -108,3 +122,14 @@ Dynamic Type 대응 (시스템 글꼴 크기 반영)
 ✅ 성능 최적화
 LazyView 및 화면 단위 상태 관리(@State, @Environment) 적용
 불필요한 View 재렌더링 방지를 위한 구조 설계
+
+<br/>   
+
+## 👨‍💻 개발진 (Contributors)
+
+| 이름 | GitHub |
+|--|--|
+| 김재훈 | [@jaehun6165](https://github.com/jaehun6165) |
+| 김종성 | [@jseongee](https://github.com/jseongee) |
+| 서재효 | [@jaehyo0318](https://github.com/jaehyo0318) |
+| 성주현 | [@zudugy](https://github.com/zudugy) |
