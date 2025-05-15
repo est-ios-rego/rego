@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import _SwiftData_SwiftUI
 
 extension Font {
     static var extraLargeTitle: Font {
@@ -14,6 +15,8 @@ extension Font {
 }
 
 struct HomeView: View {
+    @Query(sort: \Retrospect.date, order: .reverse) var allRetros: [Retrospect]
+
     @State private var brownHeight: CGFloat = 50
     @State private var mintHeight: CGFloat = 40
     @State private var beigeHeight: CGFloat = 50
@@ -58,7 +61,7 @@ struct HomeView: View {
             return 0
         }
 
-        return Retrospect.sampleData.filter {
+        return allRetros.filter {
             $0.date >= startOfMonth && $0.date <= endOfMonth
         }.count
     }
@@ -74,7 +77,7 @@ struct HomeView: View {
             return 0
         }
 
-        return Retrospect.sampleData.filter {
+        return allRetros.filter {
             $0.date >= startOfWeek && $0.date <= endOfWeek
         }.count
     }
@@ -243,13 +246,14 @@ struct HomeView: View {
 
                                             RoundedRectangle(cornerRadius: 30)
                                                 .fill(.orange.opacity(0.4))
-                                                .frame(width: 120, height: 80)
+                                                .frame(height: 80)
                                                 .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
 
-                                            Text("회고를 작성해주세요")
-                                                .font(.caption)
+                                            Text("최근 작성한 회고가 없습니다")
+                                                .font(.headline)
                                                 .foregroundColor(readStrokeColor)
                                         }
+                                        .padding(.horizontal, 10)
                                     } else {
 
                                         HStack(spacing: 7) {
@@ -275,7 +279,7 @@ struct HomeView: View {
                                                                 .font(.headline)
                                                                 .foregroundColor(readStrokeColor)
                                                                 .multilineTextAlignment(.center)
-                                                                .lineLimit(2)
+                                                                .lineLimit(1)
                                                                 .padding(.horizontal, 5)
                                                                 .padding(.bottom, 15)
                                                         }
@@ -431,10 +435,7 @@ struct HomeView: View {
                 }
 
                 .onAppear {
-                    recentRetros = Retrospect.sampleData
-                        .sorted(by: { $0.date > $1.date })
-                        .prefix(3)
-                        .map { $0 }
+                    recentRetros = Array(allRetros.prefix(3))
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color.regoBackground)
@@ -463,6 +464,7 @@ struct StatefulPreviewWrapper<Value, Content: View>: View {
 #Preview {
     StatefulPreviewWrapper(0) { binding in
         HomeView(selectedIndex: binding)
+            .modelContainer(for: Retrospect.self)
     }
 }
 
