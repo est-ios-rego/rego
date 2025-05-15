@@ -46,11 +46,16 @@ struct MonthContributionItem: View {
         isFutureDate ? Color.gray.opacity(0.2) : color.opacity(0.2 * Double(count))
     }
 
+    var circleColor: Color {
+        colorScheme == .light ? Color.regoNegative : Color.regoPositive
+    }
+
     /// 선택 시 하단에 표시될 원형 마커의 너비. iPadOS에서 더 크게 표시.
     var circleWidth: CGFloat = UIDevice.isPad ? 8 : 5
 
     /// 선택 시 하단에 표시될 원형 마커의 패딩. iPadOS에서 더 크게 표시.
     var circlePadding: CGFloat = UIDevice.isPad ? 8 : 5
+
 
     var body: some View {
         Button {
@@ -70,7 +75,7 @@ struct MonthContributionItem: View {
                 .overlay(alignment: .bottom){ // 선택 시 하단 원형 마커
                     if day == selectedDay {
                         Circle()
-                            .fill(Color.regoNegative)
+                            .fill(circleColor)
                             .frame(width: circleWidth)
                             .scaledToFit()
                             .padding(circlePadding)

@@ -1,19 +1,23 @@
-//
-//  DetailView.swift
-//  ReGo
-//
-//  Created by 김종성 on 5/12/25.
-//
-
 import SwiftUI
 import SwiftData
 
+/// 개별 회고의 상세 내용을 보여주는 뷰입니다.
+///
+/// `Retrospect` 모델을 전달받아 회고의 카테고리, 날짜, 기분, 제목, 내용을 표시합니다.
+/// 상단 툴바를 통해 회고를 수정하거나 삭제할 수 있으며,
+/// 수정/삭제 시 확인 알림창이 표시됩니다.
+///
+/// - Parameters:
+///   - retro: 상세 보기에 사용할 `Retrospect` 인스턴스
 struct DetailView: View {
-    let retro: Retrospect
+    @Bindable var retro: Retrospect
 
+    /// 수정 화면으로 전환 여부
     @State private var showEditView = false
+    /// 삭제 확인 알림 표시 여부
     @State private var showDeleteConfirm = false
 
+    /// 토스트 메시지 출력을 위한 환경 객체
     @EnvironmentObject private var toastManager: ToastManager
 
     @Environment(\.dismiss) private var dismiss
@@ -137,8 +141,11 @@ struct DetailView: View {
 }
 
 extension DetailView {
+    /// 회고 데이터를 삭제하고 토스트 메시지를 표시합니다.
     private func deleteRetrospect() {
         modelContext.delete(retro)
+        try? modelContext.save()
+        
         toastManager.show(message: "삭제되었습니다.")
     }
 }

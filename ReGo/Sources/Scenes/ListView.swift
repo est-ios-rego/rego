@@ -76,25 +76,9 @@ struct ListView: View {
     @State private var showEditView = false
     @State private var showDatePicker = false
 
-    // 샘플데이터 Create시 사용  @Environment(\.modelContext) private var modelContext
-
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 20) {
-
-                //                샘플데이터 Createt시 사용
-                //                Button {
-                //                    Retrospect.sampleData.forEach { item in
-                //                        modelContext.insert(item)
-                //                    }
-                //                    Retrospect.sampleDataForStatistics.forEach { item in
-                //                        modelContext.insert(item)
-                //                    }
-                //                    try? modelContext.save()
-                //                } label: {
-                //                    Text("샘플데이터 추가")
-                //                        .font(.largeTitle)
-                //                }
 
                 VStack {
                     CategoryView(showCategoryPicker: $showCategoryPicker, selectedCategory: $selectedCategory)

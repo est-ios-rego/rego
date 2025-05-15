@@ -10,7 +10,8 @@ enum EditMode {
 struct EditView: View {
     /// 생성/수정 모드 지정
     let mode: EditMode
-    /// 수정 대상 회고 객체 (Bindable로 SwiftData 연동)
+
+    /// 대상 회고 객체 (Bindable로 SwiftData 연동)
     @Bindable var retro: Retrospect
 
     // 원본 데이터 저장용 (변경 감지)
@@ -92,12 +93,11 @@ struct EditView: View {
             }
         }
         .onAppear {
-            switch mode {
-            case .create:
+            if mode == .create {
                 isTitleFocused = true
-            case .update:
-                initRetro()
             }
+
+            initRetro()
         }
         .alert("변경사항이 저장되지 않았습니다.\n나가시겠습니까?", isPresented: $showDismissAlert) {
             Button("취소", role: .cancel) {}
@@ -317,6 +317,8 @@ struct DateSection: View {
     @Binding var date: Date
     /// 날짜 피커 표시 여부 바인딩
     @Binding var showDatePicker: Bool
+    /// 미래시점의 Date 값 선택시 alert창 표시여부
+    @State var showAlert = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -326,6 +328,7 @@ struct DateSection: View {
             
             Button {
                 showDatePicker = true
+
             } label: {
                 HStack {
                     Text("\(date.toDetailDate)")
@@ -341,6 +344,17 @@ struct DateSection: View {
             .sheet(isPresented: $showDatePicker) {
                 DatePickerSheet(isPresented: $showDatePicker, currentDate: $date)
             }
+            .onChange(of: date) { value in
+                if Date.now < value {
+                    showAlert = true
+                }
+            }
+            .alert("미래의 회고를 작성할 수 없습니다.", isPresented: $showAlert) {
+                Button("확인") {
+                    showDatePicker = true
+                }
+            }
+
         }
     }
 }

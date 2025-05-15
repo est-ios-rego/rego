@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 
 extension Mood {
+
+    /// 감정에 해당하는 색상
     var color: Color {
         switch self {
         case .happy: return Color(red: 255 / 255, green: 205 / 255, blue: 250 / 255)
