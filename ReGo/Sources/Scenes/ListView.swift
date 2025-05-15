@@ -87,6 +87,21 @@ struct ListView: View {
 
                 }
 
+                if retros.count == 0 {
+                    VStack(alignment: .center) {
+                        Spacer()
+
+                        Text("Rego와 함께\n회고를 기록해봐요!")
+                            .font(.title)
+                            .foregroundStyle(Color.regoAccent)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(5)
+
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+
                 /// filteredRetros을 불러오는 ScrollView
                 ScrollView {
                     ForEach(dateList, id: \.self) { date in
