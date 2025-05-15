@@ -90,7 +90,7 @@ struct HomeView: View {
     }
 
     func startLoopingAnimation() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             withAnimation(.easeInOut(duration: 4)) {
                 toggleState.toggle()
                 brownHeight = toggleState ? 130 : 50
