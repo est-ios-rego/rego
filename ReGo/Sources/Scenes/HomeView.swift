@@ -236,7 +236,8 @@ struct HomeView: View {
                                         }
 
                                     }
-                                    .padding(.horizontal, 20)
+                                    .padding(.horizontal, 25)
+
 
 
 
@@ -259,7 +260,7 @@ struct HomeView: View {
 
                                     } else {
 
-                                        HStack(spacing: 40) {
+                                        HStack(spacing: 30) {
 
                                             ForEach(recentRetros, id: \.id) { retrospect in
                                                 NavigationLink(destination: DetailView(retro: retrospect)) {
@@ -331,10 +332,11 @@ struct HomeView: View {
                                                 .foregroundStyle(Color.regoAccent)
 
                                         }
+
                                     }
                                     .padding(.horizontal, 20)
 
-                                    HStack(spacing: 40) {
+                                    HStack(spacing: 30) {
 
                                         ZStack{
 
