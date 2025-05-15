@@ -70,7 +70,7 @@ ReGo/
 │       ├── SettingView.swift
 │       ├── ListView.swift
 │       └── DetailView.swift
-├── ReGoApp.swift              # App 진입점
+└── ReGoApp.swift              # App 진입점
 ```
 
 <br/>   
