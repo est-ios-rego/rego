@@ -14,6 +14,7 @@ extension Color {
     static let regoNegative: Color = .init("AppNegative")
     static let regoPositive: Color = .init("AppPositive")
     static let regoCategoryBg: Color = .init("AppCategoryBg")
+    static let regoCategoryBg2: Color = .init("AppCategoryBg2")
 }
 
 

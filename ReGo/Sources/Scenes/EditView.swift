@@ -63,7 +63,7 @@ struct EditView: View {
             .padding()
         }
         .scrollContentBackground(.hidden)
-        .background(Color("AppBackground"))
+        .background(Color.regoBackground)
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
@@ -78,7 +78,7 @@ struct EditView: View {
                     }
                 } label: {
                     Image(systemName: "chevron.left")
-                        .foregroundStyle(Color("AppAccent"))
+                        .foregroundStyle(Color.regoAccent)
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -86,7 +86,7 @@ struct EditView: View {
                     print("date: \(date), retro.date: \(retro.date)")
                     onClickSave()
                 }
-                .foregroundStyle(Color("AppAccent"))
+                .foregroundStyle(Color.regoAccent)
             }
         }
         .onAppear {
@@ -229,7 +229,7 @@ struct TitleSection: View {
             
             TextField("제목을 입력해주세요.", text: $title)
                 .padding(12)
-                .background(Color("AppBackground2"))
+                .background(Color.regoBackground2)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.gray.opacity(0.2), lineWidth: 1)
@@ -295,7 +295,7 @@ struct CategorySection: View {
                         .foregroundColor(.gray)
                 }
                 .padding()
-                .background(Color("AppBackground2"))
+                .background(Color.regoBackground2)
                 .cornerRadius(8)
             }
             .sheet(isPresented: $showCategoryPicker) {
@@ -331,7 +331,7 @@ struct DateSection: View {
                         .foregroundColor(.gray)
                 }
                 .padding()
-                .background(Color("AppBackground2"))
+                .background(Color.regoBackground2)
                 .cornerRadius(8)
             }
             .sheet(isPresented: $showDatePicker) {
@@ -366,7 +366,7 @@ struct MoodSection: View {
                         .foregroundColor(.gray)
                 }
                 .padding()
-                .background(Color("AppBackground2"))
+                .background(Color.regoBackground2)
                 .cornerRadius(8)
             }
             .sheet(isPresented: $showMoodPicker) {

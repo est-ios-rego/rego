@@ -31,10 +31,10 @@ struct SettingView: View {
                     }
                 }
             }
-            .listRowBackground(Color("AppBackground2"))
+            .listRowBackground(Color.regoBackground2)
         }
         .scrollContentBackground(.hidden)
-        .background(Color("AppBackground"))
+        .background(Color.regoBackground)
     }
 }
 

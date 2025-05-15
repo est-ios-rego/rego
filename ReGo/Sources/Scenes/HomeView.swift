@@ -32,7 +32,7 @@ struct HomeView: View {
     }
 
     var buttonStrokeColor: Color {
-        colorScreme == .dark ? .brown.opacity(0.7) : Color("AppCategoryBg2").opacity(0.7)
+        colorScreme == .dark ? .brown.opacity(0.7) : Color.regoCategoryBg2.opacity(0.7)
 
     }
 
@@ -219,6 +219,7 @@ struct HomeView: View {
                                         Text("목록보기")
                                             .font(.caption)
                                             .frame(alignment: .trailing)
+                                            .foregroundStyle(Color.regoAccent)
 
                                     }
 
@@ -306,6 +307,7 @@ struct HomeView: View {
                                         Text("통계보기")
                                             .font(.caption)
                                             .frame(alignment: .trailing)
+                                            .foregroundStyle(Color.regoAccent)
 
                                     }
                                 }
@@ -426,7 +428,7 @@ struct HomeView: View {
                         .map { $0 }
                 }
                 .scrollContentBackground(.hidden)
-                .background(Color("AppBackground"))
+                .background(Color.regoBackground)
             }
         }
     }

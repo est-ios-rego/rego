@@ -83,7 +83,7 @@ struct DetailView: View {
             .padding()
         }
         .scrollContentBackground(.hidden)
-        .background(Color("AppBackground"))
+        .background(Color.regoBackground)
         .navigationTitle("상세보기")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
@@ -94,7 +94,7 @@ struct DetailView: View {
                     dismiss()
                 } label: {
                     Image(systemName: "chevron.left")
-                        .foregroundStyle(Color("AppAccent"))
+                        .foregroundStyle(Color.regoAccent)
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -116,7 +116,7 @@ struct DetailView: View {
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
-                        .foregroundStyle(Color("AppAccent"))
+                        .foregroundStyle(Color.regoAccent)
                 }
             }
         }

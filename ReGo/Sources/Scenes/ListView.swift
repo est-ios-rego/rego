@@ -236,7 +236,7 @@ struct DateFilterView: View {
                 showStartDateSheet = true
             } label: {
                 HStack {
-                    Text("시작일: \(selectedStartDate.toDetailDate)")
+                    Text("\(selectedStartDate.toListDate)")
                         .foregroundColor(.primary)
                     Spacer()
                     Image(systemName: "calendar")
@@ -254,7 +254,7 @@ struct DateFilterView: View {
                 showEndDateSheet = true
             } label: {
                 HStack {
-                    Text("종료일: \(selectedEndDate.toDetailDate)")
+                    Text("\(selectedEndDate.toListDate)")
                         .foregroundColor(.primary)
                     Spacer()
                     Image(systemName: "calendar")

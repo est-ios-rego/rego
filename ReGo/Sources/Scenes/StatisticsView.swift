@@ -231,7 +231,7 @@ struct StatisticsView: View {
             .padding(.horizontal)
             .scrollIndicators(.hidden)
             .scrollContentBackground(.hidden)
-            .background(Color("AppBackground"))
+            .background(Color.regoBackground)
 
         }
     }
