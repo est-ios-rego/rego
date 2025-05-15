@@ -108,7 +108,7 @@ extension StatisticsView {
     func changePeriodCase(_ newValue: StatisticsPeriodCase) {
         let calendar = Calendar.current
 
-        // 메서드 종료 전 selectedDay 초기화.
+        // 기간 단위가 바뀌면서 선택한 '일'을 초기화
         defer {
             selectedDay = nil
         }
@@ -147,7 +147,7 @@ extension StatisticsView {
     func changeDate(isNext: Bool) {
         let calendar = Calendar.current
 
-        // 메서드 종료 전 selectedDay 초기화.
+        // 기간이 바뀌면서 선택한 '일'을 초기화
         defer {
             selectedDay = nil
         }
@@ -159,7 +159,7 @@ extension StatisticsView {
             // 주간 단위: 현재 baseStartDate에서 일주일 전/후로 이동.
             nextStartDate = calendar.date(byAdding: .weekOfYear, value: isNext ? 1 : -1, to: baseStartDate)!
 
-            let weekday = calendar.component(.weekday, from: nextStartDate) // 이동된 주의 요일.
+            let weekday = calendar.component(.weekday, from: nextStartDate)
 
             // 이동한 주의 시작일(일요일)과 종료일(토요일)을 계산
             nextStartDate = calendar.date(byAdding: .weekday, value: 1 - weekday, to: nextStartDate)!
@@ -175,7 +175,7 @@ extension StatisticsView {
             nextEndDate = calendar.date(byAdding: DateComponents(month: 1, day: -1),to: nextStartDate)!
         }
 
-        // isLastWeek 상태 업데이트.
+        // isLastWeek 상태 업데이트: 새로운 종료 날짜가 현재 시점 이후인지 확인.
         isLastWeek = nextEndDate >= .now
 
         baseStartDate = nextStartDate
