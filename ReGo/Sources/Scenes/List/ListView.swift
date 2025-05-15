@@ -70,6 +70,7 @@ struct ListView: View {
     @State private var showFilterView = false
     @State private var showCategoryPicker = false
     @State private var showEditView = false
+    @State private var showdatePicker = false
 
     var body: some View {
         NavigationStack {
@@ -126,19 +127,40 @@ struct ListView: View {
 
                         Spacer()
 
+                        if dateSelection == "기간" {
+                            HStack {
+                                Text(selectedStartDate.toListDate)
+                                    .labelsHidden()
+
+                                Text("~")
+
+                                Text(selectedEndDate.toListDate)
+                                    .labelsHidden()
+                            }
+                        }
+
                         Picker("", selection: $dateSelection) {
                             ForEach(["전체", "기간"], id: \.self) { item in
                                 Text(item)
+
                             }
                         }
                         .tint(.primary)
+                        .onChange(of: dateSelection) {
+                            if $0 == "기간" {
+                                showdatePicker = true
+                            }
+                        }
                     }
 
                     if dateSelection == "기간" {
-                        DateFilterView(
-                            selectedStartDate: $selectedStartDate,
-                            selectedEndDate: $selectedEndDate
-                        )
+                        if showdatePicker{
+                            DateFilterView(
+                                selectedStartDate: $selectedStartDate,
+                                selectedEndDate: $selectedEndDate,
+                                showdatePicker: $showdatePicker
+                            )
+                        }
                     }
 
                 }
@@ -203,12 +225,13 @@ struct ListView: View {
 struct DateFilterView: View {
     @Binding var selectedStartDate: Date
     @Binding var selectedEndDate: Date
+    @Binding var showdatePicker: Bool
 
     @State private var showStartDateSheet = false
     @State private var showEndDateSheet = false
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(alignment: .trailing, spacing: 8) {
             Button {
                 showStartDateSheet = true
             } label: {
@@ -235,7 +258,7 @@ struct DateFilterView: View {
                         .foregroundColor(.primary)
                     Spacer()
                     Image(systemName: "calendar")
-                        .foregroundStyle(Color.appAccent)
+                        .foregroundStyle(Color.regoAccent)
                 }
                 .padding()
                 .background(Color.regoBackground2)
@@ -243,6 +266,13 @@ struct DateFilterView: View {
             }
             .onChange(of: selectedEndDate) {
                 setStartDate()
+            }
+
+            Button {
+                showdatePicker = false
+            } label: {
+                Text("완료")
+                    .foregroundStyle(Color.regoAccent)
             }
         }
         .sheet(isPresented: $showStartDateSheet) {
