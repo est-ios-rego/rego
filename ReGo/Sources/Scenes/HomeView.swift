@@ -453,7 +453,7 @@ struct HomeView: View {
 
                 .onAppear {
                     startLoopingAnimation()
-                    recentRetros = Array(retros.prefix(3))
+                    recentRetros = retros.sorted(by: { $0.date > $1.date }).prefix(3).map { $0 }
                 }
 
                 .scrollContentBackground(.hidden)
