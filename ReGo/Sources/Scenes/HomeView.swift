@@ -22,8 +22,9 @@ struct HomeView: View {
     @State private var beigeHeight: CGFloat = 50
     @State private var apricotHeight: CGFloat = 40
     @State private var lavenderHeight: CGFloat = 40
+    @State private var toggleState = false
     @State private var recentRetros: [Retrospect] = []
-    
+
 
     @Binding var selectedIndex: Int
 
@@ -88,6 +89,19 @@ struct HomeView: View {
         return formatter
     }
 
+    func startLoopingAnimation() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            withAnimation(.easeInOut(duration: 4)) {
+                toggleState.toggle()
+                brownHeight = toggleState ? 130 : 50
+                mintHeight = toggleState ? 120 : 40
+                beigeHeight = toggleState ? 140 : 50
+                apricotHeight = toggleState ? 110 : 40
+                lavenderHeight = toggleState ? 150 : 40
+            }
+            startLoopingAnimation()
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -140,64 +154,54 @@ struct HomeView: View {
                         VStack {
                             VStack(alignment: .center) {
 
-                                    HStack(alignment: .bottom, spacing: 10) {
+                                HStack(alignment: .bottom, spacing: 10) {
 
 
 
-                                        Rectangle()
-                                            .foregroundColor(.brown.opacity(0.9))
-                                            .frame(height: brownHeight)
-                                            .cornerRadius(6)
-                                            .shadow(color: .brown.opacity(0.5), radius: 2, x: 0, y: 5)
-                                            .animation(infiniteAnimation, value: brownHeight)
-
-                                        Rectangle()
-                                            .foregroundColor(.mint.opacity(0.4))
-                                            .frame(height: mintHeight)
-                                            .cornerRadius(6)
-                                            .shadow(color: .mint.opacity(0.4), radius: 2, x: 0, y: 5)
-                                            .animation(infiniteAnimation, value: mintHeight)
-
-                                        Rectangle()
-                                            .foregroundColor(.brown.opacity(0.5))
-                                            .frame(height: beigeHeight)
-                                            .cornerRadius(6)
-                                            .shadow(color: .brown.opacity(0.4), radius: 2, x: 0, y: 5)
-                                            .animation(infiniteAnimation, value: beigeHeight)
-
-                                        Rectangle()
-                                            .foregroundColor(.orange.opacity(0.4))
-                                            .frame(height: apricotHeight)
-                                            .cornerRadius(6)
-                                            .shadow(color: .orange.opacity(0.4), radius: 2, x: 0, y: 5)
-                                            .animation(infiniteAnimation, value: apricotHeight)
-
-                                        Rectangle()
-                                            .foregroundColor(.red.opacity(0.4))
-                                            .frame(height: lavenderHeight)
-                                            .cornerRadius(6)
-                                            .shadow(color: .red.opacity(0.3), radius: 2, x: 0, y: 5)
-                                            .animation(infiniteAnimation, value: lavenderHeight)
+                                    Rectangle()
+                                        .foregroundColor(.brown.opacity(0.9))
+                                        .frame(height: brownHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .brown.opacity(0.5), radius: 2, x: 0, y: 5)
 
 
-                                        Spacer()
-
-                                    }
-                                    .onAppear {                           DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                                        brownHeight = 130
-                                        mintHeight = 120
-                                        beigeHeight = 140
-                                        apricotHeight = 110
-                                        lavenderHeight = 150                                }
-                                    }
+                                    Rectangle()
+                                        .foregroundColor(.mint.opacity(0.4))
+                                        .frame(height: mintHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .mint.opacity(0.4), radius: 2, x: 0, y: 5)
 
 
-                                    .padding(.horizontal, 40)
-                                    .frame(width: geo.size.width > 600 &&
-                                           geo.size.height > geo.size.width ? 600 : nil,
-                                           height: 300, alignment: .bottom)
-                                    .padding(.bottom, 5)
+                                    Rectangle()
+                                        .foregroundColor(.brown.opacity(0.5))
+                                        .frame(height: beigeHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .brown.opacity(0.4), radius: 2, x: 0, y: 5)
 
+
+                                    Rectangle()
+                                        .foregroundColor(.orange.opacity(0.4))
+                                        .frame(height: apricotHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .orange.opacity(0.4), radius: 2, x: 0, y: 5)
+
+
+                                    Rectangle()
+                                        .foregroundColor(.red.opacity(0.4))
+                                        .frame(height: lavenderHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .red.opacity(0.3), radius: 2, x: 0, y: 5)
+
+
+
+                                    Spacer()
+
+                                }
+                                .padding(.horizontal, 40)
+                                .frame(width: geo.size.width > 600 &&
+                                       geo.size.height > geo.size.width ? 600 : nil,
+                                       height: 200, alignment: .bottom)
+                                .padding(.bottom, 5)
 
 
 
@@ -300,7 +304,7 @@ struct HomeView: View {
                                 )
                                 .padding(.horizontal, 5)
                                 .padding(.top, 30)
-                                
+
                                 if geo.size.width > 600 && geo.size.height > geo.size.width {
                                     Spacer().frame(height: 40)
                                 }
@@ -446,8 +450,10 @@ struct HomeView: View {
                 }
 
                 .onAppear {
+                    startLoopingAnimation()
                     recentRetros = Array(allRetros.prefix(3))
                 }
+
                 .scrollContentBackground(.hidden)
                 .background(Color.regoBackground)
             }
