@@ -102,8 +102,7 @@ struct StatisticsView: View {
             }
             .padding()
         }
-        .frame(width: 500)
-
+        .frame(width: UIDevice.isPad ? 500 : nil)
     }
 
     var noDataView: some View {
