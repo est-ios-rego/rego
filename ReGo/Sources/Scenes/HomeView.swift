@@ -136,113 +136,121 @@ struct HomeView: View {
 
                         Spacer()
 
+                        VStack {
+                            VStack(alignment: .center) {
 
-                        VStack(alignment: .center) {
-
-                            HStack(alignment: .bottom) {
-
-                                Rectangle()
-                                    .foregroundColor(.brown.opacity(0.9))
-                                    .frame(width: 40, height: brownHeight)
-                                    .cornerRadius(6)
-                                    .shadow(color: .brown.opacity(0.5), radius: 2, x: 0, y: 5)
-                                    .onAppear {
-                                        withAnimation(infiniteAnimation) {
-                                            brownHeight = 130
-                                        }
-                                    }
-
-                                Rectangle()
-                                    .foregroundColor(.mint.opacity(0.4))
-                                    .frame(width: 40, height: mintHeight)
-                                    .cornerRadius(6)
-                                    .shadow(color: .mint.opacity(0.4), radius: 2, x: 0, y: 5)
-                                    .onAppear {
-                                        withAnimation(infiniteAnimation) {
-                                            mintHeight = 120
-                                        }
-                                    }
-
-                                Rectangle()
-                                    .foregroundColor(.brown.opacity(0.5))
-                                    .frame(width: 40, height: beigeHeight)
-                                    .cornerRadius(6)
-                                    .shadow(color: .brown.opacity(0.4), radius: 2, x: 0, y: 5)
-                                    .onAppear {
-                                        withAnimation(infiniteAnimation) {
-                                            beigeHeight = 140
-                                        }
-                                    }
-
-                                Rectangle()
-                                    .foregroundColor(.orange.opacity(0.4))
-                                    .frame(width: 40, height: apricotHeight)
-                                    .cornerRadius(6)
-                                    .shadow(color: .orange.opacity(0.4), radius: 2, x: 0, y: 5)
-                                    .onAppear {
-                                        withAnimation(infiniteAnimation) {
-                                            apricotHeight = 110
-                                        }
-                                    }
-
-                                Rectangle()
-                                    .foregroundColor(.red.opacity(0.4))
-                                    .frame(width: 40, height: lavenderHeight)
-                                    .cornerRadius(6)
-                                    .shadow(color: .red.opacity(0.3), radius: 2, x: 0, y: 5)
-                                    .onAppear {
-                                        withAnimation(infiniteAnimation) {
-                                            lavenderHeight = 150
-                                        }
-                                    }
-                            }
-
-                            .frame(height: 100, alignment: .bottom)
-                            .padding(.bottom, 10)
-
-                            VStack {
-
-                                HStack {
-
-                                    Text("최근 작성한 회고")
-                                        .font(.headline)
-                                        .foregroundColor(readStrokeColor)
-
-
-
+                                if geo.size.width > 600 && geo.size.height > geo.size.width {
                                     Spacer()
-
-                                    Button {
-                                        selectedIndex = 1
-                                    } label: {
-
-                                        Text("목록보기")
-                                            .font(.caption)
-                                            .frame(alignment: .trailing)
-                                            .foregroundStyle(Color.regoAccent)
-
-                                    }
-
                                 }
-                                .padding(.horizontal, 20)
 
+                                HStack(alignment: .bottom) {
 
+                                    Rectangle()
+                                        .foregroundColor(.brown.opacity(0.9))
+                                        .frame(width: 40, height: brownHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .brown.opacity(0.5), radius: 2, x: 0, y: 5)
+                                        .onAppear {
+                                            withAnimation(infiniteAnimation) {
+                                                brownHeight = 130
+                                            }
+                                        }
 
-                                if recentRetros.isEmpty {
-                                    
+                                    Rectangle()
+                                        .foregroundColor(.mint.opacity(0.4))
+                                        .frame(width: 40, height: mintHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .mint.opacity(0.4), radius: 2, x: 0, y: 5)
+                                        .onAppear {
+                                            withAnimation(infiniteAnimation) {
+                                                mintHeight = 120
+                                            }
+                                        }
 
-                                    ZStack {
+                                    Rectangle()
+                                        .foregroundColor(.brown.opacity(0.5))
+                                        .frame(width: 40, height: beigeHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .brown.opacity(0.4), radius: 2, x: 0, y: 5)
+                                        .onAppear {
+                                            withAnimation(infiniteAnimation) {
+                                                beigeHeight = 140
+                                            }
+                                        }
 
-                                        RoundedRectangle(cornerRadius: 30)
-                                            .fill(.orange.opacity(0.4))
-                                            .frame(width: 120, height: 80)
-                                            .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+                                    Rectangle()
+                                        .foregroundColor(.orange.opacity(0.4))
+                                        .frame(width: 40, height: apricotHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .orange.opacity(0.4), radius: 2, x: 0, y: 5)
+                                        .onAppear {
+                                            withAnimation(infiniteAnimation) {
+                                                apricotHeight = 110
+                                            }
+                                        }
 
-                                        Text("회고를 작성해주세요")
-                                            .font(.caption)
+                                    Rectangle()
+                                        .foregroundColor(.red.opacity(0.4))
+                                        .frame(width: 40, height: lavenderHeight)
+                                        .cornerRadius(6)
+                                        .shadow(color: .red.opacity(0.3), radius: 2, x: 0, y: 5)
+                                        .onAppear {
+                                            withAnimation(infiniteAnimation) {
+                                                lavenderHeight = 150
+                                            }
+                                        }
+                                }
+
+                                .frame(height: 100, alignment: .bottom)
+                                .padding(.bottom, 10)
+
+                                if geo.size.width > 600 && geo.size.height > geo.size.width {
+                                    Spacer()
+                                }
+                                
+                                VStack {
+
+                                    HStack {
+
+                                        Text("최근 작성한 회고")
+                                            .font(.headline)
                                             .foregroundColor(readStrokeColor)
+
+
+
+                                        Spacer()
+
+                                        Button {
+                                            selectedIndex = 1
+                                        } label: {
+
+                                            Text("목록보기")
+                                                .font(.caption)
+                                                .frame(alignment: .trailing)
+                                                .foregroundStyle(Color.regoAccent)
+
+                                        }
+
                                     }
-                                } else {
+                                    .padding(.horizontal, 20)
+
+
+
+                                    if recentRetros.isEmpty {
+
+
+                                        ZStack {
+
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .fill(.orange.opacity(0.4))
+                                                .frame(width: 120, height: 80)
+                                                .shadow(color: .white.opacity(0.3), radius: 4, x: 0, y: 5)
+
+                                            Text("회고를 작성해주세요")
+                                                .font(.caption)
+                                                .foregroundColor(readStrokeColor)
+                                        }
+                                    } else {
 
                                         HStack(spacing: 7) {
 
@@ -280,104 +288,105 @@ struct HomeView: View {
                                         .padding(.horizontal, 10)
 
 
-                                }
-                                
-
-
-
-                            }
-                            .frame(
-                                maxWidth: geo.size.width > 600 ? 600 : .infinity,
-                                alignment: .center
-                            )
-                            .padding(.horizontal, 5)
-                            .padding(.top, 30)
-
-
-                            VStack {
-
-                                HStack {
-
-                                    Spacer()
-
-                                    Button {
-                                        selectedIndex = 2
-                                    } label: {
-
-                                        Text("통계보기")
-                                            .font(.caption)
-                                            .frame(alignment: .trailing)
-                                            .foregroundStyle(Color.regoAccent)
-
-                                    }
-                                }
-                                .padding(.horizontal, 20)
-
-                                HStack {
-
-                                    ZStack{
-
-                                        RoundedRectangle(cornerRadius: 30)
-                                            .fill(barStrokeColor)
-                                            .frame(height: 80)
-                                            .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
-
-                                        VStack {
-
-                                            Text("이번달 회고 작성 횟수 :\n")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(readStrokeColor)
-                                                .padding(.top, 5)
-
-
-                                            Text("\(monthlyCount)회")
-                                                .font(.headline)
-                                                .bold()
-                                                .foregroundColor(Color(red: 0.85, green: 0.55, blue: 0.55).opacity(0.9))
-                                        }
-                                        .padding(.bottom, 15)
-                                        .frame(height: 80)
                                     }
 
 
 
-                                    ZStack{
-
-                                        RoundedRectangle(cornerRadius: 30)
-                                            .fill(barStrokeColor)
-                                            .frame(height: 80)
-                                            .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
-
-
-                                        VStack(alignment: .center, spacing: 0) {
-
-                                            Text("이번주 회고 작성 횟수 :\n")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(readStrokeColor)
-                                                .padding(.top, 5)
-
-                                            Text("\(weeklyCount)회")
-                                                .font(.headline)
-                                                .bold()
-                                                .foregroundColor(Color(red: 0.85, green: 0.55, blue: 0.55).opacity(0.9))
-                                        }
-                                        .padding(.bottom, 15)
-                                        .frame(height: 80)
-                                    }
-
 
                                 }
+                                .frame(
+                                    maxWidth: geo.size.width > 600 ? 600 : .infinity,
+                                    alignment: .center
+                                )
                                 .padding(.horizontal, 5)
-                                .padding(.bottom)
+                                .padding(.top, 30)
 
+
+                                VStack {
+
+                                    HStack {
+
+                                        Spacer()
+
+                                        Button {
+                                            selectedIndex = 2
+                                        } label: {
+
+                                            Text("통계보기")
+                                                .font(.caption)
+                                                .frame(alignment: .trailing)
+                                                .foregroundStyle(Color.regoAccent)
+
+                                        }
+                                    }
+                                    .padding(.horizontal, 20)
+
+                                    HStack {
+
+                                        ZStack{
+
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .fill(barStrokeColor)
+                                                .frame(height: 80)
+                                                .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
+
+                                            VStack {
+
+                                                Text("이번달 회고 작성 횟수 :\n")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(readStrokeColor)
+                                                    .padding(.top, 5)
+
+
+                                                Text("\(monthlyCount)회")
+                                                    .font(.headline)
+                                                    .bold()
+                                                    .foregroundColor(Color(red: 0.85, green: 0.55, blue: 0.55).opacity(0.9))
+                                            }
+                                            .padding(.bottom, 15)
+                                            .frame(height: 80)
+                                        }
+
+
+
+                                        ZStack{
+
+                                            RoundedRectangle(cornerRadius: 30)
+                                                .fill(barStrokeColor)
+                                                .frame(height: 80)
+                                                .shadow(color: .brown.opacity(0.3), radius: 3, x: 0, y: 2)
+
+
+                                            VStack(alignment: .center, spacing: 0) {
+
+                                                Text("이번주 회고 작성 횟수 :\n")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(readStrokeColor)
+                                                    .padding(.top, 5)
+
+                                                Text("\(weeklyCount)회")
+                                                    .font(.headline)
+                                                    .bold()
+                                                    .foregroundColor(Color(red: 0.85, green: 0.55, blue: 0.55).opacity(0.9))
+                                            }
+                                            .padding(.bottom, 15)
+                                            .frame(height: 80)
+                                        }
+
+
+                                    }
+                                    .padding(.horizontal, 5)
+                                    .padding(.bottom)
+
+                                }
+                                .frame(
+                                    maxWidth: geo.size.width > 600 ? 600 : .infinity,
+                                    alignment: .center
+                                )
+                                .padding(10)
                             }
-                            .frame(
-                                maxWidth: geo.size.width > 600 ? 600 : .infinity,
-                                alignment: .center
-                            )
-                            .padding(10)
                         }
                     }
 
