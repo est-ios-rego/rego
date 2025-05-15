@@ -44,11 +44,6 @@ ReGo는 자기 성찰이나 업무 회고를 습관화하고 싶은 개인 사�
 - Foundation
 - Charts - Apple 공식 라이브러리로 통계 데이터를 시각적으로 표현
 
-│   ├── Components/            # 재사용 가능한 UI 컴포넌트
-│   ├── Extensions/            # View, Date 등 확장 기능
-│   ├── Models/                # 데이터 모델 정의
-│   └── Scenes/                # 화면별 뷰 및 뷰모델
-
 ## 📁 폴더 구조
 ```
 ReGo/
@@ -82,9 +77,17 @@ class Retrospect {
     var category: RetrospectCategory
     var mood: Mood
 }
+
+// 회고의 카테고리를 나타내는 열거형
+enum RetrospectCategory: String, Codable, CaseIterable {
+    case daily, work, study, relationship, goal, lesson, all
+}
+
+// 회고 작성 시 선택 가능한 감정 상태를 나타내는 열거형
+enum Mood: String, CaseIterable, Identifiable, Codable, Equatable {
+    case happy, sad, angry, tired, excited, neutral, anxious
+}
 ```
-- `RetrospectCategory`: .daily, .work, .study, .relationship, .goal, .lesson, .all
-- `Mood`: .happy, .sad, .angry, .tired, .excited, .neutral, .anxious
 
 ## 💾 저장 방식 (SwiftData)
 ReGo는 Apple이 제공하는 최신 영속성 프레임워크인 SwiftData를 사용합니다.
