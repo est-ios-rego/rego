@@ -133,88 +133,79 @@ struct HomeView: View {
 
 
 
-
+                            Spacer()
 
                         }
-
-                        Spacer()
 
                         VStack {
                             VStack(alignment: .center) {
 
+                                    HStack(alignment: .bottom, spacing: 10) {
 
 
 
-                                HStack(alignment: .bottom, spacing: 10) {
-                                    Spacer()
+                                        Rectangle()
+                                            .foregroundColor(.brown.opacity(0.9))
+                                            .frame(height: brownHeight)
+                                            .cornerRadius(6)
+                                            .shadow(color: .brown.opacity(0.5), radius: 2, x: 0, y: 5)
+                                            .animation(infiniteAnimation, value: brownHeight)
 
-                                    Rectangle()
-                                        .foregroundColor(.brown.opacity(0.9))
-                                        .frame(height: brownHeight)
-                                        .cornerRadius(6)
-                                        .shadow(color: .brown.opacity(0.5), radius: 2, x: 0, y: 5)
-                                        .onAppear {
-                                            withAnimation(infiniteAnimation) {
-                                                brownHeight = 130
-                                            }
-                                        }
+                                        Rectangle()
+                                            .foregroundColor(.mint.opacity(0.4))
+                                            .frame(height: mintHeight)
+                                            .cornerRadius(6)
+                                            .shadow(color: .mint.opacity(0.4), radius: 2, x: 0, y: 5)
+                                            .animation(infiniteAnimation, value: mintHeight)
 
-                                    Rectangle()
-                                        .foregroundColor(.mint.opacity(0.4))
-                                        .frame(height: mintHeight)
-                                        .cornerRadius(6)
-                                        .shadow(color: .mint.opacity(0.4), radius: 2, x: 0, y: 5)
-                                        .onAppear {
-                                            withAnimation(infiniteAnimation) {
-                                                mintHeight = 110
-                                            }
-                                        }
+                                        Rectangle()
+                                            .foregroundColor(.brown.opacity(0.5))
+                                            .frame(height: beigeHeight)
+                                            .cornerRadius(6)
+                                            .shadow(color: .brown.opacity(0.4), radius: 2, x: 0, y: 5)
+                                            .animation(infiniteAnimation, value: beigeHeight)
 
-                                    Rectangle()
-                                        .foregroundColor(.brown.opacity(0.5))
-                                        .frame(height: beigeHeight)
-                                        .cornerRadius(6)
-                                        .shadow(color: .brown.opacity(0.4), radius: 2, x: 0, y: 5)
-                                        .onAppear {
-                                            withAnimation(infiniteAnimation) {
-                                                beigeHeight = 120
-                                            }
-                                        }
+                                        Rectangle()
+                                            .foregroundColor(.orange.opacity(0.4))
+                                            .frame(height: apricotHeight)
+                                            .cornerRadius(6)
+                                            .shadow(color: .orange.opacity(0.4), radius: 2, x: 0, y: 5)
+                                            .animation(infiniteAnimation, value: apricotHeight)
 
-                                    Rectangle()
-                                        .foregroundColor(.orange.opacity(0.4))
-                                        .frame(height: apricotHeight)
-                                        .cornerRadius(6)
-                                        .shadow(color: .orange.opacity(0.4), radius: 2, x: 0, y: 5)
-                                        .onAppear {
-                                            withAnimation(infiniteAnimation) {
-                                                apricotHeight = 130
-                                            }
-                                        }
+                                        Rectangle()
+                                            .foregroundColor(.red.opacity(0.4))
+                                            .frame(height: lavenderHeight)
+                                            .cornerRadius(6)
+                                            .shadow(color: .red.opacity(0.3), radius: 2, x: 0, y: 5)
+                                            .animation(infiniteAnimation, value: lavenderHeight)
 
-                                    Rectangle()
-                                        .foregroundColor(.red.opacity(0.4))
-                                        .frame(height: lavenderHeight)
-                                        .cornerRadius(6)
-                                        .shadow(color: .red.opacity(0.3), radius: 2, x: 0, y: 5)
-                                        .onAppear {
-                                            withAnimation(infiniteAnimation) {
-                                                lavenderHeight = 110
-                                            }
-                                        }
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 40)
-                                .frame(width: geo.size.width > 600 &&
-                                       geo.size.height > geo.size.width ? 600 : nil,
-                                    height: 100, alignment: .bottom)
-                                .padding(.bottom, 5)
 
-                                if geo.size.width > 600 && geo.size.height > geo.size.width {
-                                    Spacer().frame(height: 150)
-                                }
+                                        Spacer()
+
+                                    }
+                                    .onAppear {                           DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                        brownHeight = 130
+                                        mintHeight = 120
+                                        beigeHeight = 140
+                                        apricotHeight = 110
+                                        lavenderHeight = 150                                }
+                                    }
+
+
+                                    .padding(.horizontal, 40)
+                                    .frame(width: geo.size.width > 600 &&
+                                           geo.size.height > geo.size.width ? 600 : nil,
+                                           height: 300, alignment: .bottom)
+                                    .padding(.bottom, 5)
+
+
+
 
                                 VStack {
+
+                                    if geo.size.width > 600 && geo.size.height > geo.size.width {
+                                        Spacer().frame(height: 150)
+                                    }
 
                                     HStack {
 
