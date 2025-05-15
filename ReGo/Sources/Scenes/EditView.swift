@@ -10,7 +10,8 @@ enum EditMode {
 struct EditView: View {
     /// 생성/수정 모드 지정
     let mode: EditMode
-    /// 수정 대상 회고 객체 (Bindable로 SwiftData 연동)
+
+    /// 대상 회고 객체 (Bindable로 SwiftData 연동)
     @Bindable var retro: Retrospect
 
     // 원본 데이터 저장용 (변경 감지)
@@ -92,12 +93,11 @@ struct EditView: View {
             }
         }
         .onAppear {
-            switch mode {
-            case .create:
+            if mode == .create {
                 isTitleFocused = true
-            case .update:
-                initRetro()
             }
+
+            initRetro()
         }
         .alert("변경사항이 저장되지 않았습니다.\n나가시겠습니까?", isPresented: $showDismissAlert) {
             Button("취소", role: .cancel) {}

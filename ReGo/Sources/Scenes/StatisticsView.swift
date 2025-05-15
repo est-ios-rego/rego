@@ -57,11 +57,18 @@ struct StatisticsView: View {
     /// Contribution Chart에서 선택된 날짜(일) 상태 변수.
     @State var selectedDay: Int? = nil
 
-    // FIXME: 추후 @Query로 실제 데이터 연결 필요
-//    @Query var data: [Retrospect]
+    var selectedDate: Date? {
+        guard let selectedDay = selectedDay else {
+            return nil
+        }
 
-    /// 표시할 회고 데이터. (현재 샘플 데이터 사용)
-    @State var data = Retrospect.detailSampleData
+        let components = Calendar.current.dateComponents([.year, .month], from: baseStartDate)
+
+        return Calendar.current.date(from: DateComponents(year: components.year, month: components.month, day: selectedDay)) ?? nil
+    }
+
+    /// SwiftData를 통해 저장된 회고 객체 불러와서 바인딩
+    @Query var data: [Retrospect]
 
     /// 회고 등록 화면 표시 여부 상태 변수.
     @State var showEditView = false
@@ -76,9 +83,15 @@ struct StatisticsView: View {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: .now)
 
+        // 단위 기간의 시작일 기본 값은 일요일 0시 0분 0초
+        var startDate = calendar.date(byAdding: .weekday, value: 1 - weekday, to: .now)!
+
+        // 단위 기간의 시작일 기본 값은 토요일 0시 0분 0초
+        startDate = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: startDate)!
+
         // 기본값을 현재 날짜가 속한 주의 시작일과 종료일로 설정.
-        self.baseStartDate = calendar.date(byAdding: .weekday, value: 1 - weekday, to: .now)!
-        self.baseEndDate = calendar.date(byAdding: .weekday, value: 7 - weekday, to: .now)!
+        self.baseStartDate = startDate
+        self.baseEndDate = calendar.date(byAdding: .weekday, value: 6, to: startDate)!
     }
 
     /// 통계 화면 헤더 뷰.
@@ -245,6 +258,15 @@ struct StatisticsView: View {
                             }
                     }
                     .padding(.bottom)
+                    .navigationDestination(isPresented: $showEditView) {
+                        EditView(mode: .create, retro: Retrospect(
+                            title: "",
+                            content: "",
+                            date: selectedDate ?? .now,
+                            category: .daily,
+                            mood: .tired
+                        ))
+                    }
                 }
                 .navigationTitle("Statistics")
                 .navigationBarTitleDisplayMode(.inline)
@@ -254,7 +276,6 @@ struct StatisticsView: View {
             .scrollIndicators(.hidden)
             .scrollContentBackground(.hidden)
             .background(Color.regoBackground)
-
         }
     }
 }
