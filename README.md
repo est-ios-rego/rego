@@ -1,4 +1,6 @@
-# ReGo - 회고 기록 앱
+<img width="270" alt="스크린샷 2025-05-15 오전 11 25 14" src="https://github.com/user-attachments/assets/6ff17d93-7dbb-47ae-b22c-fbeee32266b3" />
+
+# ReGo - 회고 관리 앱
 
 ReGo는 일상 및 회고를 기록하고, 카테고리와 감정 상태로 분류하며, 주∙월간 통계를 통해 회고 패턴을 분석할 수 있는 iOS 앱입니다. SwiftUI 및 SwiftData를 기반으로 개발되었습니다.
 
