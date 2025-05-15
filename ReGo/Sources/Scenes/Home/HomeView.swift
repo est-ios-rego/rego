@@ -381,7 +381,7 @@ struct HomeView: View {
 
 
 
-                    NavigationLink(destination: EditView(mode: .create, retro: Retrospect.sampleData[0])) {
+                    NavigationLink(destination: EditView(mode: .create, retro: Retrospect.emptyData)) {
                         VStack {
 
                             HStack {

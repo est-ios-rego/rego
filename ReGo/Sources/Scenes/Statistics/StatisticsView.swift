@@ -257,32 +257,7 @@ struct CreateButton: View {
                 }
         }
         .navigationDestination(isPresented: $showEditView) {
-            EditView(mode: .create)
-        }
-    }
-}
-
-struct CreateButton: View {
-    var buttonText: String
-
-    @Binding var showEditView: Bool
-
-    var body: some View {
-        Button {
-            showEditView = true
-        } label: {
-            Text(buttonText)
-                .tint(.appAccent)
-                .bold()
-                .padding()
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.gray.opacity(0.7))
-                }
-        }
-        .navigationDestination(isPresented: $showEditView) {
-            EditView(mode: .create)
+            EditView(mode: .create, retro: Retrospect.emptyData)
         }
     }
 }
@@ -294,18 +269,18 @@ struct iOS: PreviewProvider {
     }
 }
 
-//struct iPadOSPortrait: PreviewProvider {
-//    static var previews: some View {
-//        StatisticsView(statPeriod: .week)
-//            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
-//            .previewInterfaceOrientation(.portrait)
-//    }
-//}
-//
-//struct iPadOSLandscape: PreviewProvider {
-//    static var previews: some View {
-//        StatisticsView(statPeriod: .week)
-//            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
-//            .previewInterfaceOrientation(.landscapeLeft)
-//    }
-//}
+struct iPadOSPortrait: PreviewProvider {
+    static var previews: some View {
+        StatisticsView(statPeriod: .week)
+            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
+            .previewInterfaceOrientation(.portrait)
+    }
+}
+
+struct iPadOSLandscape: PreviewProvider {
+    static var previews: some View {
+        StatisticsView(statPeriod: .week)
+            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
+            .previewInterfaceOrientation(.landscapeLeft)
+    }
+}

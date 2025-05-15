@@ -75,7 +75,20 @@ struct ListView: View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 20) {
 
-                
+//                샘플데이터 추가
+                Button {
+                    Retrospect.sampleData.forEach { item in
+                        modelContext.insert(item)
+                    }
+                    Retrospect.sampleDataForStatistics.forEach { item in
+                        modelContext.insert(item)
+                    }
+                    try? modelContext.save()
+                } label: {
+                    Text("샘플데이터 추가")
+                        .font(.largeTitle)
+                }
+
 
                 VStack {
 
@@ -180,11 +193,12 @@ struct ListView: View {
                 }
             }
             .navigationDestination(isPresented: $showEditView) {
-                EditView(mode: .create, retro: Retrospect.sampleData[0])
+                EditView(mode: .create, retro: Retrospect.emptyData)
             }
         }
     }
 }
+
 
 struct DateFilterView: View {
     @Binding var selectedStartDate: Date
@@ -203,10 +217,10 @@ struct DateFilterView: View {
                         .foregroundColor(.primary)
                     Spacer()
                     Image(systemName: "calendar")
-                        .foregroundStyle(Color("AppAccent"))
+                        .foregroundStyle(Color.regoAccent)
                 }
                 .padding()
-                .background(Color("AppBackground2"))
+                .background(Color.regoBackground2)
                 .cornerRadius(8)
             }
             .onChange(of: selectedStartDate) {
@@ -221,10 +235,10 @@ struct DateFilterView: View {
                         .foregroundColor(.primary)
                     Spacer()
                     Image(systemName: "calendar")
-                        .foregroundStyle(Color("AppAccent"))
+                        .foregroundStyle(Color.appAccent)
                 }
                 .padding()
-                .background(Color("AppBackground2"))
+                .background(Color.regoBackground2)
                 .cornerRadius(8)
             }
             .onChange(of: selectedEndDate) {
@@ -267,5 +281,23 @@ struct DateFilterView: View {
 #Preview {
     ListView()
         .modelContainer(for: Retrospect.self)
+}
+
+struct ListViewiPadOSPortrait: PreviewProvider {
+    static var previews: some View {
+        ListView()
+            .modelContainer(for: Retrospect.self)
+            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
+            .previewInterfaceOrientation(.portrait)
+    }
+}
+
+struct ListViewiPadOSLandscape: PreviewProvider {
+    static var previews: some View {
+        ListView()
+            .modelContainer(for: Retrospect.self)
+            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
+            .previewInterfaceOrientation(.landscapeLeft)
+    }
 }
 

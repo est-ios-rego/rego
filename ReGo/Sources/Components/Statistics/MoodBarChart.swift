@@ -17,7 +17,7 @@ struct MoodBarChart: View {
                 BarMark(
                     x: .value("Mood", item.emoji),
                     y: .value("Count", Int(item.count)),
-                    width: 25,
+                    width: 25
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .annotation(content: {

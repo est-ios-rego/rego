@@ -8,6 +8,16 @@
 import Foundation
 
 extension Retrospect {
+    static var emptyData: Retrospect {
+        return Retrospect(
+            title: "",
+            content: "",
+            date: Date(),
+            category: .daily,
+            mood: .tired
+        )
+    }
+
     static var sampleData: [Retrospect] {
         return [
             Retrospect(

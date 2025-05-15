@@ -89,11 +89,16 @@ struct DetailView: View {
         .navigationBarBackButtonHidden()
         .toolbar(.hidden, for: .tabBar)
         .toolbar {
+
             ToolbarItem(placement: .topBarLeading) {
                 Button {
                     dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(Color("AppAccent"))
                 }
             }
+
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     HStack {
