@@ -49,6 +49,7 @@ struct MainView: View {
         }
         .environmentObject(toastManager)
         .modifier(ToastModifier(isPresented: $toastManager.isPresented, message: toastManager.message))
+        .tint(Color.regoAccent)
     }
 }
 
