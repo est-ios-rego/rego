@@ -4,29 +4,41 @@
 //
 //  Created by 성주현 on 5/12/25.
 //
+/// 사용자 회고 통계를 다양한 방식으로 시각화하여 보여주는 뷰.
+///
+/// 주간/월간 기여도, 감정 분포, 카테고리별 비율 등 다각적인 통계 정보를 제공.
+//
 
 import Foundation
 import SwiftUI
 import SwiftData
 import Charts
 
-/// 통계 기간 (주간, 월간) 열거형.
+/// 통계 조회 기간 단위 열거형.
 enum StatisticsPeriodCase {
+    /// 주간 단위.
     case week
+    /// 월간 단위.
     case month
 }
 
-/// Mood 차트 항목 정의 구조체.
+/// 감정 통계 차트 표시용 데이터 구조체.
 struct MoodChartItem {
+    /// id
     var id: UUID = UUID()
+    /// 감정 표현 이모지
     var emoji: String
+    /// 해당 감정 회고 개수
     var count: Int
+    /// 차트 표시 색상
     var color: Color
 }
 
-/// 회고 통계 뷰.
+/// 사용자 회고 통계를 시각적으로 제공하는 메인 뷰.
 ///
-/// 주간 또는 월간 회고 작성 현황, 감정 및 카테고리별 통계 시각화 제공.
+/// 이 뷰는 사용자의 회고 데이터를 기반으로 주간 또는 월간 단위의 통계를 생성하고,
+/// Contribution 차트, 감정 분포 차트, 카테고리별 차트 등을 통해 다양한 관점에서
+/// 회고 패턴을 분석할 수 있도록 지원.
 struct StatisticsView: View {
     /// SwiftData 모델 컨텍스트 환경 변수.
     @Environment(\.modelContext) private var modelContext
@@ -45,10 +57,11 @@ struct StatisticsView: View {
     /// Contribution Chart에서 선택된 날짜(일) 상태 변수.
     @State var selectedDay: Int? = nil
 
-    // FIXME: 수정필요
+    // FIXME: 추후 @Query로 실제 데이터 연결 필요
 //    @Query var data: [Retrospect]
+
     /// 표시할 회고 데이터. (현재 샘플 데이터 사용)
-    @State var data = Retrospect.detailSampleData // FIXME: 추후 @Query로 실제 데이터 연결 필요
+    @State var data = Retrospect.detailSampleData
 
     /// 회고 등록 화면 표시 여부 상태 변수.
     @State var showEditView = false
@@ -56,7 +69,7 @@ struct StatisticsView: View {
     /// 뷰 내 애니메이션 효과 상태 변수.
     @State var isAnimated: Bool = false
 
-    /// 주차 한글 표시용 배열 (예: "첫", "둘").
+    /// 주차를 한글로 표시하기 위한 배열 (예: "첫째 주", "둘째 주").
     let numOfWeekKr = ["첫", "둘", "셋", "넷", "다섯"]
 
     init() {
@@ -171,13 +184,13 @@ struct StatisticsView: View {
 
                                                 CreateButton(buttonText: "이 날의 이야기 더하기", showEditView: $showEditView)
                                             }
-                                            .animation(.smooth, value: isAnimated)
-                                            .onAppear {
-                                                isAnimated = true
-                                            }
-                                            .onDisappear() {
-                                                isAnimated = false
-                                            }
+//                                            .animation(.smooth, value: isAnimated)
+//                                            .onAppear {
+//                                                isAnimated = true
+//                                            }
+//                                            .onDisappear() {
+//                                                isAnimated = false
+//                                            }
                                         } else {
                                             // 선택 날짜에 회고 작성 건 없는 경우
                                             noDataView
@@ -215,7 +228,7 @@ struct StatisticsView: View {
 
                                             Spacer()
 
-                                            CountByCategoryChart(startDate: baseStartDate, endDate: baseEndDate, data: dataFilteredByPeriod)
+                                            CountByCategoryChart(data: dataFilteredByPeriod)
                                                 .animation(.easeInOut, value: [baseStartDate, baseEndDate])
                                                 .frame(maxWidth: .infinity)
 
@@ -225,7 +238,7 @@ struct StatisticsView: View {
                                             .padding(.bottom)
                                             .animation(.easeInOut, value: [baseStartDate, baseEndDate])
 
-                                        CountByCategoryChart(startDate: baseStartDate, endDate: baseEndDate, data: dataFilteredByPeriod)
+                                        CountByCategoryChart(data: dataFilteredByPeriod)
                                             .animation(.easeInOut, value: [baseStartDate, baseEndDate])
                                     }
                                 }
