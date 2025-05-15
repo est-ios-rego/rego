@@ -64,7 +64,7 @@ class Retrospect {
 - `RetrospectCategory`: .daily, .work, .study, .relationship, .goal, .lesson, .all
 - `Mood`: .happy, .sad, .angry, .tired, .excited, .neutral, .anxious
 
-### 💾 저장 방식 (SwiftData)
+## 💾 저장 방식 (SwiftData)
 ReGo는 Apple이 제공하는 최신 영속성 프레임워크인 SwiftData를 사용합니다.
 - @Model을 통해 모델 정의
 - @Query로 회고 목록 바인딩
