@@ -286,7 +286,7 @@ struct StatisticsView: View {
 
 struct iOS: PreviewProvider {
     static var previews: some View {
-        StatisticsView(retros: Retrospect.detailSampleData)
+        StatisticsView(retros: Retrospect.sampleData)
             .previewDevice(PreviewDevice(rawValue: "iPhone 16 Pro")) // 최신 기기 또는 일반 기기명 사용 권장.
     }
 }

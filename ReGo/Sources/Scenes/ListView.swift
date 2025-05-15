@@ -331,7 +331,7 @@ struct DateFilterView: View {
 }
 
 #Preview {
-    ListView(retros: Retrospect.detailSampleData)
+    ListView(retros: Retrospect.sampleData)
 }
 
 

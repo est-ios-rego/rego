@@ -453,7 +453,7 @@ struct HomeView: View {
 
                 .onAppear {
                     startLoopingAnimation()
-                    recentRetros = Array(allRetros.prefix(3))
+                    recentRetros = Array(retros.prefix(3))
                 }
 
                 .scrollContentBackground(.hidden)
@@ -482,7 +482,7 @@ struct StatefulPreviewWrapper<Value, Content: View>: View {
 
 #Preview {
     StatefulPreviewWrapper(0) { binding in
-        HomeView(retros: Retrospect.detailSampleData, selectedIndex: binding)
+        HomeView(retros: Retrospect.sampleData, selectedIndex: binding)
             .modelContainer(for: Retrospect.self)
     }
 }
