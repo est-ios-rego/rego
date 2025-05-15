@@ -13,7 +13,7 @@ struct WeekContributionItem: View {
     @Environment(\.colorScheme) var colorScheme
 
     var color: Color {
-        return colorScheme == .light ? Color.appPositive : Color.appNegative
+        return colorScheme == .light ? Color.regoPositive : Color.regoNegative
     }
 
     let count: Int

@@ -36,7 +36,7 @@ struct CategoryPickerView: View {
             }
             .padding()
             .scrollContentBackground(.hidden)
-            .background(Color("AppBackground"))
+            .background(Color.regoBackground)
             .navigationTitle("카테고리")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -44,7 +44,7 @@ struct CategoryPickerView: View {
                     Button("닫기") {
                         isPresented = false
                     }
-                    .tint(Color("AppAccent"))
+                    .tint(Color.regoAccent)
                 }
             }
             .presentationDetents([.fraction(shouldIncludeAllCategory ? 0.7 : 0.5)])
@@ -64,12 +64,12 @@ struct CategoryButton: View {
         } label: {
             Text(category.displayName)
                 .frame(maxWidth: .infinity, minHeight: 50)
-                .foregroundStyle(Color("AppAccent"))
-                .background(isSelected ? Color("AppAccent").opacity(0.2) : Color.gray.opacity(0.1))
+                .foregroundStyle(Color.regoAccent)
+                .background(isSelected ? Color.regoAccent.opacity(0.2) : Color.gray.opacity(0.1))
                 .cornerRadius(8)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(isSelected ? Color("AppAccent") : Color.gray.opacity(0.3), lineWidth: 1)
+                        .stroke(isSelected ? Color.regoAccent : Color.gray.opacity(0.3), lineWidth: 1)
                 )
         }
     }

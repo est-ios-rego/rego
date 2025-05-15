@@ -18,7 +18,7 @@ struct DatePickerSheet: View {
                 }
             }
             .scrollContentBackground(.hidden)
-            .background(Color("AppBackground"))
+            .background(Color.regoBackground)
             .navigationTitle("날짜")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -26,7 +26,7 @@ struct DatePickerSheet: View {
                     Button("닫기") {
                         isPresented = false
                     }
-                    .tint(Color("AppAccent"))
+                    .tint(Color.regoAccent)
                 }
             }
             .presentationDetents([.fraction(0.75)])

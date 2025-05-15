@@ -26,7 +26,7 @@ struct MoodPickerView: View {
                 .padding()
             }
             .scrollContentBackground(.hidden)
-            .background(Color("AppBackground"))
+            .background(Color.regoBackground)
             .navigationTitle("오늘의 기분")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -34,7 +34,7 @@ struct MoodPickerView: View {
                     Button("닫기") {
                         isPresented = false
                     }
-                    .tint(Color("AppAccent"))
+                    .tint(Color.regoAccent)
                 }
             }
             .presentationDetents([.fraction(0.5)])
@@ -59,7 +59,7 @@ struct MoodButton: View {
         }
         .padding(8)
         .frame(maxWidth: .infinity)
-        .background(isSelected ? Color("AppAccent").opacity(0.2) : Color.clear)
+        .background(isSelected ? Color.regoAccent.opacity(0.2) : Color.clear)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .onTapGesture {
             onTap()
