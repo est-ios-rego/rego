@@ -76,18 +76,18 @@ struct ListView: View {
             VStack(alignment: .leading, spacing: 20) {
 
 //                샘플데이터 추가
-                Button {
-                    Retrospect.sampleData.forEach { item in
-                        modelContext.insert(item)
-                    }
-                    Retrospect.sampleDataForStatistics.forEach { item in
-                        modelContext.insert(item)
-                    }
-                    try? modelContext.save()
-                } label: {
-                    Text("샘플데이터 추가")
-                        .font(.largeTitle)
-                }
+//                Button {
+//                    Retrospect.sampleData.forEach { item in
+//                        modelContext.insert(item)
+//                    }
+//                    Retrospect.sampleDataForStatistics.forEach { item in
+//                        modelContext.insert(item)
+//                    }
+//                    try? modelContext.save()
+//                } label: {
+//                    Text("샘플데이터 추가")
+//                        .font(.largeTitle)
+//                }
 
 
                 VStack {
@@ -283,21 +283,4 @@ struct DateFilterView: View {
         .modelContainer(for: Retrospect.self)
 }
 
-struct ListViewiPadOSPortrait: PreviewProvider {
-    static var previews: some View {
-        ListView()
-            .modelContainer(for: Retrospect.self)
-            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
-            .previewInterfaceOrientation(.portrait)
-    }
-}
-
-struct ListViewiPadOSLandscape: PreviewProvider {
-    static var previews: some View {
-        ListView()
-            .modelContainer(for: Retrospect.self)
-            .previewDevice(PreviewDevice(rawValue: "iPad Pro 11-inch (M4)"))
-            .previewInterfaceOrientation(.landscapeLeft)
-    }
-}
 
