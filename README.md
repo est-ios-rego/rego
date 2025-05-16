@@ -22,7 +22,7 @@
 
 ## 🛠 설치 방법
 
-1. 이 저장소를 클론합니다.
+1. 저장소 클론
 
    ```
    git clone https://github.com/est-ios-rego/rego.git
