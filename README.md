@@ -103,7 +103,7 @@ class Retrospect {
 ## 📷 스크린샷
 | 홈 | 목록 | 통계 | 설정 | 상세 |
 | -- | -- | -- | -- | -- |
-| ![image](https://github.com/user-attachments/assets/f4bb9edf-d3c9-449d-9739-b4fb5da5b102) | ![image](https://github.com/user-attachments/assets/34648dbd-4c25-42f8-9045-60ff2a2eebf9) | ![image](https://github.com/user-attachments/assets/94a40d4f-dc19-407d-bfec-eb62a6a5321f) | ![image](https://github.com/user-attachments/assets/7abeb0a1-88a5-46c5-9e00-7efcab5a9d65) | ![image](https://github.com/user-attachments/assets/43c2fec9-b477-496c-b371-b656e8042c3e) |
+| ![image](https://github.com/user-attachments/assets/f4bb9edf-d3c9-449d-9739-b4fb5da5b102) | ![image](https://github.com/user-attachments/assets/a77e3653-a2db-4aca-aaa5-6ab3be7d63ef) | ![image](https://github.com/user-attachments/assets/94a40d4f-dc19-407d-bfec-eb62a6a5321f) | ![image](https://github.com/user-attachments/assets/7abeb0a1-88a5-46c5-9e00-7efcab5a9d65) | ![image](https://github.com/user-attachments/assets/43c2fec9-b477-496c-b371-b656e8042c3e) |
 
 <br/>
 
