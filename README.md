@@ -95,8 +95,6 @@ class Retrospect {
 | 항목 | 설명 |
 |------|------|
 | 🌙 다크 모드 | 시스템 테마에 따라 UI 자동 전환 |
-| 🧑‍🦯 접근성 | Dynamic Type (글자 크기) 지원 |
-| 🚀 성능 최적화 | LazyView, @State 분리로 렌더링 최소화 |
 
 <br/>
 
