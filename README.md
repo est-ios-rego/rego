@@ -113,3 +113,8 @@ class Retrospect {
 | 김종성 | [@jseongee](https://github.com/jseongee) |
 | 서재효 | [@jaehyo0318](https://github.com/jaehyo0318) |
 | 성주현 | [@zudugy](https://github.com/zudugy) |
+
+<br />
+
+## 🏆 성과
+<img src="https://github.com/user-attachments/assets/dc64789a-8a48-4e98-b9e0-cd7143660e2d" width="500"/>
