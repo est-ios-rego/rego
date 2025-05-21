@@ -25,7 +25,7 @@
 1. 저장소 클론
 
    ```
-   git clone https://github.com/est-ios-rego/rego.git
+   git clone https://github.com/est-ios-rego/rego.git
    ```
 2. Xcode 15 이상에서 ReGo.xcodeproj 또는 ReGo.xcworkspace 열기
 3. 시뮬레이터 또는 실제 디바이스에서 실행
@@ -117,4 +117,4 @@ class Retrospect {
 <br />
 
 ## 🏆 성과
-<img src="https://github.com/user-attachments/assets/dc64789a-8a48-4e98-b9e0-cd7143660e2d" width="500"/>
+<img src="https://github.com/user-attachments/assets/0953eeb4-8450-475e-9b72-eaf0af74cbcb" width="500"/>
